@@ -83,13 +83,13 @@ Vagrant.configure(2) do |config|
 	sudo apt-get install -y nginx > /dev/null
 	
 	echo "Updating PHP repository"
-	apt-get install python-software-properties build-essential -y > /dev/null
-	add-apt-repository ppa:ondrej/php5 -y > /dev/null
+	apt-get install software-properties-common python-software-properties -y > /dev/null
+	add-apt-repository ppa:ondrej/php -y > /dev/null
 	apt-get update > /dev/null
 	echo "Installing PHP"
-	apt-get install php5-common php5-dev php5-cli php5-fpm php5-imagick -y > /dev/null
+	apt-get install php5.6 php5.6-common php5.6-dev php5.6-cli php5.6-fpm -y > /dev/null
 	echo "Installing PHP extensions"
-	apt-get install curl php5-curl php5-gd php5-mcrypt php5-mysql -y > /dev/null
+	apt-get install php5.6-mcrypt php5.6-mbstring php5.6-curl php5.6-cli php5.6-mysql php5.6-gd php5.6-intl php5.6-xsl php5.6-zip -y > /dev/null
 	php5enmod mcrypt > /dev/null
 
 	echo -e "\n--- Install MySQL specific packages and settings ---\n"
@@ -117,7 +117,7 @@ Vagrant.configure(2) do |config|
 	cp /var/www/olimp/config/nginx.cfg /etc/nginx/sites-available/default > /dev/null
   
 	service nginx restart > /dev/null
-	service php5-fpm restart > /dev/null
+	service php5.6-fpm restart > /dev/null
 	service mysql restart > /dev/null
 	
 	echo -e "Installing Composer for PHP package management"
