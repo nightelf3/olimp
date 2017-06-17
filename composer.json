@@ -1,0 +1,29 @@
+{
+  "type": "project",
+  "require": {
+    "php": ">=5.5.9",
+    "fxp/composer-asset-plugin": "*",
+    "kohkimakimoto/lib-migration": "*",
+    "symfony/yaml": "*",
+    "klein/klein": "*",
+    "illuminate/events": "*",
+    "illuminate/database": "*",
+    "ptejada/uFlex": "*",
+
+    "bower-asset/jquery": "3.2.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "*",
+    "symfony/debug": "*",
+    "squizlabs/php_codesniffer": "*",
+    "kint-php/kint": "*"
+  },
+  "config": {
+    "fxp-asset": {
+      "installer-paths": {
+        "npm-asset-library": "vendor/npm",
+        "bower-asset-library": "www/vendor"
+      }
+    }
+  }
+}
