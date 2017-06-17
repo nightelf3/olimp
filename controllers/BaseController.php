@@ -5,11 +5,9 @@
  * Date: 12.04.2017
  * Time: 0:33
  */
-
 namespace controllers;
 
-
-class BaseController
+abstract class BaseController
 {
 
 }

@@ -1,2 +1,12 @@
 site_url: http://10.2.2.10
 env: dev
+
+database:
+  host: localhost
+  prefix: oi_
+  database: olimp_db
+  username: root
+  password:
+
+session:
+  cookie_lifetime: 0

@@ -14,6 +14,6 @@ class IndexController extends BaseController
 {
     public function index(Request $request, Response $response, $service, $app)
     {
-        return "lol";
+        d($response);
     }
 }

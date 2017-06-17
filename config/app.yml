@@ -7,3 +7,6 @@ database:
   database: olimp_db
   username: root
   password:
+
+session:
+  cookie_lifetime: 0

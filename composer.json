@@ -1,22 +1,22 @@
 {
   "type": "project",
   "require": {
-    "php": ">=5.5.9",
+    "php": ">=5.6.3",
     "fxp/composer-asset-plugin": "*",
-    "kohkimakimoto/lib-migration": "*",
     "symfony/yaml": "*",
     "klein/klein": "*",
     "illuminate/events": "*",
     "illuminate/database": "*",
-    "ptejada/uFlex": "*",
+    "serafim/properties": "1.*",
+    "robmorgan/phinx": "0.*",
 
-    "bower-asset/jquery": "3.2.1"
+    "bower-asset/jquery": "3.*"
   },
   "require-dev": {
     "codeception/codeception": "*",
     "symfony/debug": "*",
     "squizlabs/php_codesniffer": "*",
-    "kint-php/kint": "*"
+    "kint-php/kint": "2.*"
   },
   "config": {
     "fxp-asset": {
