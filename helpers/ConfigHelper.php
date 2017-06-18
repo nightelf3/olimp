@@ -13,7 +13,7 @@ class ConfigHelper extends BaseHelper
 
     public static function initialize()
     {
-        self::$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(BASE_PATH . "/config/app.yml"));
+        self::$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(UrlHelper::pathTo("config/app.yml")));
     }
 
     /**
@@ -24,16 +24,8 @@ class ConfigHelper extends BaseHelper
      */
     public static function getDatabaseSettings()
     {
-        return [
-            'driver'    => 'mysql',
-            'host'      => self::$config['database']['host'],
-            'database'  => self::$config['database']['database'],
-            'username'  => self::$config['database']['username'],
-            'password'  => self::$config['database']['password'],
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => self::$config['database']['prefix']
-        ];
+        ErrorHelper::assert(is_array(self::$config['database']), "Missing database settings");
+        return self::$config['database'];
     }
 
     /**
@@ -43,7 +35,7 @@ class ConfigHelper extends BaseHelper
      */
     public static function getSessionSettings()
     {
-        return isset(self::$config['sesstion']) ? self::$config['sesstion'] : [];
+        return isset(self::$config['session']) ? self::$config['session'] : [];
     }
 
     /**

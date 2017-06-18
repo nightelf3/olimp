@@ -2,11 +2,22 @@ site_url: http://10.2.2.10
 env: dev
 
 database:
+  driver: mysql
   host: localhost
-  prefix: oi_
   database: olimp_db
   username: root
-  password:
+  password: root
+  port: 3306
+  charset: utf8
+  collation: utf8_unicode_ci
+  prefix: oi_
 
 session:
   cookie_lifetime: 0
+
+template:
+  path: /template
+
+migration:
+  path: /migrations
+  table: phinxlog

@@ -6,31 +6,16 @@
  * Time: 23:42
  */
 
-define('BASE_PATH', dirname(dirname(__FILE__)));
+require_once(dirname(dirname(__FILE__)) . '/includes/autoload.php');
 
-require_once(BASE_PATH . '/vendor/autoload.php');
-spl_autoload_register(function ($class) {
-    $classPath = str_replace("\\", "/", $class);
-
-    if (file_exists(BASE_PATH . "/{$classPath}.php")) {
-        require_once BASE_PATH . "/{$classPath}.php";
-
-        // initialize helpers
-        if (preg_match('/^helpers/', $class) && method_exists($class, 'initialize')) {
-            $class::initialize();
-        }
-    }
-
-    return false;
-});
-
+/* Eloqument ORM */
 $capsule = new \Illuminate\Database\Capsule\Manager;
 $capsule->addConnection(helpers\ConfigHelper::getDatabaseSettings(), 'default');
 $capsule->setEventDispatcher(new \Illuminate\Events\Dispatcher(new \Illuminate\Container\Container));
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-// turn on debug mode
+/* Turn on debug mode */
 if (helpers\ConfigHelper::isDev()) {
     Symfony\Component\Debug\Debug::enable(E_ERROR | E_WARNING);
     Kint_Renderer_Rich::$theme = 'solarized-dark.css';
@@ -40,13 +25,17 @@ if (helpers\ConfigHelper::isDev()) {
     Kint::$enabled_mode = false;
 }
 
+/* Session */
 $sessionId = session_id();
 if (empty($sessionId)) {
     session_start(helpers\ConfigHelper::getSessionSettings());
 }
 
+/* Twig */
+Twig_Autoloader::register();
+
+/* Klein */
 $klein = new \Klein\Klein();
-$routes = include(BASE_PATH . '/includes/routes.php');
 
 /**
  * Main callback function for routes
@@ -83,6 +72,7 @@ function callback($path, array $callbacks, Klein\Request $request, Klein\Respons
     return $response->code(404);
 }
 
+$routes = include(helpers\UrlHelper::pathTo('includes/routes.php'));
 foreach ($routes as $route) {
     $method = $route[0];
     $path = $route[1];

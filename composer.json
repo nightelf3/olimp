@@ -9,6 +9,7 @@
     "illuminate/database": "*",
     "serafim/properties": "1.*",
     "robmorgan/phinx": "0.*",
+    "twig/twig": "1.*",
 
     "bower-asset/jquery": "3.*"
   },

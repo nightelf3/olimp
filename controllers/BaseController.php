@@ -7,7 +7,18 @@
  */
 namespace controllers;
 
+use helpers\TemplateHelper;
+
 abstract class BaseController
 {
+    protected $data = [];
 
+    protected function render($template)
+    {
+        //TODO: change
+        $this->data['header'] = TemplateHelper::render("header.twig", [ 'title' => get_called_class() ]);
+        $this->data['footer'] = TemplateHelper::render("footer.twig", []);
+
+        return TemplateHelper::render("{$template}.twig", $this->data);
+    }
 }
