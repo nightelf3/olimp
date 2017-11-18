@@ -7,5 +7,6 @@
  */
 
 return [
-    [["GET"], "/", "index#index"]
+    [["GET"], "/", "index#index"],
+    [["GET,DELETE"], "/lol", "index#index"]
 ];

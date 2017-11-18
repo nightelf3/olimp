@@ -7,6 +7,8 @@
  */
 namespace helpers;
 
+use helpers\classes\twig\TwigLanguageExtension;
+
 class TemplateHelper extends BaseHelper
 {
     /** @var \Twig_Environment $twig */
@@ -14,8 +16,16 @@ class TemplateHelper extends BaseHelper
 
     public static function initialize()
     {
-        $loader = new \Twig_Loader_Filesystem(UrlHelper::pathTo(ConfigHelper::get('template', 'path')));
-        self::$twig = new \Twig_Environment($loader);
+        $loader = new \Twig_Loader_Filesystem(UrlHelper::path(ConfigHelper::get('template', 'path')));
+        self::$twig = new \Twig_Environment($loader, [
+            'debug' => ConfigHelper::isDebug()
+        ]);
+
+        $pathToTwigExtensions = ConfigHelper::get('template', 'extensions') . '/';
+        foreach (glob(UrlHelper::path("{$pathToTwigExtensions}*.php"), GLOB_BRACE) as $extension) {
+            $class = str_replace('/', '\\', $pathToTwigExtensions . basename($extension, '.php'));
+            self::$twig->addExtension(new $class());
+        }
     }
 
     /**
@@ -25,8 +35,8 @@ class TemplateHelper extends BaseHelper
      * @param array $data
      * @return string
      */
-    public static function render($template, array $data)
+    public static function render($template, array $data = [])
     {
-        return self::$twig->render($template, $data);
+        return self::$twig->render("{$template}.twig", $data);
     }
 }

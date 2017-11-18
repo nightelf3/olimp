@@ -13,7 +13,7 @@ class ConfigHelper extends BaseHelper
 
     public static function initialize()
     {
-        self::$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(UrlHelper::pathTo("config/app.yml")));
+        self::$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(UrlHelper::path("config/app.yml")));
     }
 
     /**
@@ -43,7 +43,7 @@ class ConfigHelper extends BaseHelper
      *
      * @return bool
      */
-    public static function isDev()
+    public static function isDebug()
     {
         return self::$config['env'] == 'dev';
     }

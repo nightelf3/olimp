@@ -2,19 +2,23 @@
   "type": "project",
   "require": {
     "php": ">=5.6.3",
-    "fxp/composer-asset-plugin": "*",
-    "symfony/yaml": "*",
-    "klein/klein": "*",
-    "illuminate/events": "*",
-    "illuminate/database": "*",
+    "fxp/composer-asset-plugin": "dev-master",
+    "mnsami/composer-custom-directory-installer": "1.1.*",
+    "symfony/yaml": "^3.3.2",
+    "klein/klein": "^2.1.2",
+    "illuminate/events": "^5.4.27",
+    "illuminate/database": "^5.4.27",
     "serafim/properties": "1.*",
     "robmorgan/phinx": "0.*",
     "twig/twig": "1.*",
+    "pfbc/pfbc": "3.*", //Do we need this one?
+    "twbs/bootstrap": "~3.3.6",
+    "timhovius/bootstrap-material-design": "dev-master", //Do we need this one?
 
-    "bower-asset/jquery": "3.*"
+    "bower-asset/jquery-2.2.4": "2.2.4"
   },
   "require-dev": {
-    "codeception/codeception": "*",
+    "codeception/codeception": "2.3.3",
     "symfony/debug": "*",
     "squizlabs/php_codesniffer": "*",
     "kint-php/kint": "2.*"
@@ -25,6 +29,14 @@
         "npm-asset-library": "vendor/npm",
         "bower-asset-library": "www/vendor"
       }
+    }
+  },
+  "extra": {
+    "installer-paths": {
+      "www/vendor/{$name}": [
+        "twbs/bootstrap",
+        "timhovius/bootstrap-material-design"
+      ]
     }
   }
 }

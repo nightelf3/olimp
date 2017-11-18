@@ -14,8 +14,6 @@ class IndexController extends BaseController
 {
     public function index(Request $request, Response $response, $service, $app)
     {
-        $this->data['body'] = "Test body";
-
         return $this->render('home');
     }
 }

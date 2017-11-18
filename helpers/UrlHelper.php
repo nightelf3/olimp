@@ -15,7 +15,7 @@ class UrlHelper extends BaseHelper
      * @param string $path
      * @return null|string
      */
-    public static function pathTo($path)
+    public static function path($path)
     {
         ErrorHelper::assert(is_string($path), "Path should be string");
         if (!is_string($path)) {
@@ -27,5 +27,16 @@ class UrlHelper extends BaseHelper
         }
 
         return BASE_PATH . $path;
+    }
+
+    /**
+     * Get link to some controller
+     *
+     * @param $controller
+     * @return string
+     */
+    public static function href($controller)
+    {
+        return ConfigHelper::get('site_url') . "/{$controller}";
     }
 }

@@ -8,15 +8,8 @@
 
 require_once(dirname(dirname(__FILE__)) . '/includes/autoload.php');
 
-/* Eloqument ORM */
-$capsule = new \Illuminate\Database\Capsule\Manager;
-$capsule->addConnection(helpers\ConfigHelper::getDatabaseSettings(), 'default');
-$capsule->setEventDispatcher(new \Illuminate\Events\Dispatcher(new \Illuminate\Container\Container));
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
-
 /* Turn on debug mode */
-if (helpers\ConfigHelper::isDev()) {
+if (helpers\ConfigHelper::isDebug()) {
     Symfony\Component\Debug\Debug::enable(E_ERROR | E_WARNING);
     Kint_Renderer_Rich::$theme = 'solarized-dark.css';
 } else {
@@ -25,17 +18,21 @@ if (helpers\ConfigHelper::isDev()) {
     Kint::$enabled_mode = false;
 }
 
+/* Eloqument ORM */
+$capsule = new \Illuminate\Database\Capsule\Manager;
+$capsule->addConnection(helpers\ConfigHelper::getDatabaseSettings(), 'default');
+$capsule->setEventDispatcher(new \Illuminate\Events\Dispatcher(new \Illuminate\Container\Container));
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
 /* Session */
 $sessionId = session_id();
 if (empty($sessionId)) {
     session_start(helpers\ConfigHelper::getSessionSettings());
 }
 
-/* Twig */
-Twig_Autoloader::register();
-
 /* Klein */
-$klein = new \Klein\Klein();
+$klein = \helpers\ControllerHelper::getKlein();
 
 /**
  * Main callback function for routes
@@ -51,28 +48,19 @@ $klein = new \Klein\Klein();
  */
 function callback($path, array $callbacks, Klein\Request $request, Klein\Response $response, $service, $app)
 {
-    $namespaces = explode("\\", $callbacks[0]);
-    $controller = ucfirst(array_pop($namespaces)) . 'Controller';
-    if ($namespaces) {
-        $class = "controllers\\" . implode("\\", $namespaces) . "\\{$controller}";
-    } else {
-        $class = "controllers\\{$controller}";
-    }
-
+    $class = \helpers\ControllerHelper::getControllerClass($callbacks[0]);
     $action = $callbacks[1] ?: 'index';
-    $controller = new $class($controller, $action, $request);
+    $controller = new $class();
 
     if (method_exists($controller, $action)) {
-        $obj = $controller->$action($request, $response, $service, $app);
-        return $obj;
-    } else {
-        helpers\ErrorHelper::assert("Can't find {$controller}->{$action}");
+        return $controller->$action($request, $response, $service, $app);
     }
 
+    helpers\ErrorHelper::assert(false, "Can't find {$controller}->{$action}");
     return $response->code(404);
 }
 
-$routes = include(helpers\UrlHelper::pathTo('includes/routes.php'));
+$routes = include(helpers\UrlHelper::path('includes/routes.php'));
 foreach ($routes as $route) {
     $method = $route[0];
     $path = $route[1];
@@ -85,7 +73,7 @@ foreach ($routes as $route) {
 
 $klein->onHttpError(function ($code, $router) {
     //TODO: add 404 catching
-    helpers\ErrorHelper::assert("Oh no, a bad error happened that caused a {$code} code.");
+    helpers\ErrorHelper::assert(false, "Oh no, a bad error happened that caused a {$code} code.");
 });
 
 $klein->dispatch();

@@ -9,11 +9,11 @@ namespace helpers;
 
 class ErrorHelper extends BaseHelper
 {
-    protected static $isDev = false;
+    protected static $isDebug = false;
 
     public static function initialize()
     {
-        self::$isDev = ConfigHelper::isDev();
+        self::$isDebug = ConfigHelper::isDebug();
     }
 
     /**
@@ -30,14 +30,14 @@ class ErrorHelper extends BaseHelper
             $condition = false;
         }
 
-        if (self::$isDev && !$condition) {
+        if (self::$isDebug && !$condition) {
             throw new \Exception($message);
         }
     }
 
     public static function trace()
     {
-        if (self::$isDev) {
+        if (self::$isDebug) {
             //TODO: \Kint::trace() better?
             throw new \Exception();
         }

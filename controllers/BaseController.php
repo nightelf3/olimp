@@ -16,9 +16,9 @@ abstract class BaseController
     protected function render($template)
     {
         //TODO: change
-        $this->data['header'] = TemplateHelper::render("header.twig", [ 'title' => get_called_class() ]);
-        $this->data['footer'] = TemplateHelper::render("footer.twig", []);
+        $this->data['header'] = TemplateHelper::render("common/header", [ 'title' => get_called_class() ]);
+        $this->data['footer'] = TemplateHelper::render("common/footer", []);
 
-        return TemplateHelper::render("{$template}.twig", $this->data);
+        return TemplateHelper::render("pages/{$template}", $this->data);
     }
 }

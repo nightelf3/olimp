@@ -9,6 +9,9 @@ namespace helpers;
 
 abstract class BaseHelper
 {
+    /**
+     * Some kind on cunstructor for the helpers
+     */
     public static function initialize()
     {
         /* empty initializer */

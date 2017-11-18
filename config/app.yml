@@ -17,6 +17,7 @@ session:
 
 template:
   path: /template
+  extensions: /helpers/classes/twig
 
 migration:
   path: /migrations
