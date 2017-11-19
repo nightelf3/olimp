@@ -35,7 +35,7 @@ class UrlHelper extends BaseHelper
      * @param $controller
      * @return string
      */
-    public static function href($controller)
+    public static function href($controller = '')
     {
         return ConfigHelper::get('site_url') . "/{$controller}";
     }

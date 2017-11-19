@@ -18,7 +18,7 @@ class TwigLinkExtension extends \Twig_Extension
         ];
     }
 
-    public function href($controller)
+    public function href($controller = '')
     {
         return UrlHelper::href($controller);
     }

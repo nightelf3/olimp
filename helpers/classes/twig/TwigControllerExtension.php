@@ -19,8 +19,8 @@ class TwigControllerExtension extends \Twig_Extension
         ];
     }
 
-    public function load($name, $action = 'index')
+    public function load($name, $action = 'index', $data = [])
     {
-        return ControllerHelper::getComponent($name, $action);
+        return ControllerHelper::getComponent($name, $action, $data);
     }
 }

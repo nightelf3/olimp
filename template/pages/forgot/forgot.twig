@@ -1,0 +1,38 @@
+{{ header|raw }}
+<div style="width: 1000px; margin: auto; ">
+    <div id="MainBlock" style="margin-top: 30px; padding:20px; background: #E0E0E0; border: 1px solid black;">
+        <form method="post" style="margin:-15px auto 0px; margin-top:-5 px;" action="{{ href('forgot') }}">
+            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                <tr>
+                    <td colspan="2" align="center">{{ text('forgottenText') }}</td>
+                </tr>
+                <tr>
+                    <td style="width: 50px" nowrap>{{ text('username') }}</td>
+                    <td>
+                        <input type="text" style="width: 784" name="username" value="{{ form.username }}" required />
+                        {% if errors.username %}<p class="error">{{ text('incorrect-username') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px" nowrap>{{ text('email') }}</td>
+                    <td>
+                        <input type="email" style="width: 784" name="email" value="{{ form.email }}" required />
+                        {% if errors.email %}<p class="error">{{ text('incorrect-email') }}</p>{% endif %}
+                    </td>
+                </tr>
+                {% if errors.userNotExists %}
+                <tr>
+                    <td colspan="2"><p class="error">{{ text('restore-error') }}</p></td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="button" style="width: 130px;" value="{{ text('back') }}" OnClick="document.location = '{{ href() }}'" />
+                        <input type="submit" style="width: 150px;" value="{{ text('restore') }}" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+{{ footer|raw }}

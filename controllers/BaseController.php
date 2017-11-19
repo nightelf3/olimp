@@ -16,8 +16,8 @@ abstract class BaseController
     protected function render($template)
     {
         //TODO: change
-        $this->data['header'] = TemplateHelper::render("common/header", [ 'title' => get_called_class() ]);
-        $this->data['footer'] = TemplateHelper::render("common/footer", []);
+        $this->data['header'] = TemplateHelper::render("pages/common/header");
+        $this->data['footer'] = TemplateHelper::render("pages/common/footer");
 
         return TemplateHelper::render("pages/{$template}", $this->data);
     }

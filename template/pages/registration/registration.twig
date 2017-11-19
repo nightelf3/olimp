@@ -1,0 +1,82 @@
+{{ header|raw }}
+<div style="width: 1000px; margin: auto; ">
+    <div id="MainBlock" style="margin-top: 30px; padding:20px; background: #E0E0E0; border: 1px solid black;">
+        <form method="post" action="{{ href('registration') }}" style="margin:0px auto 0px; margin-top:-5 px;">
+            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('username') }}</td>
+                    <td valign="top">
+                        <input type="text" style="width: 784" name="username" value="{{ form.username }}" required />
+                        {% if errors.username %}<p class="error">{{ text('incorrect-username') }}</p>{% endif %}
+                        {% if errors.usernameExists %}<p class="error">{{ text('username-exists') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('password') }}</td>
+                    <td valign="top">
+                        <input type="password" style="width: 784" name="password" value="{{ form.password }}" required />
+                        {% if errors.password %}<p class="error">{{ text('incorrect-password') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('password2') }}</td>
+                    <td valign="top">
+                        <input type="password" style="width: 784" name="password2" value="{{ form.password2 }}" required />
+                        {% if errors.password2 %}<p class="error">{{ text('incorrect-password2') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('email') }}</td>
+                    <td valign="top">
+                        <input type="email" style="width: 784" name="email" value="{{ form.email }}" required />
+                        {% if errors.email %}<p class="error">{{ text('incorrect-email') }}</p>{% endif %}
+                        {% if errors.emailExists %}<p class="error">{{ text('email-exists') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('surname') }}</td>
+                    <td valign="top">
+                        <input type="text" style="width: 784" name="surname" value="{{ form.surname }}" required />
+                        {% if errors.surname %}<p class="error">{{ text('incorrect-surname') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('name') }}</td>
+                    <td valign="top">
+                        <input type="text" style="width: 784" name="name" value="{{ form.name }}" required />
+                        {% if errors.name %}<p class="error">{{ text('incorrect-name') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('phone') }}</td>
+                    <td valign="top">
+                        <input type="tel" style="width: 784" name="phone" value="{{ form.phone }}" required />
+                        {% if errors.phone %}<p class="error">{{ text('incorrect-phone') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('school') }}</td>
+                    <td valign="top">
+                        <input type="text" style="width: 784" name="school" value="{{ form.school }}" required />
+                        {% if errors.school %}<p class="error">{{ text('incorrect-school') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 170px" nowrap>{{ text('class') }}</td>
+                    <td valign="top">
+                        <input type="text" style="width: 784" name="class" value="{{ form.class }}" required />
+                        {% if errors.class %}<p class="error">{{ text('incorrect-class') }}</p>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top"></td>
+                    <td>
+                        <input type="button" style="width: 130px;  float: right;" value="{{ text('back') }}" onClick="location.href = '{{ href() }}'" />
+                        <input type="submit" style="width: 150px; float: right;" value="{{ text('register') }}" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+{{ footer|raw }}

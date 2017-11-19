@@ -7,6 +7,7 @@
  */
 namespace helpers;
 
+use Klein\Request;
 use models\UserModel;
 
 class UserHelper extends BaseHelper
@@ -21,9 +22,7 @@ class UserHelper extends BaseHelper
         $userId = SessionHelper::get('userId');
 
         if (!is_null($userId)) {
-            self::$user = UserModel::find([
-                'user_id' => $userId
-            ]);
+            self::$user = UserModel::where([ 'user_id' => $userId ])->first();
         }
     }
 
@@ -48,5 +47,29 @@ class UserHelper extends BaseHelper
     public static function isAuthenticated()
     {
         return !is_null(self::$user);
+    }
+
+    /**
+     * Try to login user
+     *
+     * @param Request $request
+     * @return array of errors
+     */
+    public static function login(Request $request)
+    {
+        $password = addslashes($request->paramsPost()->get('username', ''));
+        /** @var UserModel $user */
+        $user = UserModel::where('username', $request->paramsPost()->get('username', ''))
+            ->whereRaw("password = SHA1(CONCAT('{$password}', password_salt))")
+            ->select([ 'user_id' ])->first();
+
+        $errors = [];
+        if ($user) {
+            SessionHelper::set('userId', $user->user_id);
+        } else {
+            $errors['userNotExists'] = true;
+        }
+
+        return $errors;
     }
 }

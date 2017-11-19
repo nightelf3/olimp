@@ -1,0 +1,27 @@
+<form method="post" action="{{ href() }}">
+    <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+        <tr>
+            <td style="width:50px" nowrap>{{ text('username') }}</td>
+            <td><input type="text" style="width:100%" name="username" value="{{ username }}" required /></td>
+        </tr>
+        <tr>
+            <td style="width: 50px" nowrap>{{ text('password') }}</td>
+            <td><input type="password" style="width:100%" name="password" required /></td>
+        </tr>
+        {% if errors %}
+        <tr>
+            <td colspan="2">
+            {% for key in errors|keys %}
+                <p class="error">{{ text(key) }}</p>
+            {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="2" align="right" valign="top"><input type="submit" value="{{ text('login') }}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="font-size:10pt;text-align:center;"><a href="{{ href('forgot') }}">{{ text('forgot') }}</a> | <a href="{{ href('registration') }}">{{ text('registrate') }}</a></td>
+        </tr>
+    </table>
+</form>

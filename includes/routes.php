@@ -7,6 +7,9 @@
  */
 
 return [
-    [["GET"], "/", "index#index"],
-    [["GET,DELETE"], "/lol", "index#index"]
+    [['GET', 'POST'], '/', 'index#index'],
+
+    [['GET', 'POST'], '/registration', 'account#registration'],
+    [['GET', 'POST'], '/forgot', 'account#forgot'],
+    [['GET'], '/logout', 'account#logout'],
 ];

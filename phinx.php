@@ -12,7 +12,7 @@ $database = helpers\ConfigHelper::getDatabaseSettings();
 
 return [
     'paths' => [
-      'migrations' => helpers\UrlHelper::pathTo(helpers\ConfigHelper::get('migration', 'path'))
+      'migrations' => helpers\UrlHelper::path(helpers\ConfigHelper::get('migration', 'path'))
     ],
     'environments' => [
         'default_migration_table' => helpers\ConfigHelper::get('migration', 'table'),

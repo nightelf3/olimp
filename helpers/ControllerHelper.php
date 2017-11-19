@@ -25,10 +25,10 @@ class ControllerHelper extends BaseHelper
         return self::$klein;
     }
 
-    public static function getControllerClass($name)
+    public static function getControllerClass($name, $sufix = 'Controller')
     {
         $namespaces = explode("\\", $name);
-        $controller = ucfirst(array_pop($namespaces)) . 'Controller';
+        $controller = ucfirst(array_pop($namespaces)) . $sufix;
         if ($namespaces) {
             return "controllers\\" . implode("\\", $namespaces) . "\\{$controller}";
         }
@@ -36,11 +36,11 @@ class ControllerHelper extends BaseHelper
         return "controllers\\{$controller}";
     }
 
-    public static function getComponent($name, $action = 'index')
+    public static function getComponent($name, $action = 'index', $data = [])
     {
-        $class = \helpers\ControllerHelper::getControllerClass($name);
+        $class = \helpers\ControllerHelper::getControllerClass($name, 'Component');
         $action = $action ?: 'index';
-        $controller = new $class();
+        $controller = new $class($data);
         $klein = self::getKlein();
 
         if (method_exists($controller, $action)) {

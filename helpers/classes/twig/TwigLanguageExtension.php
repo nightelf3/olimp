@@ -7,6 +7,8 @@
  */
 namespace helpers\classes\twig;
 
+use helpers\TemplateHelper;
+
 class TwigLanguageExtension extends \Twig_Extension
 {
     public function getFunctions()
@@ -18,7 +20,6 @@ class TwigLanguageExtension extends \Twig_Extension
 
     public function text($id)
     {
-        //TODO: implement multi-language support
-        return "_{$id}Text";
+        return TemplateHelper::text($id);
     }
 }

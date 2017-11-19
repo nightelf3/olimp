@@ -39,4 +39,10 @@ class TemplateHelper extends BaseHelper
     {
         return self::$twig->render("{$template}.twig", $data);
     }
+
+    public static function text($id)
+    {
+        //TODO: implement multi-language support
+        return "_{$id}Text";
+    }
 }

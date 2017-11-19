@@ -1,0 +1,8 @@
+{{ header|raw }}
+<div style="width: 1000px; margin: auto; ">
+    <div id="MainBlock" style="margin-top: 30px; padding:20px; background: #E0E0E0; border: 1px solid black;">
+        Hello, {{ username }}, new password was sendet to your email: {{ email }}
+        <a href="{{ href() }}">Goto index</a>
+    </div>
+</div>
+{{ footer|raw }}

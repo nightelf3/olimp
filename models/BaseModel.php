@@ -41,23 +41,6 @@ abstract class BaseModel extends Model
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
-    protected $rules = [];
-
-    public function validate(array $args)
-    {
-        $fields = [];
-
-        if ($this->rules) {
-            foreach ($this->rules as $key => $regExp) {
-                if (isset($args[$key]) && !preg_match("/{$regExp}/ui", $args[$key])) {
-                    $fields[$key] = $regExp;
-                }
-            }
-        }
-
-        return $fields;
-    }
-
     public function toArray($defaultArray = [])
     {
         $arr = parent::toArray();

@@ -13,7 +13,8 @@ class ConfigHelper extends BaseHelper
 
     public static function initialize()
     {
-        self::$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(UrlHelper::path("config/app.yml")));
+        //be careful with UrlHelper::path there
+        self::$config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(BASE_PATH . "/config/app.yml"));
     }
 
     /**
