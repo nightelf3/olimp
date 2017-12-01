@@ -14,7 +14,8 @@ class TwigTaskExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('tabTaskColor', [ $this, 'tabTaskColor' ])
+            new \Twig_SimpleFunction('tabTaskColor', [ $this, 'tabTaskColor' ]),
+            new \Twig_SimpleFunction('taskStatus', [ $this, 'taskStatus' ])
         ];
     }
 
@@ -40,5 +41,10 @@ class TwigTaskExtension extends \Twig_Extension
         }
 
         return $active ? "#c6c6c6" : "#606060";
+    }
+
+    public function taskStatus($var)
+    {
+        return (new TaskStatusEnum($var))->value;
     }
 }

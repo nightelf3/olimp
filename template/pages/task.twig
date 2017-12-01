@@ -1,38 +1,40 @@
 {{ header|raw }}
-<style>
-    .tab {
-        border: 1px solid black;
-        background: #E0E0E0;
-        padding: 5px;
-        width: 100%;
+<div class="main">
+    <table width="100%" style="border: 1px solid black;">
+        <tr>
+            <td class="TopBlock" align="right">
+                <div style="float:left; margin-left: 40px;"><?php  include ROOT_DIR."includes/timer/timer.php"  ?></div>
+                <div style="display:inline-block" class="UserInfoBlock"><?php include ROOT_DIR."includes/userinfo.php"; ?></div>
+            </td>
+        </tr>
 
-        text-align: justify;
-    }
-
-    .tabsLink {
-        background-color:#606060;
-        padding:5px;
-        font: bold 12pt "Trebuchet MS", tahoma, verdana, arial narrow, arial;
-        color:#fff;
-        text-decoration:none;
-        cursor: pointer;
-
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-    #ZadPlace table td {
-        vertical-align:top;
-    }
-</style>
-<table width="100%" cellspacing="0">
-    <tr>
-        {% for task in tasks %}
-        <td class="tabsLink" style="background-color:{{ tabTaskColor(task.getStatus(), task.task_id == currentTask.task_id) }}; color: #fff" align="center" width="{{ 100 / tasks|length }}%" onClick="location.href='{{ href("task/#{task.task_id}") }}'">{{ task.name }}</td>
-        <td width="1"></td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td class="tab" id="ZadPlace" colspan="{{ tasks|length * 2 }}">{{ currentTask.task|decode|raw }}</td>
-    </tr>
-</table>
+        <tr>
+            <td>
+                <table style="margin: 0px; padding: 0px; border: 1px solid black; width: 100%">
+                    <tr>
+                        <td width="60%">
+                            <table width="100%" cellspacing="0" class="tabs-table">
+                                <tr>
+                                    {% for task in tasks %}
+                                        <td class="tabsLink" style="background-color:{{ tabTaskColor(task.getStatus(), task.task_id == currentTask.task_id) }}; color: #fff" align="center" width="{{ 100 / tasks|length }}%" onClick="location.href='{{ href("task/#{task.task_id}") }}'">{{ task.name }}</td>
+                                        {% if false == loop.last %}<td width="1"></td>{% endif %}
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="tab" id="task-main-text" colspan="{{ tasks|length * 2 }}">{{ currentTask.task|decode|raw }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="40%" valign="top" >
+                            <div class="UploadBlock">
+                                {{ uploadForm|raw }}
+                                {{ queueInfo|raw }}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
 {{ footer|raw }}

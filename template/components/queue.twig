@@ -1,0 +1,42 @@
+
+    <table border="1" width="95%" style="margin: 10px auto;text-align: center;" cellpadding="3">
+        {% if queue|length %}
+        <thead>
+        <tr>
+            <td width="1" nowrap>{{ text('testNum') }}</td>
+            <td>{{ text('errorType') }}</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in queue %}
+            <tr>
+                <td colspan="2">
+                    <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ item['user_filename'] }}</div>
+                </td>
+            <tr>
+            <tr>
+                {% if item['stan']|length > 1 %}
+                    {% for i in 0..(item['test']|length - 1) %}
+                        <td>{{ item['test'][i] }}</td>
+                        <td>{{ text("taskResult_#{item['stan'][i]}") }}</td>
+                    {% endfor %}
+                {% else %}
+                    <td colspan="2">
+                        {{ text("taskResult_#{item['stan'][0]}") }}
+                        {% if taskStatus('CompilingError') == item['stan'][0] %}
+                            <a href="{{ href("compile-log/#{item['queue_id']}") }}">{{ text('seeCompileError') }}</a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        {% else %}
+        <thead>
+        <tr>
+            <td style="text-align: center;">{{ text('emptyQueue') }}</td>
+        </tr>
+        </thead>
+        {% endif %}
+    </table>

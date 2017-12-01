@@ -15,6 +15,7 @@ namespace models;
  * @property string user_filename
  * @property string filename
  * @property int compiler_id
+ * @property string created_at
  * @property string stan
  * @property string tests
  * @property string upload_ip
