@@ -10,13 +10,15 @@ namespace controllers;
 use helpers\MailHelper;
 use helpers\SessionHelper;
 use helpers\UrlHelper;
+use Klein\App;
 use Klein\Request;
 use Klein\Response;
+use Klein\ServiceProvider;
 use models\UserModel;
 
 class AccountController extends BaseController
 {
-    public function registration(Request $request, Response $response, $service, $app)
+    public function registration(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if ($request->method('get')) {
             return $this->render('registration/registration');
@@ -43,7 +45,7 @@ class AccountController extends BaseController
     }
 
     //get
-    public function forgot(Request $request, Response $response, $service, $app)
+    public function forgot(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if ($request->method('get')) {
             return $this->render('forgot/forgot');
@@ -81,7 +83,7 @@ class AccountController extends BaseController
         return $this->render('forgot/forgot_succeed');
     }
 
-    public function logout(Request $request, Response $response, $service, $app)
+    public function logout(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         SessionHelper::remove('userId');
         return $response->redirect(UrlHelper::href());

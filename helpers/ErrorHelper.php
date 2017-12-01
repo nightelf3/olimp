@@ -31,8 +31,8 @@ class ErrorHelper extends BaseHelper
     public static function trace()
     {
         if (ConfigHelper::isDebug()) {
-            //TODO: \Kint::trace() better?
-            throw new \Exception();
+            \Kint::trace();
+            exit;
         }
     }
 }

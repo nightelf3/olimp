@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UserTableCreation extends AbstractMigration
+class TaskTableCreation extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,15 +27,15 @@ class UserTableCreation extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('users', [ 'id' => 'user_id' ]);
-        $table->addColumn('username', 'string')
-            ->addColumn('password', 'string')
-            ->addColumn('password_salt', 'string')
-            ->addColumn('email', 'string')
-            ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime')
+        $table = $this->table('tasks', [ 'id' => 'task_id' ]);
+        $table->addColumn('task', 'text')
+            ->addColumn('input', 'text')
+            ->addColumn('output', 'text')
+            ->addColumn('tests_count', 'integer', [ 'signed' => false ])
+            ->addColumn('time_limit', 'decimal', [ 'precision' => 10, 'scale' => 2 ])
+            ->addColumn('memory_limit', 'decimal', [ 'precision' => 10, 'scale' => 2 ])
+            ->addColumn('max_score', 'integer', [ 'signed' => false ])
+            ->addColumn('mulct', 'integer', [ 'signed' => false ])
             ->create();
-        $table->addIndex(['username', 'email'], [ 'unique' => true ])
-            ->update();
     }
 }

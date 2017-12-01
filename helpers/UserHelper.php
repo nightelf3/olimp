@@ -57,7 +57,7 @@ class UserHelper extends BaseHelper
      */
     public static function login(Request $request)
     {
-        $password = addslashes($request->paramsPost()->get('username', ''));
+        $password = $request->paramsPost()->get('password', '');
         /** @var UserModel $user */
         $user = UserModel::where('username', $request->paramsPost()->get('username', ''))
             ->whereRaw("password = SHA1(CONCAT('{$password}', password_salt))")

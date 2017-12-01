@@ -10,12 +10,14 @@ namespace controllers;
 use helpers\TemplateHelper;
 use helpers\UrlHelper;
 use helpers\UserHelper;
+use Klein\App;
 use Klein\Request;
 use Klein\Response;
+use Klein\ServiceProvider;
 
 class IndexController extends BaseController
 {
-    public function index(Request $request, Response $response, $service, $app)
+    public function index(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         $errors = [];
         if ($request->method('post')) {

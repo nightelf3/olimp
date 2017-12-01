@@ -46,7 +46,7 @@ $klein = \helpers\ControllerHelper::getKlein();
  *
  * @return mixed
  */
-function callback($path, array $callbacks, Klein\Request $request, Klein\Response $response, $service, $app)
+function callback($path, array $callbacks, Klein\Request $request, Klein\Response $response, \Klein\ServiceProvider $service, \Klein\App $app)
 {
     $class = \helpers\ControllerHelper::getControllerClass($callbacks[0]);
     $action = $callbacks[1] ?: 'index';
@@ -56,24 +56,29 @@ function callback($path, array $callbacks, Klein\Request $request, Klein\Respons
         return $controller->$action($request, $response, $service, $app);
     }
 
-    helpers\ErrorHelper::assert(false, "Can't find {$controller}->{$action}");
-    return $response->code(404);
+    helpers\ErrorHelper::assert(false, "Can't find {$class}->{$action}");
+    throw \Klein\Exceptions\HttpException::createFromCode(404);
 }
 
 $routes = include(helpers\UrlHelper::path('includes/routes.php'));
 foreach ($routes as $route) {
-    $method = $route[0];
+    $methods = $route[0];
     $path = $route[1];
     $callbacks = explode("#", $route[2]);
+    $conditions = $route[3] ?: [];
 
-    $klein->respond($method, $path, function ($request, $response, $service, $app) use ($path, $callbacks) {
+    $klein->respond($methods, $path, function (\Klein\Request $request, \Klein\Response $response, \Klein\ServiceProvider $service, \Klein\App $app) use ($path, $callbacks, $conditions) {
+        if ($conditions['login'] && !\helpers\UserHelper::isAuthenticated()) {
+            throw \Klein\Exceptions\HttpException::createFromCode(401);
+        }
         return callback($path, $callbacks, $request, $response, $service, $app);
     });
 }
 
-$klein->onHttpError(function ($code, $router) {
-    //TODO: add 404 catching
+$klein->onHttpError(function ($code, \Klein\Klein $router) {
+    //TODO: add 404, 403, 401 catching
     helpers\ErrorHelper::assert(false, "Oh no, a bad error happened that caused a {$code} code.");
+    return $router->response()->redirect(\helpers\UrlHelper::href());
 });
 
 $klein->dispatch();

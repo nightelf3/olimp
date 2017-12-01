@@ -25,6 +25,7 @@ class UserModel extends BaseModel
     protected $table = 'users';
     protected $primaryKey = 'user_id';
     protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname' ];
+    public $timestamps = true;
 
     public function generateSalt()
     {
