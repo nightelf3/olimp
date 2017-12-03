@@ -9,7 +9,10 @@ namespace controllers;
 
 use helpers\MailHelper;
 use helpers\SessionHelper;
+use helpers\SettingsHelper;
+use helpers\TemplateHelper;
 use helpers\UrlHelper;
+use helpers\UserHelper;
 use Klein\App;
 use Klein\Request;
 use Klein\Response;
@@ -20,15 +23,22 @@ class AccountController extends BaseController
 {
     public function registration(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        $userData = [
+            'backLink' => UrlHelper::href(),
+            'submitText' => TemplateHelper::text('register')
+        ];
+
         if ($request->method('get')) {
+            $this->data['userForm'] = TemplateHelper::render('components/user_form', $userData);
             return $this->render('registration/registration');
         }
 
         $user = $request->paramsPost()->all();
-        $errors = $this->validateRegistrationForm($user);
+        $errors = $this->validateUserForm($user);
         if (false === empty($errors)) {
-            $this->data['errors'] = $errors;
-            $this->data['form'] = $user;
+            $userData['errors'] = $errors;
+            $userData['form'] = $user;
+            $this->data['userForm'] = TemplateHelper::render('components/user_form', $userData);
             return $this->render('registration/registration');
         }
 
@@ -37,14 +47,11 @@ class AccountController extends BaseController
         $userModel = new UserModel($user);
         $userModel->hashPassword()->save();
 
-        $this->data = [
-            'username' => $user['username'],
-            'email' => $user['email']
-        ];
+        $this->data['username'] = $user['username'];
+        $this->data['email'] = $user['email'];
         return $this->render('registration/registration_succeed');
     }
 
-    //get
     public function forgot(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if ($request->method('get')) {
@@ -89,30 +96,85 @@ class AccountController extends BaseController
         return $response->redirect(UrlHelper::href());
     }
 
-    protected function validateRegistrationForm($user)
+    public function user(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        $this->css[] = 'timer.css';
+        $this->js[] = 'timer.js';
+        $this->data['timer'] = TemplateHelper::render('components/timer', [
+            'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
+            'olimpContinuity' => SettingsHelper::param('olimp_continuity', 0)
+        ]);
+
+        $this->data['userInfo'] = TemplateHelper::render('components/user', [
+            'user' => UserHelper::getUser(),
+            'showScore' => true,
+            'userPage' => true
+        ]);
+
+        $userData = [
+            'form' => UserHelper::getUser(),
+            'backLink' => UrlHelper::href('task'),
+            'submitText' => TemplateHelper::text('save'),
+            'updateOnly' => true
+        ];
+        if ($request->method('get')) {
+            $this->data['userForm'] = TemplateHelper::render('components/user_form', $userData);
+            return $this->render('user');
+        }
+
+        $user = $request->paramsPost()->all();
+        $errors = $this->validateUserForm($user, true);
+        if (false === empty($errors)) {
+            $userData['errors'] = $errors;
+            $this->data['userForm'] = TemplateHelper::render('components/user_form', $userData);
+            return $this->render('user');
+        }
+
+        $user = UserHelper::getUser();
+        $user->fill([
+            'class' => $user['class'],
+            'school' => $user['school'],
+            'phone' => $user['phone'],
+            'name' => $user['name'],
+            'surname' => $user['surname']
+        ]);
+        if (!empty($user['password'])) {
+            $user->password = $user['password'];
+            $user->hashPassword();
+        }
+        $user->save();
+
+        $userData['succeed'] = true;
+        $this->data['userForm'] = TemplateHelper::render('components/user_form', $userData);
+        return $this->render('user');
+    }
+
+    protected function validateUserForm($user, $updateOnly = false)
     {
         $errors = [];
-        if (!isset($user['username']) || empty($user['username'])) {
-            $errors['username'] = true;
+        if (!!$updateOnly) {
+            if (!isset($user['username']) || empty($user['username'])) {
+                $errors['username'] = true;
+            }
+
+            if (isset($user['username']) && UserModel::where(['username' => $user['username']])->count() > 0) {
+                $errors['usernameExists'] = true;
+            }
         }
 
-        if (isset($user['username']) && UserModel::where([ 'username' => $user['username'] ])->count() > 0) {
-            $errors['usernameExists'] = true;
-        }
-
-        if (!isset($user['password']) || empty($user['password'])) {
+        if (!$updateOnly && (!isset($user['password']) || empty($user['password']))) {
             $errors['password'] = true;
         }
 
-        if (!isset($user['password2']) || empty($user['password2']) || $user['password'] !== $user['password2']) {
+        if (!$updateOnly && (!isset($user['password2']) || empty($user['password2'])) || $user['password'] !== $user['password2']) {
             $errors['password2'] = true;
         }
 
-        if (!isset($user['email']) || empty($user['email']) || false === filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+        if (!$updateOnly && (!isset($user['email']) || empty($user['email']) || false === filter_var($user['email'], FILTER_VALIDATE_EMAIL))) {
             $errors['email'] = true;
         }
 
-        if (isset($user['email']) && UserModel::where([ 'email' => $user['email'] ])->count() > 0) {
+        if (!$updateOnly && (isset($user['email']) && UserModel::where([ 'email' => $user['email'] ])->count() > 0)) {
             $errors['emailExists'] = true;
         }
 

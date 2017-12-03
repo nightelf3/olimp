@@ -1,0 +1,24 @@
+{{ header|raw }}
+<div class="main">
+    <table width="100%" style="border: 1px solid black;">
+        <tr>
+            <td class="TopBlock" align="right">
+                <div style="float:left; margin-left: 40px;">{{ timer|raw }}</div>
+                <div style="display:inline-block" class="UserInfoBlock">{{ userInfo|raw }}</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table style="margin: 0px; padding: 0px; border: 1px solid black; width: 100%">
+                    <tr>
+                        <td valign="top">
+                            {{ userForm|raw }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+{{ footer|raw }}

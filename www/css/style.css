@@ -110,3 +110,32 @@ td#ZadPlace > p {
 .tabs-table #task-main-text table td {
     vertical-align:top;
 }
+
+.userform {
+    margin: auto;
+}
+.userform * {
+    box-sizing: border-box;
+}
+.userform input[type="text"],
+.userform input[type="tel"],
+.userform input[type="password"],
+.userform input[type="email"]  {
+    width: 100%;
+}
+.userform .error {
+    font-size: 8pt;
+    color: #F00;
+    margin: 0;
+    text-indent: 0;
+}
+.userform .user-table {
+    width: 100%;
+}
+.userform .user-table td {
+    white-space: nowrap;
+    vertical-align: top;
+}
+.userform .user-table .input-cell {
+    width: 100%;
+}
