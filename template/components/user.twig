@@ -1,6 +1,11 @@
 <table height="100%" width="100%" >
     <tr>
-        <td valign="middle" align="left" colspan="2"  height="70%">
+        {% if showScore %}
+        <td rowspan="2" width="25%" valign="middle" align="center">
+            <div class="round-up" style="background: #FFF; font-size: 43pt; margin: 5px; ">{{ user.score ?: 0 }}</div>
+        </td>
+        {% endif %}
+        <td valign="middle" align="left" colspan="2">
             <font size="5"><strong>{{ user.surname }}&nbsp;{{ user.name }}</strong></font>
             <br />
             {{ user.school }}:&nbsp;{{ user.class }}
@@ -8,7 +13,11 @@
     </tr>
     <tr>
         <td style="font-size:13pt; padding-bottom: 7px;" align="center" valign="bottom">
-			<a href="{{ href('user') }}">{{ text('profile') }}</a> | <a href="{{ href('task') }}">{{ text('tasks') }}</a>
+            {% if taskPage %}
+            <a href="{{ href('user') }}">{{ text('profile') }}</a> | <a href="{{ href('rating') }}">{{ text('ratingTable') }}</a>
+            {% else %}
+            <a href="{{ href('user') }}">{{ text('profile') }}</a> | <a href="{{ href('task') }}">{{ text('tasks') }}</a>
+            {% endif %}
         </td>
         <td width="23%" valign="bottom" align="right" style="padding-bottom: 5px; padding-right: 7px;">
             <input type="button" onClick="location.href='{{ href('logout') }}'" style="width: 100%" value="{{ text('logout') }}">

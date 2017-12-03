@@ -3,8 +3,8 @@
     <table width="100%" style="border: 1px solid black;">
         <tr>
             <td class="TopBlock" align="right">
-                <div style="float:left; margin-left: 40px;"><?php  include ROOT_DIR."includes/timer/timer.php"  ?></div>
-                <div style="display:inline-block" class="UserInfoBlock"><?php include ROOT_DIR."includes/userinfo.php"; ?></div>
+                <div style="float:left; margin-left: 40px;">{{ timer|raw }}</div>
+                <div style="display:inline-block" class="UserInfoBlock">{{ userForm|raw }}</div>
             </td>
         </tr>
 
@@ -12,7 +12,7 @@
             <td>
                 <table style="margin: 0px; padding: 0px; border: 1px solid black; width: 100%">
                     <tr>
-                        <td width="60%">
+                        <td width="60%" valign="top">
                             <table width="100%" cellspacing="0" class="tabs-table">
                                 <tr>
                                     {% for task in tasks %}
@@ -25,7 +25,7 @@
                                 </tr>
                             </table>
                         </td>
-                        <td width="40%" valign="top" >
+                        <td width="40%" valign="top">
                             <div class="UploadBlock">
                                 {{ uploadForm|raw }}
                                 {{ queueInfo|raw }}

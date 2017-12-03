@@ -10,8 +10,14 @@
 
     {#<link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css" />#}
     <link rel="stylesheet" href="css/style.css" />
+    {% for item in css %}
+    <link rel="stylesheet" href="css/{{ item }}" />
+    {% endfor %}
 
-    {#<script src="vendor/jquery-2.2.4/dist/jquery.min.js"></script>#}
+    <script src="vendor/jquery-2.2.4/dist/jquery.min.js"></script>
     {#<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>#}
+    {% for item in js %}
+        <script src="js/{{ item }}"></script>
+    {% endfor %}
 </head>
 <body>

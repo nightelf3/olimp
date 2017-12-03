@@ -45,6 +45,6 @@ class TwigTaskExtension extends \Twig_Extension
 
     public function taskStatus($var)
     {
-        return (new TaskStatusEnum($var))->value;
+        return constant("helpers\\classes\\enums\\TaskStatusEnum::{$var}");
     }
 }

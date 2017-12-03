@@ -50,13 +50,19 @@ class UserModel extends BaseModel
     /**
      * Get user queue
      * @param int $taks_id
+     * @param int $limit
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getQueue($taks_id)
+    public function getQueue($taks_id, $limit = 0)
     {
-        return QueueModel::select([ 'queue_id', 'user_filename', 'stan', 'tests' ])->where([
+        $query = QueueModel::select([ 'queue_id', 'user_filename', 'stan', 'tests' ])->where([
             'user_id' => $this->user_id,
             'task_id' => $taks_id
-        ])->orderBy('created_at', 'desc')->get();
+        ])->orderBy('created_at', 'desc');
+        if ($limit > 0) {
+            $query->take($limit);
+        }
+
+        return $query->get();
     }
 }

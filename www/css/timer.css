@@ -1,0 +1,54 @@
+@font-face {
+	font-family: 'MyriadProRegular';
+	font-style: normal;
+	font-weight: normal;
+	src: url('fonts/myriadpro-regular-webfont.eot?') format('eot'),
+	url('fonts/myriadpro-regular-webfont.woff') format('woff'),
+	url('fonts/myriadpro-regular-webfont.ttf') format('truetype'),
+	url('fonts/myriadpro-regular-webfont.svg') format('svg');
+}
+
+#timerbox  {
+	color: #2f2f2f;
+	font-family: MyriadProRegular,Helvetica,sans-serif;
+	font-size: 69px;
+	height: 106px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.timerbox-num {
+	float: left;
+    width: 103px;
+}
+
+.timerbox-space  {
+	float: left;
+	height: 90px;
+	width: 8px;
+}
+
+.timer-box {
+	font-size: 12pt;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.timerbox-field  {
+    background-image: url('/images/flip.png');
+    background-repeat: no-repeat;
+    float: left;
+    height: 89px;
+    margin: 0 -4px 0 0;
+    text-align: center;
+    width: 55px;
+    z-index: 1;
+}
+.timerbox-field:before {
+    content: '';
+    position: absolute;
+    display: block;
+    background: url('/images/flip_gradient.png') no-repeat;
+    height: 89px;
+    width: 55px;
+}

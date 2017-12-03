@@ -11,12 +11,17 @@ use helpers\TemplateHelper;
 
 abstract class BaseController
 {
+    protected $css = [];
+    protected $js = [];
+
     protected $data = [];
 
     protected function render($template)
     {
-        //TODO: change
-        $this->data['header'] = TemplateHelper::render("pages/common/header");
+        $this->data['header'] = TemplateHelper::render("pages/common/header", [
+            'css' => $this->css,
+            'js' => $this->js
+        ]);
         $this->data['footer'] = TemplateHelper::render("pages/common/footer");
 
         return TemplateHelper::render("pages/{$template}", $this->data);

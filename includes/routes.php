@@ -13,5 +13,5 @@ return [
     [['GET', 'POST'], '/forgot', 'account#forgot'],
     [['GET'], '/logout', 'account#logout'],
     [['GET', 'POST'], '/task/[i:task_id]', 'task#index', [ 'login' => true ]],
-    [['GET'], '/task', 'task#indexRedirect', [ 'login' => true ]],
+    [['GET'], '/task', 'task#task', [ 'login' => true ]],
 ];

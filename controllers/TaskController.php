@@ -7,6 +7,7 @@
  */
 namespace controllers;
 
+use helpers\SettingsHelper;
 use helpers\TemplateHelper;
 use helpers\UrlHelper;
 use helpers\UserHelper;
@@ -23,6 +24,23 @@ class TaskController extends BaseController
 {
     public function index(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        if (!SettingsHelper::isOlimpStarts()) {
+            return $response->redirect(UrlHelper::href('task'));
+        }
+
+        $this->css[] = 'timer.css';
+        $this->js[] = 'timer.js';
+        $this->data['timer'] = TemplateHelper::render('components/timer', [
+            'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
+            'olimpContinuity' => SettingsHelper::param('olimp_continuity', 0)
+        ]);
+
+        $this->data['userForm'] = TemplateHelper::render('components/user', [
+            'user' => UserHelper::getUser(),
+            'showScore' => true,
+            'taskPage' => true
+        ]);
+
         $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->orderBy('sort_order')->get();
 
         /** @var TaskModel $task */
@@ -31,10 +49,12 @@ class TaskController extends BaseController
             throw HttpException::createFromCode(404);
         }
 
-        $this->data['uploadForm'] = TemplateHelper::render('components/upload', [
-            'error' => $this->uploadFile($request),
-            'task_id' => $task->task_id
-        ]);
+        if (SettingsHelper::isOlimpInProgress()) {
+            $this->data['uploadForm'] = TemplateHelper::render('components/upload', [
+                'error' => $this->uploadFile($request),
+                'task_id' => $task->task_id
+            ]);
+        }
 
         $queue = UserHelper::getUser()->getQueue($task->task_id)->toArray();
         foreach ($queue as &$item) {
@@ -42,22 +62,26 @@ class TaskController extends BaseController
             $item['tests'] = explode(',', $item['tests']);
         }
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue ]);
-
         $this->data['currentTask'] = $task;
+
         return $this->render('task');
     }
 
-    public function indexRedirect(Request $request, Response $response, ServiceProvider $service, App $app)
+    public function task(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        $task = TaskModel::select([ 'task_id' ])->first();
-        return $response->redirect(UrlHelper::href("task/{$task->task_id}"));
+        if (SettingsHelper::isOlimpInProgress()) {
+            $task = TaskModel::select([ 'task_id' ])->first();
+            return $response->redirect(UrlHelper::href("task/{$task->task_id}"));
+        }
+        $this->data['username'] = UserHelper::getUser()->username;
+        return $this->render('wait');
     }
 
     private function uploadFile(Request $request)
     {
         $errors = [];
 
-        if ($request->files()->count()) {
+        if ($request->files()->count() && SettingsHelper::isOlimpInProgress()) {
             $userFilename = $request->files()->get('userfile')['name'];
             $ext = mb_strtolower(pathinfo($userFilename)['extension'], "utf-8");
             $filename = uniqid(mt_rand(), false) . ".{$ext}";

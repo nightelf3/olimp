@@ -7,12 +7,13 @@
  */
 namespace helpers;
 
-use helpers\classes\twig\TwigLanguageExtension;
-
 class TemplateHelper extends BaseHelper
 {
+    const LANG_PATH = BASE_PATH . '/languages/general.lng';
+
     /** @var \Twig_Environment $twig */
     protected static $twig = null;
+    protected static $lang = [];
 
     public static function initialize()
     {
@@ -26,6 +27,8 @@ class TemplateHelper extends BaseHelper
             $class = str_replace('/', '\\', $pathToTwigExtensions . basename($extension, '.php'));
             self::$twig->addExtension(new $class());
         }
+
+        self::$lang = unserialize(file_get_contents(self::LANG_PATH));
     }
 
     /**
@@ -42,7 +45,13 @@ class TemplateHelper extends BaseHelper
 
     public static function text($id)
     {
-        //TODO: implement multi-language support
-        return "_{$id}Text";
+        if (ConfigHelper::isDebug()) {
+            if (false == isset($lang[$id])) {
+                self::$lang[$id] = "_{$id}Text";
+                file_put_contents(self::LANG_PATH, serialize(self::$lang));
+            }
+        }
+
+        return isset(self::$lang[$id]) ? self::$lang[$id] : "_{$id}Text";
     }
 }
