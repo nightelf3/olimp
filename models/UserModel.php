@@ -21,12 +21,15 @@ use helpers\UrlHelper;
  * @property string name
  * @property string surname
  * @property string userFolder
+ * @property int score
+ * @property int mulct
+ * @property int old_score
  */
 class UserModel extends BaseModel
 {
     protected $table = 'users';
     protected $primaryKey = 'user_id';
-    protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname' ];
+    protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname', 'score', 'mulct', 'old_score' ];
     public $timestamps = true;
 
     public function getUserFolderAttribute()

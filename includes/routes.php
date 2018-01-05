@@ -15,4 +15,5 @@ return [
     [['GET', 'POST'], '/task/[i:task_id]', 'task#index', [ 'login' => true ]],
     [['GET'], '/task', 'task#task', [ 'login' => true ]],
     [['GET', 'POST'], '/user', 'account#user', [ 'login' => true ]],
+    [['GET'], '/rating', 'rating#index', [ 'login' => true ]],
 ];
