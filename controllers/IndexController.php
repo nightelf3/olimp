@@ -28,7 +28,13 @@ class IndexController extends BaseController
         }
 
         if (UserHelper::isAuthenticated()) {
-            $this->data['userForm'] = TemplateHelper::render('components/user', [ 'user' => UserHelper::getUser() ]);
+            $this->data['userForm'] = TemplateHelper::render('components/user', [
+                'user' => UserHelper::getUser(),
+                'links' => [
+                    [ 'link' => UrlHelper::href('user'), 'text' => TemplateHelper::text('user') ],
+                    [ 'link' => UrlHelper::href('task'), 'text' => TemplateHelper::text('tasks') ]
+                ]
+            ]);
         } else {
             $this->data['userForm'] = TemplateHelper::render('components/login', [ 'errors' => $errors ]);
         }

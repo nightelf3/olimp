@@ -15,6 +15,9 @@ database:
 session:
   cookie_lifetime: 0
 
+datetime:
+  timezone: Europe/Kiev
+
 template:
   path: /template
   extensions: /helpers/classes/twig

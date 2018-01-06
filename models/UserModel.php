@@ -24,6 +24,7 @@ use helpers\UrlHelper;
  * @property int score
  * @property int mulct
  * @property int old_score
+ * @property bool is_admin
  */
 class UserModel extends BaseModel
 {

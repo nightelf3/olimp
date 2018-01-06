@@ -27,17 +27,20 @@ class RatingController extends BaseController
             return $response->redirect(UrlHelper::href('task'));
         }
 
-        $this->css[] = 'timer.css';
-        $this->js[] = 'timer.js';
+        $this->header['css'][] = 'timer.css';
+        $this->header['js'][] = 'timer.js';
         $this->data['timer'] = TemplateHelper::render('components/timer', [
             'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
-            'olimpContinuity' => SettingsHelper::param('olimp_continuity', 0)
+            'olimpContinuity' => SettingsHelper::param('olimp_duration', 0)
         ]);
 
         $this->data['userForm'] = TemplateHelper::render('components/user', [
             'user' => UserHelper::getUser(),
             'showScore' => true,
-            'taskPage' => false
+            'links' => [
+                [ 'link' => UrlHelper::href('task'), 'text' => TemplateHelper::text('tasks') ],
+                [ 'link' => UrlHelper::href('user'), 'text' => TemplateHelper::text('user') ]
+            ]
         ]);
 
         $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->orderBy('sort_order')->get();

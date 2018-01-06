@@ -30,10 +30,23 @@ class SettingsHelper extends BaseHelper
         return self::$settings[$key] ?: $default;
     }
 
+    public static function setParam($key, $value)
+    {
+        if (isset(self::$settings[$key])) {
+            SettingModel::where('key', $key)->update([ 'value' => $value ]);
+        } else {
+            SettingModel::create([
+                'key' => $key,
+                'value' => $value
+            ]);
+        }
+        self::$settings[$key] = $value;
+    }
+
     public static function isOlimpInProgress()
     {
         $olimpStart = (int)static::param('olimp_start', 0);
-        $olimpEnd = $olimpStart + (int)static::param('olimp_continuity', 0);
+        $olimpEnd = $olimpStart + (int)static::param('olimp_duration', 0);
         $currentTime = time();
 
         return $olimpStart <= $currentTime && $currentTime <= $olimpEnd;

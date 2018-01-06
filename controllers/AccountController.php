@@ -98,8 +98,8 @@ class AccountController extends BaseController
 
     public function user(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        $this->css[] = 'timer.css';
-        $this->js[] = 'timer.js';
+        $this->header['css'][] = 'timer.css';
+        $this->header['js'][] = 'timer.js';
         $this->data['timer'] = TemplateHelper::render('components/timer', [
             'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
             'olimpContinuity' => SettingsHelper::param('olimp_continuity', 0)
@@ -108,7 +108,10 @@ class AccountController extends BaseController
         $this->data['userInfo'] = TemplateHelper::render('components/user', [
             'user' => UserHelper::getUser(),
             'showScore' => true,
-            'userPage' => true
+            'links' => [
+                [ 'link' => UrlHelper::href('task'), 'text' => TemplateHelper::text('tasks') ],
+                [ 'link' => UrlHelper::href('rating'), 'text' => TemplateHelper::text('rating') ]
+            ]
         ]);
 
         $userData = [

@@ -50,6 +50,16 @@ class UserHelper extends BaseHelper
     }
 
     /**
+     * Is user admin and authenticated
+     *
+     * @return bool
+     */
+    public static function isAdmin()
+    {
+        return !is_null(self::$user) && self::$user->is_admin;
+    }
+
+    /**
      * Try to login user
      *
      * @param Request $request

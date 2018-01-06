@@ -16,4 +16,8 @@ return [
     [['GET'], '/task', 'task#task', [ 'login' => true ]],
     [['GET', 'POST'], '/user', 'account#user', [ 'login' => true ]],
     [['GET'], '/rating', 'rating#index', [ 'login' => true ]],
+
+    [['GET'], '/admin', 'index#index', [ 'admin' => true ]],
+    [['GET'], '/admin/timer', 'timer#index', [ 'admin' => true ]],
+    [['POST'], '/admin/timer', 'timer#save', [ 'admin' => true ]],
 ];

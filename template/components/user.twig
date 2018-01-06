@@ -13,11 +13,10 @@
     </tr>
     <tr>
         <td style="font-size:13pt; padding-bottom: 7px;" align="center" valign="bottom">
-            {% if taskPage %}
-            <a href="{{ href('user') }}">{{ text('profile') }}</a> | <a href="{{ href('rating') }}">{{ text('ratingTable') }}</a>
-            {% else %}
-            <a href="{{ href('user') }}">{{ text('profile') }}</a> | <a href="{{ href('task') }}">{{ text('tasks') }}</a>
-            {% endif %}
+            {% for link in links %}
+                <a href="{{ link.link }}">{{ link.text }}</a>
+                {% if not loop.last %}|{% endif %}
+            {% endfor %}
         </td>
         <td width="23%" valign="bottom" align="right" style="padding-bottom: 5px; padding-right: 7px;">
             <input type="button" onClick="location.href='{{ href('logout') }}'" style="width: 100%" value="{{ text('logout') }}">

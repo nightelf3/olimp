@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class SettingsTableCreation extends AbstractMigration
+class AdminBoolInUsers extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,14 +27,8 @@ class SettingsTableCreation extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('settings', [ 'id' => 'setting_id' ]);
-        $table->addColumn('key', 'string')
-            ->addColumn('value', 'string')
-            ->create();
-        $table->addIndex('key', [ 'unique' => true ])->update();
-        $table->insert([
-            [ 'key' => 'olimp_start', 'value' => time() ],
-            [ 'key' => 'olimp_duration', 'value' => 3600 * 24 * 4 ]
-        ])->update();
+        $this->table('users')
+            ->addColumn('is_admin', 'boolean', [ 'default' => false ])
+            ->update();
     }
 }

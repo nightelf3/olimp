@@ -7,6 +7,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/includes/autoload.php');
+date_default_timezone_set(helpers\ConfigHelper::get('datetime', 'timezone'));
 
 /* Turn on debug mode */
 if (helpers\ConfigHelper::isDebug()) {
@@ -70,6 +71,12 @@ foreach ($routes as $route) {
     $klein->respond($methods, $path, function (\Klein\Request $request, \Klein\Response $response, \Klein\ServiceProvider $service, \Klein\App $app) use ($path, $callbacks, $conditions) {
         if ($conditions['login'] && !\helpers\UserHelper::isAuthenticated()) {
             throw \Klein\Exceptions\HttpException::createFromCode(401);
+        }
+        if ($conditions['admin']) {
+            if (!\helpers\UserHelper::isAdmin()) {
+                throw \Klein\Exceptions\HttpException::createFromCode(401);
+            }
+            $callbacks[0] = 'admin\\' . $callbacks[0];
         }
         return callback($path, $callbacks, $request, $response, $service, $app);
     });

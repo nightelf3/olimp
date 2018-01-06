@@ -11,19 +11,20 @@ use helpers\TemplateHelper;
 
 abstract class BaseController
 {
-    protected $css = [];
-    protected $js = [];
+    const ROOT_FOLDER = 'pages';
+
+    protected $header = [
+        'css' => [],
+        'js' => []
+    ];
 
     protected $data = [];
 
     protected function render($template)
     {
-        $this->data['header'] = TemplateHelper::render("pages/common/header", [
-            'css' => $this->css,
-            'js' => $this->js
-        ]);
-        $this->data['footer'] = TemplateHelper::render("pages/common/footer");
+        $this->data['header'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/header', $this->header);
+        $this->data['footer'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/footer');
 
-        return TemplateHelper::render("pages/{$template}", $this->data);
+        return TemplateHelper::render($this::ROOT_FOLDER . "/{$template}", $this->data);
     }
 }
