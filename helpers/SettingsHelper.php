@@ -49,7 +49,7 @@ class SettingsHelper extends BaseHelper
         $olimpEnd = $olimpStart + (int)static::param('olimp_duration', 0);
         $currentTime = time();
 
-        return $olimpStart <= $currentTime && $currentTime <= $olimpEnd;
+        return UserHelper::isAdmin() || ($olimpStart <= $currentTime && $currentTime <= $olimpEnd);
     }
 
     public static function isOlimpStarts()

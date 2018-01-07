@@ -17,7 +17,15 @@ return [
     [['GET', 'POST'], '/user', 'account#user', [ 'login' => true ]],
     [['GET'], '/rating', 'rating#index', [ 'login' => true ]],
 
-    [['GET'], '/admin', 'index#index', [ 'admin' => true ]],
+    [['GET'], '/admin', 'index#index', [ 'admin' => true ]], // do we need this one?
     [['GET'], '/admin/timer', 'timer#index', [ 'admin' => true ]],
     [['POST'], '/admin/timer', 'timer#save', [ 'admin' => true ]],
+
+    [['GET'], '/admin/task', 'task#index', [ 'admin' => true ]],
+    [['GET'], '/admin/task/new', 'task#create', [ 'admin' => true ]],
+    [['GET'], '/admin/task/[i:task_id]', 'task#get', [ 'admin' => true ]],
+    [['POST'], '/admin/task/[i:task_id]', 'task#save', [ 'admin' => true ]],
+    [['GET'], '/admin/task/[i:task_id]/tests', 'task#get', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
+    [['POST'], '/admin/task/[i:task_id]/tests', 'task#save', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
+    [['GET'], '/admin/task/[i:task_id]/delete', 'task#delete', [ 'admin' => true ]],
 ];

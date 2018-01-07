@@ -51,7 +51,7 @@ function callback($path, array $callbacks, Klein\Request $request, Klein\Respons
 {
     $class = \helpers\ControllerHelper::getControllerClass($callbacks[0]);
     $action = $callbacks[1] ?: 'index';
-    $controller = new $class();
+    $controller = new $class($request);
 
     if (method_exists($controller, $action)) {
         return $controller->$action($request, $response, $service, $app);
@@ -78,6 +78,10 @@ foreach ($routes as $route) {
             }
             $callbacks[0] = 'admin\\' . $callbacks[0];
         }
+
+        $app->register('optional', function() use ($conditions) {
+            return $conditions['optional'];
+        });
         return callback($path, $callbacks, $request, $response, $service, $app);
     });
 }

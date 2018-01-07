@@ -8,6 +8,7 @@
 namespace controllers;
 
 use helpers\TemplateHelper;
+use Klein\Request;
 
 abstract class BaseController
 {
@@ -19,6 +20,10 @@ abstract class BaseController
     ];
 
     protected $data = [];
+
+    public function __construct(Request $request)
+    {
+    }
 
     protected function render($template)
     {

@@ -28,7 +28,7 @@ class TemplateHelper extends BaseHelper
             self::$twig->addExtension(new $class());
         }
 
-        self::$lang = unserialize(file_get_contents(self::LANG_PATH));
+        self::$lang = json_decode(file_get_contents(self::LANG_PATH), true);
     }
 
     /**
@@ -48,7 +48,7 @@ class TemplateHelper extends BaseHelper
         if (ConfigHelper::isDebug()) {
             if (false == isset($lang[$id])) {
                 self::$lang[$id] = "_{$id}Text";
-                file_put_contents(self::LANG_PATH, serialize(self::$lang));
+                file_put_contents(self::LANG_PATH, json_encode(self::$lang));
             }
         }
 

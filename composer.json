@@ -11,11 +11,13 @@
     "serafim/properties": "1.*",
     "robmorgan/phinx": "0.*",
     "twig/twig": "1.*",
-    "pfbc/pfbc": "3.*", //Do we need this one?
+    "pfbc/pfbc": "3.*",
     "twbs/bootstrap": "~3.3.6",
-    "timhovius/bootstrap-material-design": "dev-master", //Do we need this one?
+    "timhovius/bootstrap-material-design": "dev-master",
 
-    "bower-asset/jquery-2.2.4": "2.2.4"
+    "bower-asset/jquery-2.2.4": "2.2.4",
+    "bower-asset/ckeditor": "4.3.*",
+    "bower-asset/sprintf": "^1.1.1"
   },
   "require-dev": {
     "codeception/codeception": "2.3.3",

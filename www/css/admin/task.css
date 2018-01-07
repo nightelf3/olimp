@@ -1,0 +1,48 @@
+.tab {
+    border: 1px solid black;
+    background: #E0E0E0;
+    padding: 5px;
+    width: 100%;
+
+    text-align: justify;
+}
+
+.tabsLink  {
+    background-color:#606060;
+    padding:5px;
+    font: bold 12pt "Trebuchet MS", tahoma, verdana, arial narrow, arial;
+    color:#fff;
+    text-decoration:none;
+    cursor: pointer;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.tabsLink .tab-header {
+    padding:0 5px;
+}
+
+.sysinfo input {
+    width:100%;
+}
+
+.sysinfo input:not([type='submit']) {
+    border-radius:0.3em;
+    border:1px solid #ddd;
+    outline:none;
+    padding:0.5em;
+}
+
+.cke_contents {
+    min-height: 600px;
+}
+
+#tests-form textarea {
+    resize: vertical;
+    width:100%;
+    min-height: 400px;
+}
+#tests-form input[type=submit] {
+    width:100%;
+}

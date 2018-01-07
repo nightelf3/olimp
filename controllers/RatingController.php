@@ -97,7 +97,7 @@ class RatingController extends BaseController
             }
         }
 
-        $taskIds = TaskModel::select([ 'task_id' ])->get();
+        $taskIds = TaskModel::select([ 'task_id' ])->orderBy('sort_order')->get();
         foreach ($arr as &$row) {
             $bl = true;
             foreach ($taskIds as $taskId) {
