@@ -1,0 +1,28 @@
+{{ header|raw }}
+<div id="admin-sysinfo">
+    <form method="post" action="{{ href('admin/sysinfo/settings') }}">
+        <h3 class="system-header">{{ text('systemSettings') }}</h3>
+        <table class="padding-table">
+            <tr>
+                <td>{{ text('acceptRegistration') }}</td>
+                <td><input type="checkbox" name="settings[is_registration_enabled}" value="{{ settings.is_registration_enabled }}" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" class="full-width" value="{{ text('save') }}" /></td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="post" action="{{ href('admin/sysinfo/event') }}" class="mt-1">
+        <h3 class="system-header">{{ text('systemEvents') }}</h3>
+        <table class="padding-table">
+            <tr>
+                <td colspan="2"><input type="submit" class="confirm-click full-width" name="event[delete_results]" value="{{ text('deleteResults') }}" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" class="confirm-click full-width" name="event[reset_results]" value="{{ text('resetResults') }}" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{{ footer|raw }}

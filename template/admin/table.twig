@@ -1,0 +1,36 @@
+{{ header|raw }}
+<table border="1" class="users-table padding-table">
+    <thead>
+    <tr>
+        <td>{{ text('no') }}</td>
+        <td>{{ text('username') }}</td>
+        <td>{{ text('email') }}</td>
+        <td>{{ text('surname') }}</td>
+        <td>{{ text('name') }}</td>
+        <td>{{ text('phone') }}</td>
+        <td>{{ text('school') }}</td>
+        <td>{{ text('class') }}</td>
+        <td>{{ text('mulc') }}</td>
+        <td>{{ text('oldScore') }}</td>
+        <td>{{ text('score') }}</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.surname }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.school }}</td>
+        <td>{{ user.class }}</td>
+        <td>{{ user.mulc|default(0) }}</td>
+        <td>{{ user.oldScore|default(0) }}</td>
+        <td>{{ user.score|default(0) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ footer|raw }}

@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static BaseModel first(array $_ = [])
  * @method static BaseModel find(array $_ = [])
  * @method static int count(array $_ = [])
+ * @method static void truncate()
+ * @method static BaseModel update(array $_ = [])
  */
 abstract class BaseModel extends Model
 {

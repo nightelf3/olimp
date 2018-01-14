@@ -1,0 +1,8 @@
+.users-table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.users-table thead td {
+    font-weight: bold;
+}

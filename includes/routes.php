@@ -17,7 +17,10 @@ return [
     [['GET', 'POST'], '/user', 'account#user', [ 'login' => true ]],
     [['GET'], '/rating', 'rating#index', [ 'login' => true ]],
 
-    [['GET'], '/admin', 'index#index', [ 'admin' => true ]], // do we need this one?
+    [['GET'], '/admin', 'info#index', [ 'admin' => true ]],
+    [['GET'], '/admin/users', 'info#users', [ 'admin' => true ]],
+    [['GET'], '/admin/sysinfo', 'info#sysinfo', [ 'admin' => true ]],
+
     [['GET'], '/admin/timer', 'timer#index', [ 'admin' => true ]],
     [['POST'], '/admin/timer', 'timer#save', [ 'admin' => true ]],
 

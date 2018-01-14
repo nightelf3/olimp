@@ -27,6 +27,7 @@ abstract class BaseAdminController extends BaseController
                 [ 'link' => UrlHelper::href('rating'), 'text' => TemplateHelper::text('rating') ]
             ]
         ]);
+        $this->header['css'][] = 'admin/style.css';
         return parent::render($template);
     }
 }
