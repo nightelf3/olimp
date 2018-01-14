@@ -1,8 +1,10 @@
 {{ header|raw }}
-<div style="width: 1000px; margin: auto; ">
-    <div id="MainBlock" style="margin-top: 30px; padding:20px; background: #E0E0E0; border: 1px solid black;">
-        Hello, {{ username }}, please wait olimp start
-        <a href="{{ href() }}">Goto index</a>
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('olimpNotStartedTitle') }}</h4>
+    </div>
+    <div class="content">
+        <p>Hello, {{ username }}, please wait olimp start</p>
     </div>
 </div>
 {{ footer|raw }}

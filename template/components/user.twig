@@ -1,25 +1,7 @@
-<table height="100%" width="100%" >
-    <tr>
-        {% if showScore %}
-        <td rowspan="2" width="25%" valign="middle" align="center">
-            <div class="round-up" style="background: #FFF; font-size: 43pt; margin: 5px; ">{{ user.score ?: 0 }}</div>
-        </td>
-        {% endif %}
-        <td valign="middle" align="left" colspan="2">
-            <font size="5"><strong>{{ user.surname }}&nbsp;{{ user.name }}</strong></font>
-            <br />
-            {{ user.school }}:&nbsp;{{ user.class }}
-        </td>
-    </tr>
-    <tr>
-        <td style="font-size:13pt; padding-bottom: 7px;" align="center" valign="bottom">
-            {% for link in links %}
-                <a href="{{ link.link }}">{{ link.text }}</a>
-                {% if not loop.last %}|{% endif %}
-            {% endfor %}
-        </td>
-        <td width="23%" valign="bottom" align="right" style="padding-bottom: 5px; padding-right: 7px;">
-            <input type="button" onClick="location.href='{{ href('logout') }}'" style="width: 100%" value="{{ text('logout') }}">
-        </td>
-    </tr>
-</table>
+<div class="user-card">
+    <div class="vertical-middle card">{{ max(user.score - user.mulct, 0) }}</div>
+    <div class="vertical-middle text-left">
+        <strong>{{ user.surname }}&nbsp;{{ user.name }}</strong><br />
+        {{ user.class }} {{ text('class') }}
+    </div>
+</div>

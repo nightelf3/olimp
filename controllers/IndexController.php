@@ -23,20 +23,12 @@ class IndexController extends BaseController
         if ($request->method('post')) {
             $errors = UserHelper::login($request);
             if (empty($errors)) {
-                return $response->redirect(UrlHelper::href());
+                return $response->redirect(UrlHelper::href('task'));
             }
         }
 
-        if (UserHelper::isAuthenticated()) {
-            $this->data['userForm'] = TemplateHelper::render('components/user', [
-                'user' => UserHelper::getUser(),
-                'links' => [
-                    [ 'link' => UrlHelper::href('user'), 'text' => TemplateHelper::text('user') ],
-                    [ 'link' => UrlHelper::href('task'), 'text' => TemplateHelper::text('tasks') ]
-                ]
-            ]);
-        } else {
-            $this->data['userForm'] = TemplateHelper::render('components/login', [ 'errors' => $errors ]);
+        if (!UserHelper::isAuthenticated()){
+            $this->data['loginForm'] = TemplateHelper::render('components/login', [ 'errors' => $errors ]);
         }
 
         return $this->render('home');

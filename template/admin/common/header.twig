@@ -9,14 +9,14 @@
     <title>{{  text('siteName') }} - {{ title ? " - #{title}" : '' }}</title>
 
     {% for item in css %}
-        <link rel="stylesheet" href="css/{{ item }}" />
+        <link rel="stylesheet" href="/assets/css/{{ item }}" />
     {% endfor %}
 
     <script src="vendor/jquery-2.2.4/dist/jquery.min.js"></script>
     <script src="vendor/ckeditor/ckeditor.js"></script>
     <script src="vendor/sprintf/dist/sprintf.min.js"></script>
     {% for item in js %}
-        <script src="js/{{ item }}"></script>
+        <script src="/assets/js/{{ item }}"></script>
     {% endfor %}
 
     <style>

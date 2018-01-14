@@ -7,7 +7,10 @@
  */
 namespace controllers;
 
+use helpers\SettingsHelper;
 use helpers\TemplateHelper;
+use helpers\UrlHelper;
+use helpers\UserHelper;
 use Klein\Request;
 
 abstract class BaseController
@@ -27,8 +30,26 @@ abstract class BaseController
 
     protected function render($template)
     {
+        $this->header['user'] = UserHelper::isAuthenticated() ? UserHelper::getUser() : null;
+        if (UserHelper::isAuthenticated()) {
+            if (SettingsHelper::isOlimpInProgress()) {
+                $this->header['css'][] = 'timer.css';
+                $this->header['js'][] = 'timer.js';
+                $this->header['timer'] = TemplateHelper::render('components/timer', [
+                    'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
+                    'olimpContinuity' => SettingsHelper::param('olimp_duration', 0)
+                ]);
+            }
+
+            $this->header['userForm'] = TemplateHelper::render('components/user', [
+                'user' => UserHelper::getUser()
+            ]);
+        }
+
         $this->data['header'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/header', $this->header);
         $this->data['footer'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/footer');
+
+        $this->data['isAuthenticated'] = UserHelper::isAuthenticated();
 
         return TemplateHelper::render($this::ROOT_FOLDER . "/{$template}", $this->data);
     }

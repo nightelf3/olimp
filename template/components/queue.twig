@@ -1,39 +1,45 @@
-
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('queueTitle') }}</h4>
+        <p class="category">{{ text('queueHelp') }}</p>
+    </div>
     {% if queue|length %}
+    <div class="content table-responsive table-full-width upload-content">
     {% for item in queue %}
-    <table border="1" width="95%" style="margin: 10px auto;text-align: center;" cellpadding="3">
-        <tbody>
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td colspan="2">
-                    <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ item['user_filename'] }}</div>
-                </td>
-            <tr>
-            {% if item['stan']|length > 1 %}
-            {% for test in item['tests'] %}
-            <tr>
-                <td>{{ text('test') }} {{ test }}</td>
-                <td>{{ text("taskResult_#{item['stan'][loop.index0]}") }}</td>
+                <th colspan="2" class="text-center text-ellipsis">{{ item['user_filename'] }}</th>
             </tr>
-            {% endfor %}
+            </thead>
+
+            <tbody>
+            {% if item['tests']|length > 0 %}
+                {% for test in item['tests'] %}
+                <tr>
+                    <td width="1" class="text-ellipsis">{{ text('test') }} {{ test }}</td>
+                    <td class="text-ellipsis">{{ text("taskResult_#{item['stan'][loop.index0]}") }}</td>
+                </tr>
+                {% endfor %}
             {% else %}
-            <tr>
-                <td colspan="2">
-                    {{ text("taskResult_#{item['stan'][0]}") }}
-                    {% if taskStatus('CompilingError') == item['stan'][0] %}
-                        <a href="{{ href("compile-log/#{item['queue_id']}") }}">{{ text('seeCompileError') }}</a>
-                    {% endif %}
-                </td>
-            </tr>
+                <tr>
+                    <td colspan="2" class="text-center">
+                        {{ text("taskResult_#{item['stan'][0]}") }}
+                        {% if taskStatus('CompilingError') == item['stan'][0] %}
+                            <a href="{{ href("compile-log/#{item['queue_id']}") }}">{{ text('seeCompileError') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
             {% endif %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     {% endfor %}
+    </div>
     {% else %}
-        <table border="1" width="95%" style="margin: 10px auto;text-align: center;" cellpadding="3">
-        <thead>
-        <tr>
-            <td style="text-align: center;">{{ text('emptyQueue') }}</td>
-        </tr>
-        </thead>
-        <table border="1" width="95%" style="margin: 10px auto;text-align: center;" cellpadding="3">
+    <div class="content">
+        <div class="alert alert-info text-center">
+            <i class="ti-info"></i> {{ text('emptyQueue') }}
+        </div>
+    </div>
     {% endif %}
+</div>

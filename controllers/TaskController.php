@@ -24,25 +24,9 @@ class TaskController extends BaseController
 {
     public function index(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        if (!SettingsHelper::isOlimpStarts()) {
+        if (!SettingsHelper::isOlimpStarts() && !UserHelper::isAdmin()) {
             return $response->redirect(UrlHelper::href('task'));
         }
-
-        $this->header['css'][] = 'timer.css';
-        $this->header['js'][] = 'timer.js';
-        $this->data['timer'] = TemplateHelper::render('components/timer', [
-            'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
-            'olimpContinuity' => SettingsHelper::param('olimp_duration', 0)
-        ]);
-
-        $this->data['userForm'] = TemplateHelper::render('components/user', [
-            'user' => UserHelper::getUser(),
-            'showScore' => true,
-            'links' => [
-                [ 'link' => UrlHelper::href('user'), 'text' => TemplateHelper::text('user') ],
-                [ 'link' => UrlHelper::href('rating'), 'text' => TemplateHelper::text('rating') ]
-            ]
-        ]);
 
         $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->orderBy('sort_order')->get();
 
@@ -62,7 +46,7 @@ class TaskController extends BaseController
         $queue = UserHelper::getUser()->getQueue($task->task_id)->toArray();
         foreach ($queue as &$item) {
             $item['stan'] = explode(',', $item['stan']);
-            $item['tests'] = explode(',', $item['tests']);
+            $item['tests'] = $item['tests'] ? explode(',', $item['tests']) : [];
         }
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue ]);
         $this->data['currentTask'] = $task;

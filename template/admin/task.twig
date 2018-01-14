@@ -9,8 +9,8 @@
                 <table width="100%">
                     <tr>
                         <td width="100%" class="tab-header" onClick="location.href = '{{ href("admin/task/#{task.task_id}") }}'">{{ task.name }}</td>
-                        <td width="15" align="right" nowrap><img src="images/icons/edit.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/tests") }}'" width="100%" /></td>
-                        <td width="15" align="right" nowrap><img src="images/icons/delete.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/delete") }}'" width="100%" /></td>
+                        <td width="15" align="right" nowrap><img src="/assets/img/icons/edit.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/tests") }}'" width="100%" /></td>
+                        <td width="15" align="right" nowrap><img src="/assets/img/delete.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/delete") }}'" width="100%" /></td>
                     </tr>
                 </table>
             </td>
@@ -18,7 +18,7 @@
             <td width="3"></td>
             {% endif %}
             {% endfor %}
-            <td width="3%" valign="middle"><img src="images/icons/plus.png" onClick="location.href = '{{ href("admin/task/new") }}'" width="30" /></td>
+            <td width="3%" valign="middle"><img src="/assets/img/icons/plus.png" onClick="location.href = '{{ href("admin/task/new") }}'" width="30" /></td>
         {% endif %}
     </tr>
     <tr>

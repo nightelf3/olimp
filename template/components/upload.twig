@@ -1,19 +1,31 @@
-<form method="post" enctype="multipart/form-data" style="margin: 5px;">
-    <table width="100%">
-        {% if error %}
-            <tr>
-                <td align="center">{{ error }}</td>
-            </tr>
-        {% endif %}
-        <tr>
-            <td align="center">
-                <input style="width:100%; background-color:#fff;" type="file" name="userfile" />
-                <input style="display: none;" type="hidden" name="task_id" value="{{ task_id }}" />
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><input type="submit" name="submit" value="{{ text('uploadButton') }}" style="width:100%" /></td>
-        </tr>
-    </table>
-</form>
-<div align="center"><a href="{{ href('upload.docx') }}" target="_blank">{{ text('uploadHelpLink') }}</a></div>
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('uploadFormTitle') }}</h4>
+    </div>
+    <div class="content">
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="task_id" value="{{ task_id }}" />
+            {% if errors %}
+            <div class="form-group">
+                <div class="alert alert-danger">{{ error }}</div>
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="upload-file">{{ text('uploadSolution') }}</label>
+                <input type="file" id="upload-file" class="form-control border-input" name="userfile" required />
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-info btn-fill btn-wd" name="submit">{{ text('uploadButton') }}</button>
+            </div>
+        </form>
+
+        <div class="footer">
+            <hr>
+            <p class="category"><a href="{{ href('upload.docx') }}" target="_blank"><i class="ti-help"></i> {{ text('uploadHelpLink') }}</a></p>
+        </div>
+    </div>
+</div>
+
+<div align="center"></div>

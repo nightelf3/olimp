@@ -1,56 +1,40 @@
 {{ header|raw }}
-<div class="main">
-    <table width="100%" style="border: 1px solid black;">
-        <tr>
-            <td class="TopBlock" align="right">
-                <div style="float:left; margin-left: 40px;">{{ timer|raw }}</div>
-                <div style="display:inline-block" class="UserInfoBlock">{{ userForm|raw }}</div>
-            </td>
-        </tr>
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('ratingTable') }}</h4>
+    </div>
+    <div class="content table-responsive table-full-width rating-content">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ text('no') }}</th>
+                <th>{{ text('username') }}</th>
+                <th>{{ text('fullname') }}</th>
+                {% for task in tasks %}
+                <th>{{ task.name }}</th>
+                {% endfor %}
+                <th>{{ text('mulc') }}</th>
+                <th>{{ text('oldScore') }}</th>
+                <th>{{ text('score') }}</th>
+            </tr>
+            </thead>
 
-        <tr>
-            <td>
-                <table style="margin: 0px; padding: 0px; border: 1px solid black; width: 100%">
-                    <tr>
-                        <td valign="top">
-                            <table border="1" width="100%">
-                                <tr>
-                                    <td colspan="{{ 6 + table[0].tasks|length }}">
-                                        <input type="button" style="width: 100%;" value="{{ text('back') }}" onClick="document.location = '{{ href('task') }}'" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ text('no') }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ text('username') }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ text('fullname') }}</td>
-
-                                    {% for task in tasks %}
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ task.name }}</td>
-                                    {% endfor %}
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ text('mulc') }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ text('oldScore') }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ text('score') }}</td>
-                                </tr>
-
-                                {% for key, row in table  %}
-                                <tr>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ key + 1 }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ row.login }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ row.name }}</td>
-                                    {% for task in row.tasks %}
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ task.ok }} ({{ task.try }})</td>
-                                    {% endfor %}
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ row.shtraff }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ row.old_res }}</td>
-                                    <td align="center" valign="middle" style="padding: 5px;">{{ row.score }}</td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+            <tbody>
+            {% for key, row in table  %}
+            <tr>
+                <td>{{ key + 1 }}</td>
+                <td>{{ row.login }}</td>
+                <td>{{ row.name }}</td>
+                {% for task in row.tasks %}
+                    <td>{{ task.ok }} ({{ task.try }})</td>
+                {% endfor %}
+                <td>{{ row.shtraff }}</td>
+                <td>{{ row.old_res }}</td>
+                <td>{{ row.score }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {{ footer|raw }}
