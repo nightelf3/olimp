@@ -1,6 +1,6 @@
 {{ header|raw }}
 <div class="row home-text">
-    <div class="{% if isAuthenticated %}col-md-12{% else %}col-md-9{% endif %}">
+    <div class="{% if isAuthenticated %}col-md-12{% else %}col-md-8{% endif %}">
         <div class="card">
             <div class="header">
                 <h4 class="title">До уваги усіх фанатів інформатики та програмування!</h4>
@@ -54,7 +54,7 @@
         </div>
     </div>
     {% if not isAuthenticated %}
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card">
             <div class="header">
                 <h4 class="title">{{ text('authorizationForm') }}</h4>

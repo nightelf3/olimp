@@ -17,5 +17,5 @@ class CompilationErrorModel extends BaseModel
 {
     protected $table = 'compilation_errors';
     protected $primaryKey = 'error_id';
-    protected $fillable = [ 'queue_id', 'text' ];
+    protected $fillable = [ 'queue_id', 'error' ];
 }

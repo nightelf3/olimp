@@ -13,9 +13,10 @@
                 {% for task in tasks %}
                 <th>{{ task.name }}</th>
                 {% endfor %}
-                <th>{{ text('mulc') }}</th>
+                <th>{{ text('mulct') }}</th>
                 <th>{{ text('oldScore') }}</th>
                 <th>{{ text('score') }}</th>
+                <th>{{ text('result') }}</th>
             </tr>
             </thead>
 
@@ -24,13 +25,14 @@
             <tr>
                 <td>{{ key + 1 }}</td>
                 <td>{{ row.login }}</td>
-                <td>{{ row.name }}</td>
+                <td>{{ row.name|raw }}</td>
                 {% for task in row.tasks %}
                     <td>{{ task.ok }} ({{ task.try }})</td>
                 {% endfor %}
                 <td>{{ row.shtraff }}</td>
                 <td>{{ row.old_res }}</td>
                 <td>{{ row.score }}</td>
+                <td>{{ row.score + row.old_res - row.shtraff }}</td>
             </tr>
             {% endfor %}
             </tbody>

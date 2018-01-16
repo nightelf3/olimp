@@ -16,6 +16,16 @@
     width: auto;
 }
 
+@media screen and (max-width:767px) {
+    .navbar-header > .row > div {
+        text-align: center;
+    }
+    .navbar-header .user-card {
+        float: none;
+        margin: 1em auto;
+    }
+}
+
 .logout-link {
     position: absolute !important;
     width: 100%;

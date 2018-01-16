@@ -46,9 +46,9 @@ class TemplateHelper extends BaseHelper
     public static function text($id)
     {
         if (ConfigHelper::isDebug()) {
-            if (false == isset($lang[$id])) {
+            if (false == isset(self::$lang[$id])) {
                 self::$lang[$id] = "_{$id}Text";
-                file_put_contents(self::LANG_PATH, json_encode(self::$lang));
+                file_put_contents(self::LANG_PATH, json_encode(self::$lang, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             }
         }
 

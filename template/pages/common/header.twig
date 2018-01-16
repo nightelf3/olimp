@@ -50,7 +50,7 @@
 <div class="sidebar" data-background-color="white" data-active-color="danger">
     <div class="sidebar-wrapper">
         <div class="logo">
-            <a href="{{ href() }}" class="simple-text"><img src="/assets/img/logo-f.jpg" alt="{{  text('siteName') }}"></a>
+            <a href="{{ href() }}" class="simple-text"><img src="/assets/img/logo-f.jpg" alt="{{  text('siteName') }}" title="{{  text('siteName') }}" /></a>
         </div>
 
         <ul class="nav">
@@ -70,7 +70,7 @@
             <li class="{{ getActive('/forgot') }}">
                 <a href="{{ href('forgot') }}">
                     <i class="ti-id-badge"></i>
-                    <p>{{ text('forgot') }}</p>
+                    <p>{{ text('forgotMenu') }}</p>
                 </a>
             </li>
             {% else %}
@@ -108,16 +108,10 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <div class="row">
-                    <div class="col-xs-3 text-left navbar-brand-wrapper"><a class="navbar-brand" href="{{ href() }}">{{ text('logoString') }}</a></div>
-                    <div class="col-xs-5 text-center">{{ timer|raw }}</div>
-                    <div class="col-xs-4 text-right">{{ userForm|raw }}</div>
+                    <div class="col-sm-3 text-left navbar-brand-wrapper"><a class="navbar-brand" href="{{ href() }}">{{ text('logoString') }}</a></div>
+                    <div class="col-sm-5 text-center">{{ timer|raw }}</div>
+                    <div class="col-sm-4 text-right">{{ userForm|raw }}</div>
                 </div>
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar bar1"></span>
-                    <span class="icon-bar bar2"></span>
-                    <span class="icon-bar bar3"></span>
-                </button>
             </div>
         </div>
     </nav>

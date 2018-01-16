@@ -1,7 +1,7 @@
 <div class="user-card">
     <div class="vertical-middle card">{{ max(user.score - user.mulct, 0) }}</div>
     <div class="vertical-middle text-left">
-        <strong>{{ user.surname }}&nbsp;{{ user.name }}</strong><br />
-        {{ user.class }} {{ text('class') }}
+        <strong>{{ user.surname }}&nbsp;{{ user.name }}</strong>
+        <div class="text-ellipsis">{{ user.class }},&nbsp;{{ user.school }}</div>
     </div>
 </div>

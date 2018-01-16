@@ -14,6 +14,7 @@ return [
     [['GET'], '/logout', 'account#logout'],
     [['GET', 'POST'], '/task/[i:task_id]', 'task#index', [ 'login' => true ]],
     [['GET'], '/task', 'task#task', [ 'login' => true ]],
+    [['GET'], '/compile-log/[i:queue_id]', 'task#compile', [ 'login' => true ]],
     [['GET', 'POST'], '/user', 'account#user', [ 'login' => true ]],
     [['GET'], '/rating', 'rating#index', [ 'login' => true ]],
 
@@ -31,4 +32,7 @@ return [
     [['GET'], '/admin/task/[i:task_id]/tests', 'task#get', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
     [['POST'], '/admin/task/[i:task_id]/tests', 'task#save', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
     [['GET'], '/admin/task/[i:task_id]/delete', 'task#delete', [ 'admin' => true ]],
+
+    //TODO: fix it
+    [['GET'], '/admin/queue', 'admin\checker#queue'],
 ];

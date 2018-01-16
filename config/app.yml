@@ -1,4 +1,4 @@
-site_url: http://10.2.2.10
+site_url: http://192.168.0.200
 env: dev
 
 database:

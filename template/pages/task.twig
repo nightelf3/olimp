@@ -9,8 +9,10 @@
                 {% endfor %}
             </tr>
             <tr>
-                <td class="card" id="task-main-text" colspan="{{ tasks|length * 2 }}">
-                    <div class="content">{{ currentTask.task|decode|raw }}</div>
+                <td id="task-main-text" colspan="{{ tasks|length * 2 }}">
+                    <div class="card">
+                        <div class="content">{{ currentTask.task|decode|raw }}</div>
+                    </div>
                 </td>
             </tr>
         </table>

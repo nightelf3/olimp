@@ -7,6 +7,7 @@
  */
 namespace controllers;
 
+use helpers\ErrorHelper;
 use helpers\SettingsHelper;
 use helpers\TemplateHelper;
 use helpers\UrlHelper;
@@ -16,6 +17,7 @@ use Klein\Exceptions\HttpException;
 use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
+use models\CompilationErrorModel;
 use models\CompilerModel;
 use models\QueueModel;
 use models\TaskModel;
@@ -56,12 +58,29 @@ class TaskController extends BaseController
 
     public function task(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        if (SettingsHelper::isOlimpInProgress()) {
+        if (SettingsHelper::isOlimpStarts()) {
             $task = TaskModel::select([ 'task_id' ])->first();
             return $response->redirect(UrlHelper::href("task/{$task->task_id}"));
         }
         $this->data['username'] = UserHelper::getUser()->username;
         return $this->render('wait');
+    }
+
+    public function compile(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        $error = CompilationErrorModel::join('queue', 'queue.queue_id', '=', 'compilation_errors.queue_id')
+            ->join('users', 'queue.user_id', '=', 'users.user_id')
+            ->where([
+                'queue.queue_id' => $request->param('queue_id', 0),
+                'users.user_id' => UserHelper::getUser()->user_id
+            ])->first();
+        if (is_null($error)) {
+            ErrorHelper::assert("You haven't access to this log.");
+            return $response->redirect(UrlHelper::href('task'));
+        }
+
+        $this->data['compileLog'] = $error->error;
+        return $this->render('compile');
     }
 
     private function uploadFile(Request $request)
