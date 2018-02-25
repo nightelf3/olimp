@@ -1,0 +1,27 @@
+{{ header|raw }}
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('chooseOlimpTitle') }}</h4>
+    </div>
+    <div class="content">
+        <ul class="list-unstyled team-members">
+            {% for user in users %}
+            <li>
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div class="avatar vertical-middle">
+                            <img src="assets/img/face.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                        </div>
+                        <div class="vertical-middle">{{ user.username }}</div>
+                    </div>
+
+                    <div class="col-xs-3 text-right">
+                        <a class="btn btn-sm btn-success btn-icon" href="{{ href("#{controller}/#{user.user_id}") }}"><i class="ti-plug"></i></a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{{ footer|raw }}

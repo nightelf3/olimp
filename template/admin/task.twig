@@ -1,32 +1,39 @@
 {{ header|raw }}
-<table width="100%" cellspacing="0" id="admin-task-box">
-    <tr>
-        {% if tasks|length == 0 %}
-        <td class="tabsLink" width="97%" height="30">&nbsp;</td>
-        {% else %}
-            {% for task in tasks %}
-            <td id="task-{{ task.task_id }}" class="tabsLink" width="{{ 97 / tasks|length }}%">
-                <table width="100%">
-                    <tr>
-                        <td width="100%" class="tab-header" onClick="location.href = '{{ href("admin/task/#{task.task_id}") }}'">{{ task.name }}</td>
-                        <td width="15" align="right" nowrap><img src="/assets/img/icons/edit.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/tests") }}'" width="100%" /></td>
-                        <td width="15" align="right" nowrap><img src="/assets/img/icons/delete.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/delete") }}'" width="100%" /></td>
-                    </tr>
-                </table>
-            </td>
-            {% if not loop.last %}
-            <td width="3"></td>
-            {% endif %}
-            {% endfor %}
-            <td width="3%" valign="middle"><img src="/assets/img/icons/plus.png" onClick="location.href = '{{ href("admin/task/new") }}'" width="30" /></td>
-        {% endif %}
-    </tr>
-    <tr>
-        <td class="tab" id="ZadPlace" colspan="{{ max(2, tasks|length * 2) }}">
-            {{ taskForm|raw }}
-        </td>
-    </tr>
-</table>
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('tasksOlimpTitle') }}</h4>
+    </div>
+    <div class="content">
+        <table width="100%" cellspacing="0" id="admin-task-box">
+            <tr>
+                {% if tasks|length == 0 %}
+                    <td class="tabsLink" width="97%" height="30">&nbsp;</td>
+                {% else %}
+                    {% for task in tasks %}
+                        <td id="task-{{ task.task_id }}" class="tabsLink" width="{{ 97 / tasks|length }}%">
+                            <table width="100%">
+                                <tr>
+                                    <td width="100%" class="tab-header" onClick="location.href = '{{ href("admin/task/#{task.task_id}") }}'">{{ task.name }}</td>
+                                    <td width="15" align="right" nowrap><img src="/assets/img/icons/edit.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/tests") }}'" width="100%" /></td>
+                                    <td width="15" align="right" nowrap><img src="/assets/img/icons/delete.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/delete") }}'" width="100%" /></td>
+                                </tr>
+                            </table>
+                        </td>
+                        {% if not loop.last %}
+                            <td width="3"></td>
+                        {% endif %}
+                    {% endfor %}
+                    <td width="3%" valign="middle" class="text-right"><img src="/assets/img/icons/plus.png" onClick="location.href = '{{ href("admin/task/new") }}'" width="30" /></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td class="tab" id="ZadPlace" colspan="{{ max(2, tasks|length * 2) }}">
+                    {{ taskForm|raw }}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 <script>
     $(function() {
         App.admin.task.init({{ task.task_id }});

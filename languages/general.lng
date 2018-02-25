@@ -103,5 +103,9 @@
     "olimpNotStartedTitle": "Дочекайтесь початку олімпіади",
     "forgotMenu": "Відновлення паролю",
     "result": "Підсумок",
-    "compileErrorTitle": "_compileErrorTitleText"
+    "compileErrorTitle": "Лог компіляції",
+    "chooseOlimpTitle": "Виберіть олімпіаду",
+    "timerAdminTitle": "Встановлення дати та часу початку олімпіади",
+    "tasksOlimpTitle": "Редагування завдань до олімпіади",
+    "systemInfoAdminTitle": "Системна інформація"
 }

@@ -21,6 +21,7 @@ use models\CompilationErrorModel;
 use models\CompilerModel;
 use models\QueueModel;
 use models\TaskModel;
+use models\UserModel;
 
 class TaskController extends BaseController
 {
@@ -30,10 +31,13 @@ class TaskController extends BaseController
             return $response->redirect(UrlHelper::href('task'));
         }
 
-        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->orderBy('sort_order')->get();
+        $userId = $request->param('user_id', 0);
+        $this->data['userId'] = $userId;
+        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])
+            ->where('user_id', $userId)->orderBy('sort_order')->get();
 
         /** @var TaskModel $task */
-        $task = TaskModel::select([ 'task_id', 'task' ])->find($request->param('task_id', 0));
+        $task = TaskModel::select([ 'task_id', 'task' ])->where('user_id', $userId)->find($request->param('task_id', 0));
         if (is_null($task)) {
             throw HttpException::createFromCode(404);
         }
@@ -59,8 +63,16 @@ class TaskController extends BaseController
     public function task(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if (SettingsHelper::isOlimpStarts()) {
-            $task = TaskModel::select([ 'task_id' ])->first();
-            return $response->redirect(UrlHelper::href("task/{$task->task_id}"));
+            $userId = $request->param('user_id', 0);
+            $task = TaskModel::select([ 'task_id' ])->where('user_id', $userId)->first();
+            if (!is_null($task)) {
+                return $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}"));
+            }
+
+            $this->data['controller'] = 'task';
+            $this->data['users'] = UserModel::join('tasks', 'tasks.user_id', '=', 'users.user_id')
+                ->groupBy('users.user_id')->where('is_admin', 1)->get();
+            return $this->render('list');
         }
         $this->data['username'] = UserHelper::getUser()->username;
         return $this->render('wait');

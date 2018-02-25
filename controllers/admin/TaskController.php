@@ -10,6 +10,7 @@ namespace controllers\admin;
 use helpers\ErrorHelper;
 use helpers\TemplateHelper;
 use helpers\UrlHelper;
+use helpers\UserHelper;
 use Klein\App;
 use Klein\Request;
 use Klein\Response;
@@ -28,7 +29,7 @@ class TaskController extends BaseAdminController
         $this->header['css'][] = 'admin/task.css';
 
         $taskId = $request->param('task_id', 0);
-        $this->task = TaskModel::find($taskId);
+        $this->task = TaskModel::where('user_id', UserHelper::getUser()->user_id)->find($taskId);
 
         if (!is_null($this->task)) {
             $this->data['task'] = $this->task;
@@ -37,8 +38,12 @@ class TaskController extends BaseAdminController
 
     public function index(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        $task = TaskModel::select([ 'task_id' ])->orderBy('sort_order')->first();
-        return $response->redirect(UrlHelper::href("admin/task/{$task->task_id}"));
+        $task = TaskModel::select([ 'task_id' ])->where('user_id', UserHelper::getUser()->user_id)->orderBy('sort_order')->first();
+        if (!is_null($task)) {
+            return $response->redirect(UrlHelper::href("admin/task/{$task->task_id}"));
+        }
+
+        return $this->create($request, $response, $service, $app);
     }
 
     public function get(Request $request, Response $response, ServiceProvider $service, App $app)
@@ -48,7 +53,7 @@ class TaskController extends BaseAdminController
             return $response->redirect(UrlHelper::href('admin'));
         }
 
-        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->orderBy('sort_order')->get();
+        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->where('user_id', UserHelper::getUser()->user_id)->orderBy('sort_order')->get();
         if ($app->optional['tests']) {
             $this->data['taskForm'] = TemplateHelper::render('admin/components/testsForm', $this->data);
         } else {
@@ -76,7 +81,8 @@ class TaskController extends BaseAdminController
             'time_limit' => 100,
             'memory_limit' => 10,
             'max_score' => 100,
-            'mulct' => 0
+            'mulct' => 0,
+            'user_id' => UserHelper::getUser()->user_id
         ]);
         return $response->redirect(UrlHelper::href("admin/task/{$this->task->task_id}"));
     }

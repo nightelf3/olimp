@@ -8,6 +8,8 @@
 namespace helpers;
 
 use Klein\Klein;
+use models\QueueModel;
+use models\UserModel;
 
 class ControllerHelper extends BaseHelper
 {
@@ -49,5 +51,43 @@ class ControllerHelper extends BaseHelper
 
         ErrorHelper::assert(false, "Can't find {$controller}->{$action}");
         return $klein->response()->code(404);
+    }
+
+    public static function updateAllResults()
+    {
+        foreach (UserModel::get() as $user) {
+            self::updateResults($user);
+        }
+    }
+
+    public static function updateResults(UserModel $user)
+    {
+        $res_arr = [
+            'res'		=> 0,
+            'shtraff'	=> 0
+        ];
+        $res_tmp = [];
+        $queue1 = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')->where('queue.user_id', $user->user_id)
+            ->orderBy('queue_id', 'desc')->get();
+        foreach ($queue1 as $row) {
+            if (preg_match("/([35678]|10)/u", $row->stan)) {
+                if (!isset($res_tmp[$row->task_id])) {
+                    if ('10' != $row->stan && '3' != $row->stan) {
+                        $res_arr['res'] += round(((float)$row->max_score / max((float)$row->tests_count, 1)) * max((int)$row->tests_count - count(explode(',', $row->stan)), 0));
+                    }
+                    $res_tmp[$row->task_id] = (int)('3' != $row->stan);
+                } elseif ('3' != $row->stan) {
+                    $res_arr['shtraff'] += $row->mulct;
+                }
+            }
+            elseif (!isset($res_tmp[$row->task_id]) && '9' == $row->stan) {
+                $res_arr['res'] += $row->max_score;
+                $res_tmp[$row->task_id] = 0;
+            }
+        }
+        $user->update([
+            'score' =>  round($res_arr['res']),
+            'mulct' => $res_arr['shtraff']
+        ]);
     }
 }

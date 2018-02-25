@@ -27,7 +27,7 @@ class TaskModel extends BaseModel
 {
     protected $table = 'tasks';
     protected $primaryKey = 'task_id';
-    protected $fillable = [ 'task', 'input', 'output', 'tests_count', 'time_limit', 'memory_limit', 'max_score', 'mulct', 'name', 'sort_order' ];
+    protected $fillable = [ 'task', 'input', 'output', 'tests_count', 'time_limit', 'memory_limit', 'max_score', 'mulct', 'name', 'sort_order', 'user_id' ];
     public $timestamps = true;
 
     /**

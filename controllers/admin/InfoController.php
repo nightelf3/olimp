@@ -7,13 +7,16 @@
  */
 namespace controllers\admin;
 
+use helpers\ControllerHelper;
 use helpers\UrlHelper;
+use helpers\UserHelper;
 use Klein\App;
 use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
 use models\CompilationErrorModel;
 use models\QueueModel;
+use models\TaskModel;
 use models\UserModel;
 
 class InfoController extends BaseAdminController
@@ -26,7 +29,7 @@ class InfoController extends BaseAdminController
     public function users(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         $this->header['css'][] = 'admin/users.css';
-        $this->data['users'] = UserModel::get();
+        $this->data['user'] = UserModel::get();
         return $this->render('table');
     }
 
@@ -35,6 +38,7 @@ class InfoController extends BaseAdminController
         $this->header['css'][] = 'admin/sysinfo.css';
         $this->header['js'][] = 'admin/sysinfo.js';
 
+        $this->data['user'] = UserHelper::getUser();
         return $this->render('sysinfo');
     }
 
@@ -42,18 +46,21 @@ class InfoController extends BaseAdminController
     {
         $event = $request->param('event', []);
 
+        $taskIds = array_column(TaskModel::select([ 'task_id' ])
+            ->where('user_id', UserHelper::getUser()->user_id)
+            ->get()->toArray(), 'task_id');
         if (isset($event['delete_results'])) {
-            QueueModel::truncate();
-            UserModel::update([
-                'mulct' => 0,
-                'score' => 0
-            ]);
+            QueueModel::whereIn('task_id', $taskIds)->delete();
+            ControllerHelper::updateAllResults();
         } elseif (isset($event['reset_results'])) {
-            QueueModel::update([
+            QueueModel::whereIn('task_id', $taskIds)->update([
                 'stan' => 0,
                 'tests' => ''
             ]);
-            CompilationErrorModel::truncate();
+            $queueIds = array_column(QueueModel::select([ 'queue_id' ])->whereIn('task_id', $taskIds)
+                ->get()->toArray(), 'queue_id');
+            CompilationErrorModel::whereIn('queue_id', $queueIds)->delete();
+            ControllerHelper::updateAllResults();
         }
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));

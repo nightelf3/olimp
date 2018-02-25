@@ -34,6 +34,7 @@
     <script src="/assets/js/bootstrap-checkbox-radio.js"></script> {# Checkbox, Radio & Switch Plugins #}
     <script src="/assets/js/bootstrap-notify.js"></script> {# Notifications Plugin #}
     <script src="/assets/js/paper-dashboard.js"></script> {# Paper Dashboard Core javascript and methods #}
+	<script src="https://www.google.com/recaptcha/api.js"></script>
 
     {# Pages JS #}
     {% for item in js %}
@@ -92,6 +93,35 @@
                         <p>{{ text('user') }}</p>
                     </a>
                 </li>
+                <li class="logout-link">
+                    <a href="{{ href('logout') }}">
+                        <i class="ti-share"></i>
+                        <p>{{ text('logout') }}</p>
+                    </a>
+                </li>
+            {% endif %}
+            {% if user.is_admin %}
+                <li><hr></li>
+
+                <li class="{{ getActive('/admin/timer') }}">
+                    <a href="{{ href('admin/timer') }}">
+                        <i class="ti-timer"></i>
+                        <p>{{ text('adminMenuTimer') }}</p>
+                    </a>
+                </li>
+                <li class="{{ getActive('/admin/task') }}">
+                    <a href="{{ href('admin/task') }}">
+                        <i class="ti-blackboard"></i>
+                        <p>{{ text('adminMenuTasks') }}</p>
+                    </a>
+                </li>
+                <li class="{{ getActive('/admin/sysinfo') }}">
+                    <a href="{{ href('admin/sysinfo') }}">
+                        <i class="ti-settings"></i>
+                        <p>{{ text('adminMenuSysinfo') }}</p>
+                    </a>
+                </li>
+
                 <li class="logout-link">
                     <a href="{{ href('logout') }}">
                         <i class="ti-share"></i>

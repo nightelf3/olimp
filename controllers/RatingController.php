@@ -23,22 +23,32 @@ class RatingController extends BaseController
 {
     public function index(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->orderBy('sort_order')->get();
-        $this->data['table'] = $this->getRatingTable();
+        $this->data['controller'] = 'rating';
+        $this->data['users'] = UserModel::join('tasks', 'tasks.user_id', '=', 'users.user_id')
+            ->groupBy('users.user_id')->where('is_admin', 1)->get();
+        return $this->render('list');
+    }
+
+    public function get(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])
+            ->where('user_id', $request->param('user_id', 0))->orderBy('sort_order')->get();
+        $this->data['table'] = $this->getRatingTable($request);
 
         return $this->render('rating');
     }
 
-    private function getRatingTable()
+    private function getRatingTable(Request $request)
     {
         $arr = [];
-        $results = UserModel::leftJoin('queue', 'users.user_id', '=', 'queue.user_id')
-            ->leftJoin('tasks', 'queue.task_id', '=', 'tasks.task_id')
-            ->select([
-                'users.username', 'users.name as uname', 'users.surname', 'users.score', 'users.mulct', 'users.old_score',
-                'tasks.task_id', 'tasks.name', 'tasks.tests_count',
-                'queue.queue_id', 'queue.stan'
-            ])->orderBy('queue_id', 'desc')->get();
+        $adminId = $request->param('user_id', 0);
+        $results = UserModel::leftJoin('queue', 'users.user_id', '=', 'queue.user_id')->leftJoin('tasks', function($join) use ($adminId) {
+            $join->on('queue.task_id', '=', 'tasks.task_id')->where('tasks.user_id', $adminId);
+        })->select([
+            'users.username', 'users.name as uname', 'users.surname', 'users.score', 'users.mulct', 'users.old_score',
+            'tasks.task_id', 'tasks.name', 'tasks.tests_count',
+            'queue.queue_id', 'queue.stan'
+        ])->orderBy('queue_id', 'desc')->get();
 
         foreach ($results as $row) {
             if (!isset($arr[$row->username])) {
@@ -50,6 +60,10 @@ class RatingController extends BaseController
                     'res_m' => ((int)$row->score + (int)$row->old_score)*1000 - (int)$row->mulct,
                     'old_res' => (int)$row->old_mulct
                 ];
+            }
+
+            if (is_null($row->task_id)) {
+                continue;
             }
 
             if (preg_match("/([35678]|(10))/u", $row->stan)) {
@@ -77,7 +91,7 @@ class RatingController extends BaseController
             }
         }
 
-        $taskIds = TaskModel::select([ 'task_id' ])->orderBy('sort_order')->get();
+        $taskIds = TaskModel::select([ 'task_id' ])->where('user_id', $adminId)->orderBy('sort_order')->get();
         foreach ($arr as &$row) {
             $bl = true;
             foreach ($taskIds as $taskId) {
