@@ -8,6 +8,7 @@
 namespace controllers;
 
 use helpers\classes\enums\TaskStatusEnum;
+use helpers\ControllerHelper;
 use helpers\SettingsHelper;
 use helpers\TemplateHelper;
 use helpers\UrlHelper;
@@ -24,8 +25,16 @@ class RatingController extends BaseController
     public function index(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         $this->data['controller'] = 'rating';
-        $this->data['users'] = UserModel::join('tasks', 'tasks.user_id', '=', 'users.user_id')
-            ->groupBy('users.user_id')->where('is_admin', 1)->get();
+        $users = UserModel::join('tasks', 'tasks.user_id', '=', 'users.user_id')
+            ->groupBy('users.user_id')->where([
+                'is_admin' => true,
+                'users.is_enabled' => true,
+                'tasks.is_enabled' => true
+            ])->get();
+        if (1 == $users->count()) {
+            return $response->redirect(UrlHelper::href("rating/{$users[0]['user_id']}"));
+        }
+        $this->data['users'] = $users;
         return $this->render('list');
     }
 
@@ -34,6 +43,9 @@ class RatingController extends BaseController
         $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])
             ->where('user_id', $request->param('user_id', 0))->orderBy('sort_order')->get();
         $this->data['table'] = $this->getRatingTable($request);
+        $this->data['showLastResults'] = SettingsHelper::param('useLastResults', false);
+
+        ControllerHelper::updateResults(UserHelper::getUser());
 
         return $this->render('rating');
     }
@@ -51,14 +63,16 @@ class RatingController extends BaseController
         ])->orderBy('queue_id', 'desc')->get();
 
         foreach ($results as $row) {
+            if (false == SettingsHelper::param('useLastResults', false)) {
+                $row->old_score = 0;
+            }
             if (!isset($arr[$row->username])) {
                 $arr[$row->username] = [
                     'login' => $row->username,
                     'name' => "{$row->uname}&nbsp;{$row->surname}",
                     'shtraff' => (int)$row->mulct,
                     'score' => ((int)$row->score + (int)$row->old_score),
-                    'res_m' => ((int)$row->score + (int)$row->old_score)*1000 - (int)$row->mulct,
-                    'old_res' => (int)$row->old_mulct
+                    'res_m' => ((int)$row->score + (int)$row->old_score)*1000 - (int)$row->mulct
                 ];
             }
 
@@ -85,9 +99,17 @@ class RatingController extends BaseController
                         $arr[$row->username]['time_summ'] = $row->queue_id;
                 }
             }
-            elseif (!isset($arr[$row->username]['tasks'][$row->task_id]['ok']) && TaskStatusEnum::Succeed == $row->stan) {
-                $arr[$row->username]['tasks'][$row->task_id]['ok'] = '100%';
-                $arr[$row->username]['time_summ'] = $row->queue_id;
+            elseif (TaskStatusEnum::Succeed == $row->stan) {
+                if (!isset($arr[$row->username]['tasks'][$row->task_id]['ok'])) {
+                    $arr[$row->username]['tasks'][$row->task_id]['ok'] = '100%';
+                    $arr[$row->username]['time_summ'] = $row->queue_id;
+                } else {
+                    if (isset($arr[$row->username]['tasks'][$row->task_id])) {
+                        $arr[$row->username]['tasks'][$row->task_id]['try'] += 1;
+                    } else {
+                        $arr[$row->username]['tasks'][$row->task_id]['try'] = 1;
+                    }
+                }
             }
         }
 

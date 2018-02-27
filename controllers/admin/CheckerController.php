@@ -9,7 +9,9 @@ namespace controllers\admin;
 
 use helpers\ControllerHelper;
 use helpers\UrlHelper;
+use helpers\UserHelper;
 use Klein\App;
+use Klein\Exceptions\HttpException;
 use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
@@ -22,6 +24,16 @@ class CheckerController extends BaseAdminController
 {
     public function queue(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        $userAdmin = UserModel::where([
+            'username' => $request->cookies()->get('alog', ''),
+            'guid' => $request->cookies()->get('apass', ''),
+            'is_admin' => true,
+            'is_enabled' => true
+        ])->first();
+        if (!UserHelper::isAdmin() && is_null($userAdmin)) {
+            throw HttpException::createFromCode(404);
+        }
+
         if ($_GET['get'] == "file") {
             /** @var QueueModel $queue */
             $queue = QueueModel::join('users', 'users.user_id', '=', 'queue.user_id')->where('queue.queue_id', $_GET['id'])->first();

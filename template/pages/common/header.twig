@@ -34,7 +34,9 @@
     <script src="/assets/js/bootstrap-checkbox-radio.js"></script> {# Checkbox, Radio & Switch Plugins #}
     <script src="/assets/js/bootstrap-notify.js"></script> {# Notifications Plugin #}
     <script src="/assets/js/paper-dashboard.js"></script> {# Paper Dashboard Core javascript and methods #}
-	<script src="https://www.google.com/recaptcha/api.js"></script>
+
+    {# TODO: add captcha #}
+    {#<script src="https://www.google.com/recaptcha/api.js"></script>#}
 
     {# Pages JS #}
     {% for item in js %}
@@ -43,100 +45,20 @@
 </head>
 
 <body>
+{% include 'pages/common/menu.twig' with {'class': 'collapse navbar-collapse off-canvas-sidebar'} %}
 <div class="wrapper">
-{#
-    Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-    Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-#}
-<div class="sidebar" data-background-color="white" data-active-color="danger">
-    <div class="sidebar-wrapper">
-        <div class="logo">
-            <a href="{{ href() }}" class="simple-text"><img src="/assets/img/logo-f.jpg" alt="{{  text('siteName') }}" title="{{  text('siteName') }}" /></a>
-        </div>
-
-        <ul class="nav">
-            <li class="{{ getActive('/') }}">
-                <a href="{{ href() }}">
-                    <i class="ti-panel"></i>
-                    <p>{{ text('home') }}</p>
-                </a>
-            </li>
-            {% if user is null %}
-            <li class="{{ getActive('/registration') }}">
-                <a href="{{ href('registration') }}">
-                    <i class="ti-user"></i>
-                    <p>{{ text('registrate') }}</p>
-                </a>
-            </li>
-            <li class="{{ getActive('/forgot') }}">
-                <a href="{{ href('forgot') }}">
-                    <i class="ti-id-badge"></i>
-                    <p>{{ text('forgotMenu') }}</p>
-                </a>
-            </li>
-            {% else %}
-                <li class="{{ getActive('/task') }}">
-                    <a href="{{ href('task') }}">
-                        <i class="ti-shortcode"></i>
-                        <p>{{ text('tasks') }}</p>
-                    </a>
-                </li>
-                <li class="{{ getActive('/rating') }}">
-                    <a href="{{ href('rating') }}">
-                        <i class="ti-rocket"></i>
-                        <p>{{ text('rating') }}</p>
-                    </a>
-                </li>
-                <li class="{{ getActive('/user') }}">
-                    <a href="{{ href('user') }}">
-                        <i class="ti-user"></i>
-                        <p>{{ text('user') }}</p>
-                    </a>
-                </li>
-                <li class="logout-link">
-                    <a href="{{ href('logout') }}">
-                        <i class="ti-share"></i>
-                        <p>{{ text('logout') }}</p>
-                    </a>
-                </li>
-            {% endif %}
-            {% if user.is_admin %}
-                <li><hr></li>
-
-                <li class="{{ getActive('/admin/timer') }}">
-                    <a href="{{ href('admin/timer') }}">
-                        <i class="ti-timer"></i>
-                        <p>{{ text('adminMenuTimer') }}</p>
-                    </a>
-                </li>
-                <li class="{{ getActive('/admin/task') }}">
-                    <a href="{{ href('admin/task') }}">
-                        <i class="ti-blackboard"></i>
-                        <p>{{ text('adminMenuTasks') }}</p>
-                    </a>
-                </li>
-                <li class="{{ getActive('/admin/sysinfo') }}">
-                    <a href="{{ href('admin/sysinfo') }}">
-                        <i class="ti-settings"></i>
-                        <p>{{ text('adminMenuSysinfo') }}</p>
-                    </a>
-                </li>
-
-                <li class="logout-link">
-                    <a href="{{ href('logout') }}">
-                        <i class="ti-share"></i>
-                        <p>{{ text('logout') }}</p>
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-</div>
-
+{% include 'pages/common/menu.twig' %}
 <div class="main-panel">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
+                <div class="row">
+                    <button type="button" class="navbar-toggle">
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                </div>
                 <div class="row">
                     <div class="col-sm-3 text-left navbar-brand-wrapper"><a class="navbar-brand" href="{{ href() }}">{{ text('logoString') }}</a></div>
                     <div class="col-sm-5 text-center">{{ timer|raw }}</div>

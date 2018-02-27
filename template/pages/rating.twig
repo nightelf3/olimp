@@ -14,7 +14,7 @@
                 <th>{{ task.name }}</th>
                 {% endfor %}
                 <th>{{ text('mulct') }}</th>
-                <th>{{ text('oldScore') }}</th>
+                {% if showLastResults %}<th>{{ text('oldScore') }}</th>{% endif %}
                 <th>{{ text('score') }}</th>
                 <th>{{ text('result') }}</th>
             </tr>
@@ -30,9 +30,9 @@
                     <td>{{ task.ok }} ({{ task.try }})</td>
                 {% endfor %}
                 <td>{{ row.shtraff }}</td>
-                <td>{{ row.old_res }}</td>
+                {% if showLastResults %}<td>{{ row.old_res }}</td>{% endif %}
                 <td>{{ row.score }}</td>
-                <td>{{ row.score + row.old_res - row.shtraff }}</td>
+                <td>{{ max(row.score + row.old_res - row.shtraff, 0) }}</td>
             </tr>
             {% endfor %}
             </tbody>

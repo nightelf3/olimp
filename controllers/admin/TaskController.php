@@ -70,7 +70,10 @@ class TaskController extends BaseAdminController
             return $response->redirect(UrlHelper::href('admin'));
         }
 
-        $this->task->update($request->param('task', []));
+        $taskInfo = $request->param('task', []);
+        $taskInfo['is_enabled'] = $taskInfo['is_enabled'] ?: 0;
+        $this->task->update($taskInfo);
+
         return $this->get($request, $response, $service, $app);
     }
 

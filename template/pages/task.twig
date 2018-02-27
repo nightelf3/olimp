@@ -1,6 +1,6 @@
 {{ header|raw }}
 <div class="row">
-    <div class="col-md-8">
+    <div class="{% if (errors.taskIsNotEnabled) %}col-md-12{% else %}col-md-8{% endif %}">
         <table width="100%" cellspacing="0" class="tabs-table">
             <tr>
                 {% for task in tasks %}
@@ -11,15 +11,23 @@
             <tr>
                 <td id="task-main-text" colspan="{{ tasks|length * 2 }}">
                     <div class="card">
-                        <div class="content">{{ currentTask.task|decode|raw }}</div>
+                        <div class="content">
+                            {% if (errors.taskIsNotEnabled) %}
+                                <div class="alert alert-danger">{{ text('task-is-not-enabled') }}</div>
+                            {% else %}
+                                {{ currentTask.task|decode|raw }}
+                            {% endif %}
+                        </div>
                     </div>
                 </td>
             </tr>
         </table>
     </div>
+    {% if (not errors.taskIsNotEnabled) %}
     <div class="col-md-4">
         {{ uploadForm|raw }}
         {{ queueInfo|raw }}
     </div>
+    {% endif %}
 </div>
 {{ footer|raw }}

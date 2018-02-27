@@ -24,7 +24,7 @@ class TimerController extends BaseAdminController
             'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
             'olimpContinuity' => SettingsHelper::param('olimp_duration', 0)
         ]);
-        if (SettingsHelper::isOlimpInProgress()) {
+        if (SettingsHelper::isOlimpInProgress(false)) {
             $date = new \DateTime();
             $date->setTimestamp((int)SettingsHelper::param('olimp_start', 0));
 

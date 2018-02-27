@@ -22,12 +22,13 @@ use helpers\UserHelper;
  * @property int mulct
  * @property string name
  * @property int sort_order
+ * @property bool is_enabled
  */
 class TaskModel extends BaseModel
 {
     protected $table = 'tasks';
     protected $primaryKey = 'task_id';
-    protected $fillable = [ 'task', 'input', 'output', 'tests_count', 'time_limit', 'memory_limit', 'max_score', 'mulct', 'name', 'sort_order', 'user_id' ];
+    protected $fillable = [ 'task', 'input', 'output', 'tests_count', 'time_limit', 'memory_limit', 'max_score', 'mulct', 'name', 'sort_order', 'user_id', 'is_enabled' ];
     public $timestamps = true;
 
     /**

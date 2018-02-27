@@ -45,7 +45,7 @@ class AccountController extends BaseController
         MailHelper::mail($user['email'], 'registerSubject', 'register', $user);
 
         $userModel = new UserModel($user);
-        $userModel->hashPassword()->save();
+        $userModel->generateGUID()->hashPassword()->save();
 
         $this->data['username'] = $user['username'];
         $this->data['email'] = $user['email'];

@@ -24,6 +24,7 @@ return [
     [['GET'], '/admin/users', 'info#users', [ 'admin' => true ]],
     [['GET'], '/admin/sysinfo', 'info#sysinfo', [ 'admin' => true ]],
     [['POST'], '/admin/sysinfo/event', 'info#sysEvent', [ 'admin' => true ]],
+    [['POST'], '/admin/sysinfo/settings', 'info#sysSettings', [ 'admin' => true ]],
 
     [['GET'], '/admin/timer', 'timer#index', [ 'admin' => true ]],
     [['POST'], '/admin/timer', 'timer#save', [ 'admin' => true ]],
@@ -36,6 +37,5 @@ return [
     [['POST'], '/admin/task/[i:task_id]/tests', 'task#save', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
     [['GET'], '/admin/task/[i:task_id]/delete', 'task#delete', [ 'admin' => true ]],
 
-    //TODO: fix it
     [['GET'], '/admin/queue', 'admin\checker#queue'],
 ];

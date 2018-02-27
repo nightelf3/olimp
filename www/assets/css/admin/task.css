@@ -46,3 +46,11 @@
 #tests-form input[type=submit] {
     width:100%;
 }
+
+table.sysinfo {
+    margin:0.5em 0;
+}
+
+table.sysinfo td {
+    padding: 0.25em 0;
+}

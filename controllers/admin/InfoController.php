@@ -8,6 +8,7 @@
 namespace controllers\admin;
 
 use helpers\ControllerHelper;
+use helpers\SettingsHelper;
 use helpers\UrlHelper;
 use helpers\UserHelper;
 use Klein\App;
@@ -38,6 +39,13 @@ class InfoController extends BaseAdminController
         $this->header['css'][] = 'admin/sysinfo.css';
         $this->header['js'][] = 'admin/sysinfo.js';
 
+        $this->data['settings'] = [
+            'olimpCheckerLogin' => UserHelper::getUser()->username,
+            'olimpCheckerPassword' => UserHelper::getUser()->guid,
+            'useLastResults' => SettingsHelper::param('useLastResults', false),
+            'is_enabled' => UserHelper::getUser()->is_enabled
+        ];
+
         $this->data['user'] = UserHelper::getUser();
         return $this->render('sysinfo');
     }
@@ -62,6 +70,20 @@ class InfoController extends BaseAdminController
             CompilationErrorModel::whereIn('queue_id', $queueIds)->delete();
             ControllerHelper::updateAllResults();
         }
+
+        return $response->redirect(UrlHelper::href('admin/sysinfo'));
+    }
+
+    public function sysSettings(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        $settings = $request->param('settings', []);
+        /** @var UserModel $user */
+        $user = UserHelper::getUser();
+
+        $user->is_enabled = $settings['is_enabled'] ?: 0;
+        $user->save();
+
+        SettingsHelper::setParam('useLastResults', $settings['useLastResults'] ?: 0);
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));
     }

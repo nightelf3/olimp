@@ -6,6 +6,7 @@
  * Time: 18:26
  */
 namespace models;
+use helpers\SettingsHelper;
 use helpers\UrlHelper;
 
 /**
@@ -25,12 +26,14 @@ use helpers\UrlHelper;
  * @property int mulct
  * @property int old_score
  * @property bool is_admin
+ * @property bool is_enabled
+ * @property bool guid
  */
 class UserModel extends BaseModel
 {
     protected $table = 'users';
     protected $primaryKey = 'user_id';
-    protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname', 'score', 'mulct', 'old_score' ];
+    protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname', 'score', 'mulct', 'old_score', 'is_enabled', 'guid' ];
     public $timestamps = true;
 
     public function getUserFolderAttribute()
@@ -41,6 +44,13 @@ class UserModel extends BaseModel
     public function generateSalt()
     {
         $this->password_salt = uniqid(mt_rand(), false);
+        return $this;
+    }
+
+    public function generateGUID()
+    {
+        $this->guid = SettingsHelper::guid();
+        return $this;
     }
 
     public function hashPassword()

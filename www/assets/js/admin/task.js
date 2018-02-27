@@ -30,7 +30,9 @@ $(function () {
 
                 // the handler function
                 var resizeEvent = function() {
-                    $('#tests-input, #tests-output').height($this.height());
+                    if (null != $this) {
+                        $('#tests-input, #tests-output').height($this.height());
+                    }
                 };
 
                 $('#tests-input, #tests-output').on('mousedown', function(e) {
@@ -51,6 +53,19 @@ $(function () {
                     backgroundColor: '#c6c6c6',
                     color: '#606060'
                 });
+
+                $(window).keydown(function(event) {
+                        // If Control or Command key is pressed and the S key is pressed
+                        // run save function. 83 is the key code for S.
+                        if((event.ctrlKey || event.metaKey) && event.which == 83) {
+
+                            $('#save-task').click();
+
+                            event.preventDefault();
+                            return false;
+                        }
+                    }
+                );
 
                 $(document).on('submit', '#tests-form', App.admin.task.formTest);
                 App.admin.task.testsResize();

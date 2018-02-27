@@ -1,4 +1,4 @@
-site_url: http://10.2.2.10
+site_url: http://192.168.0.200
 env: dev
 
 database:
@@ -15,8 +15,12 @@ database:
 session:
   cookie_lifetime: 0
 
+datetime:
+  timezone: Europe/Kiev
+
 template:
   path: /template
+  extensions: /helpers/classes/twig
 
 migration:
   path: /migrations

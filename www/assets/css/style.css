@@ -1,3 +1,7 @@
+.checkbox {
+    margin: 0;
+}
+
 .card .footer div {
     display: block;
 }
@@ -63,6 +67,7 @@
 .user-card {
     float: right;
     max-height: 74px;
+    width: 100%;
 }
 
 .user-card .card {
@@ -75,10 +80,29 @@
     color: #616161;
 }
 
+@media (min-width: 767px) and (max-width: 991px) {
+    .user-card .user-info {
+        max-width: 65%;
+        max-width: calc(100% - 95px);
+    }
+
+    .user-card .user-info .extended-info {
+        max-width: 80%;
+        max-width: calc(100% - 35px);
+    }
+}
+
 .text-ellipsis {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.navbar-toggle {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    z-index: 1;
 }
 
 .upload-content th {
@@ -123,4 +147,8 @@
 }
 #task-main-text td {
     vertical-align:top;
+}
+
+#task-main-text table {
+    width:100%;
 }

@@ -43,13 +43,13 @@ class SettingsHelper extends BaseHelper
         self::$settings[$key] = $value;
     }
 
-    public static function isOlimpInProgress()
+    public static function isOlimpInProgress($orIsAdmin = true)
     {
         $olimpStart = (int)static::param('olimp_start', 0);
         $olimpEnd = $olimpStart + (int)static::param('olimp_duration', 0);
         $currentTime = time();
 
-        return UserHelper::isAdmin() || ($olimpStart <= $currentTime && $currentTime <= $olimpEnd);
+        return ($orIsAdmin && UserHelper::isAdmin()) || ($olimpStart <= $currentTime && $currentTime <= $olimpEnd);
     }
 
     public static function isOlimpStarts()
@@ -58,5 +58,15 @@ class SettingsHelper extends BaseHelper
         $currentTime = time();
 
         return $olimpStart <= $currentTime;
+    }
+
+    public static function guid()
+    {
+        if (function_exists('com_create_guid'))
+        {
+            return trim(com_create_guid(), '{}');
+        }
+
+        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
 }

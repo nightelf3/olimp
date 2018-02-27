@@ -107,5 +107,10 @@
     "chooseOlimpTitle": "Виберіть олімпіаду",
     "timerAdminTitle": "Встановлення дати та часу початку олімпіади",
     "tasksOlimpTitle": "Редагування завдань до олімпіади",
-    "systemInfoAdminTitle": "Системна інформація"
+    "taskEnabled": "Завдання активне",
+    "task-is-not-enabled": "Завдання не активне на поточному етапі олімпіади. Виберіть, будь ласка, інше завдання.",
+    "olimpEnabled": "Олімпіада активна",
+    "olimpCheckerPassword": "Пароль для Olimp-Checker:",
+    "olimpCheckerLogin": "Логін для Olimp-Checker:",
+    "useLastResults": "Використовувати попередні результати"
 }

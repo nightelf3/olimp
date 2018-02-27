@@ -62,32 +62,38 @@ class ControllerHelper extends BaseHelper
 
     public static function updateResults(UserModel $user)
     {
-        $res_arr = [
-            'res'		=> 0,
-            'shtraff'	=> 0
+        $calculatedTasks = [];
+        $results = [
+            'score' => 0,
+            'mulct' => 0
         ];
-        $res_tmp = [];
-        $queue1 = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')->where('queue.user_id', $user->user_id)
+        $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
+            ->where('queue.user_id', $user->user_id)
             ->orderBy('queue_id', 'desc')->get();
-        foreach ($queue1 as $row) {
-            if (preg_match("/([35678]|10)/u", $row->stan)) {
-                if (!isset($res_tmp[$row->task_id])) {
-                    if ('10' != $row->stan && '3' != $row->stan) {
-                        $res_arr['res'] += round(((float)$row->max_score / max((float)$row->tests_count, 1)) * max((int)$row->tests_count - count(explode(',', $row->stan)), 0));
-                    }
-                    $res_tmp[$row->task_id] = (int)('3' != $row->stan);
-                } elseif ('3' != $row->stan) {
-                    $res_arr['shtraff'] += $row->mulct;
-                }
+
+        foreach ($queue as $row) {
+            if (in_array($row->stan, [ '0', '1', '2', '3', '4' ])) {
+                continue;
             }
-            elseif (!isset($res_tmp[$row->task_id]) && '9' == $row->stan) {
-                $res_arr['res'] += $row->max_score;
-                $res_tmp[$row->task_id] = 0;
+
+            if ('9' == $row->stan && !in_array($row->task_id, $calculatedTasks)) {
+                // succeed
+                $results['score'] += $row->max_score;
+                $calculatedTasks[] = $row->task_id;
+            } elseif ('10' == $row->stan) {
+                // incorrect output
+                $results['mulct'] += $row->mulct;
+            } else {
+                // another type of error
+                if (!in_array($row->task_id, $calculatedTasks)) {
+                    $results['score'] += round(((float)$row->max_score / max((float)$row->tests_count, 1)) * max((int)$row->tests_count - count(explode(',', $row->stan)), 0));
+                    $calculatedTasks[] = $row->task_id;
+                }
+                $results['mulct'] += $row->mulct;
             }
         }
-        $user->update([
-            'score' =>  round($res_arr['res']),
-            'mulct' => $res_arr['shtraff']
-        ]);
+
+        $results['score'] = round($results['score']);
+        $user->update($results);
     }
 }
