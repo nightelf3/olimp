@@ -30,7 +30,7 @@ class AddAllowedExtensionsCompilators extends AbstractMigration
         $table = $this->table('compilers');
         $table->addColumn('ext', 'string')->update();
 
-        $table->truncate();
+        $this->execute("DELETE FROM oi_compilers WHERE 1");
         $table->insert([
             [ 'name' => 'C', 'ext' => 'c' ],
             [ 'name' => 'C++', 'ext' => 'cpp' ],

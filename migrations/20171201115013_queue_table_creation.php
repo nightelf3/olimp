@@ -47,9 +47,9 @@ class QueueTableCreation extends AbstractMigration
             ->addColumn('tests', 'string', [ 'null' => true ])
             ->addColumn('upload_ip', 'string', [ 'limit' => 16 ])
             ->create();
-        $table->addForeignKey('user_id', 'oi_users', 'user_id',  [ 'delete' => 'CASCADE' ])
-            ->addForeignKey('task_id', 'oi_tasks', 'task_id',  [ 'delete' => 'CASCADE' ])
-            ->addForeignKey('compiler_id', 'oi_compilers', 'compiler_id',  [ 'delete' => 'RESTRICT' ])
+        $table->addForeignKey('user_id', 'users', 'user_id',  [ 'delete' => 'CASCADE' ])
+            ->addForeignKey('task_id', 'tasks', 'task_id',  [ 'delete' => 'CASCADE' ])
+            ->addForeignKey('compiler_id', 'compilers', 'compiler_id',  [ 'delete' => 'RESTRICT' ])
             ->update();
     }
 }

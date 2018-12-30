@@ -32,7 +32,7 @@ class CompilationErrorsTable extends AbstractMigration
         $table->addColumn('queue_id', 'integer')
             ->addColumn('error', 'text')
             ->create();
-        $table->addForeignKey('queue_id', 'oi_queue', 'queue_id',  [ 'delete' => 'CASCADE' ])
+        $table->addForeignKey('queue_id', 'queue', 'queue_id',  [ 'delete' => 'CASCADE' ])
             ->update();
     }
 }

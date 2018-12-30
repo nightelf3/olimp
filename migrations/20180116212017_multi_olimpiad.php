@@ -31,7 +31,7 @@ class MultiOlimpiad extends AbstractMigration
         $table = $this->table('tasks');
         $table->addColumn('user_id', 'integer', [ 'null' => true ])
             ->update();
-        $table->addForeignKey('user_id', 'oi_users', 'user_id',  [ 'delete' => 'CASCADE' ])
+        $table->addForeignKey('user_id', 'users', 'user_id',  [ 'delete' => 'CASCADE' ])
             ->update();
     }
 }
