@@ -40,7 +40,7 @@ class CheckerController extends BaseAdminController
 
             $file = fopen(UrlHelper::path("users/{$queue->username}/{$queue->task_id}/{$queue->filename}"), "r");
             while (!feof($file)) {
-            echo fgets($file);
+            echo trim(str_replace("\r\n", "\n", fgets($file)), "\r\n") . "\n";
             }
             fclose($file);
 
@@ -65,7 +65,7 @@ class CheckerController extends BaseAdminController
                 $inp = explode("\r\n\r\n", $task->input);
                 $out = explode("\r\n\r\n", $task->output);
                 for ($i = 0; $i < $count; ++$i) {
-                    echo '<div class="inp">'.$inp[$i].'</div><div class="out">'.$out[$i].'</div>';
+                    echo '<div class="inp">'.trim(str_replace("\r\n", "\n", $inp[$i])).'</div><div class="out">'.trim(str_replace("\r\n", "\n", $out[$i])).'</div>';
                 }
                 echo '</div>';
             }
