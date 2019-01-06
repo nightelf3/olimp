@@ -2,7 +2,8 @@
 <div class="card">
     <div class="header">
         <h4 class="title">{{ text('compileErrorTitle') }}</h4>
+        <p class="category"><a href="{{ href("task/#{userId}/#{taskId}") }}">{{ text('goBackToTask') }} "{{ taskName }}"</a></p>
     </div>
-    <div class="content">{{ compileLog }}</div>
+    <div class="content"><pre>{{ compileLog }}</pre></div>
 </div>
 {{ footer|raw }}

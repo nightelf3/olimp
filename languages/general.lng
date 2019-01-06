@@ -112,5 +112,6 @@
     "olimpEnabled": "Олімпіада активна",
     "olimpCheckerPassword": "Пароль для Olimp-Checker:",
     "olimpCheckerLogin": "Логін для Olimp-Checker:",
-    "useLastResults": "Використовувати попередні результати"
+    "useLastResults": "Використовувати попередні результати",
+    "goBackToTask": "Повернутись назад до завдання"
 }

@@ -101,16 +101,25 @@ class TaskController extends BaseController
     {
         $error = CompilationErrorModel::join('queue', 'queue.queue_id', '=', 'compilation_errors.queue_id')
             ->join('users', 'queue.user_id', '=', 'users.user_id')
+            ->join('tasks', 'queue.task_id', '=', 'tasks.task_id')
             ->where([
                 'queue.queue_id' => $request->param('queue_id', 0),
                 'users.user_id' => UserHelper::getUser()->user_id
+            ])->select([
+                'compilation_errors.error',
+                'tasks.name',
+                'tasks.task_id',
+                'tasks.user_id'
             ])->first();
         if (is_null($error)) {
             ErrorHelper::assert("You haven't access to this log.");
             return $response->redirect(UrlHelper::href('task'));
         }
 
-        $this->data['compileLog'] = $error->error;
+        $this->data['compileLog'] = preg_replace("/<\s*br\s*\/?>/i", "\n", $error->error);
+        $this->data['taskName'] = $error->name;
+        $this->data['taskId'] = $error->task_id;
+        $this->data['userId'] = $error->user_id;
         return $this->render('compile');
     }
 
