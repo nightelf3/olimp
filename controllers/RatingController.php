@@ -55,7 +55,7 @@ class RatingController extends BaseController
 
         $oldScore = SettingsHelper::param('useLastResults', false) ? '`users`.`old_score`' : '0';
         $sql = "
-            SELECT `users`.`username`, `users`.`name`, `users`.`surname`, `users`.`score`, `users`.`mulct`, {$oldScore} AS `old_score`,
+            SELECT `users`.`username`, `users`.`name`, `users`.`surname`, `users`.`score`, `users`.`mulct`, {$oldScore} AS `old_score_new`,
                 `tasks`.`task_id`, `tasks`.`tests_count`,
                 `queue`.`queue_id`, `queue`.`stan`, `queue`.`try`
             FROM (
@@ -71,7 +71,7 @@ class RatingController extends BaseController
             ) AS `queue`
             INNER JOIN `{$prefix}tasks` AS `tasks` ON `tasks`.`task_id` = `queue`.`task_id`
             RIGHT JOIN `{$prefix}users` AS `users` ON `queue`.`user_id` = `users`.`user_id`
-            ORDER BY `users`.`score` + `old_score` - `users`.`mulct` DESC, `queue_id` DESC
+            ORDER BY `queue_id` IS NULL, `users`.`score` + `old_score_new` - `users`.`mulct` DESC, `queue_id` ASC
         ";
         $db = Capsule::connection('default');
         $results = $db->select($db->raw($sql));
@@ -83,9 +83,9 @@ class RatingController extends BaseController
                     'login' => $row->username,
                     'name' => "{$row->name}&nbsp;{$row->surname}",
                     'shtraff' => (int)$row->mulct,
-                    'score' => ((int)$row->score + (int)$row->old_score),
+                    'score' => ((int)$row->score + (int)$row->old_score_new),
                     'tasks' => [],
-                    'old_res' => (int)$row->old_score
+                    'old_res' => (int)$row->old_score_new
                 ];
             }
 
