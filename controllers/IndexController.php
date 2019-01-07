@@ -7,6 +7,7 @@
  */
 namespace controllers;
 
+use helpers\SettingsHelper;
 use helpers\TemplateHelper;
 use helpers\UrlHelper;
 use helpers\UserHelper;
@@ -31,6 +32,7 @@ class IndexController extends BaseController
             $this->data['loginForm'] = TemplateHelper::render('components/login', [ 'errors' => $errors ]);
         }
 
+        $this->data['indexContent'] = SettingsHelper::param('indexContent', '<p></p>');
         return $this->render('home');
     }
 }

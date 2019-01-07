@@ -49,9 +49,12 @@ class TaskController extends BaseController
             return $this->render('task');
         }
 
+        $fileUploaded = false;
         if (SettingsHelper::isOlimpInProgress()) {
+            $errors = $this->uploadFile($request);
+            $fileUploaded = $request->files()->count() == 1 && empty($errors);
             $this->data['uploadForm'] = TemplateHelper::render('components/upload', [
-                'error' => $this->uploadFile($request),
+                'error' => $errors,
                 'task_id' => $task->task_id
             ]);
         }
@@ -64,7 +67,7 @@ class TaskController extends BaseController
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue ]);
         $this->data['currentTask'] = $task;
 
-        return $this->render('task');
+        return $fileUploaded ? $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}")) : $this->render('task');
     }
 
     public function task(Request $request, Response $response, ServiceProvider $service, App $app)

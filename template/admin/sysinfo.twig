@@ -7,13 +7,13 @@
     <div class="content">
         <div>
             <form method="post" action="{{ href('admin/sysinfo/settings') }}">
-                <table class="padding-table">
+                <table class="padding-table full-width">
                     <tr>
-                        <td>{{ text('olimpCheckerLogin') }}</td>
+                        <td width="1%" nowrap>{{ text('olimpCheckerLogin') }}</td>
                         <td>{{ settings.olimpCheckerLogin }}</td>
                     </tr>
                     <tr>
-                        <td>{{ text('olimpCheckerPassword') }}</td>
+                        <td width="1%" nowrap>{{ text('olimpCheckerPassword') }}</td>
                         <td>{{ settings.olimpCheckerPassword }}</td>
                     </tr>
                     <tr>
@@ -30,6 +30,11 @@
                                 <input type="checkbox" id="is-olimp-enabled-checkbox" name="settings[is_enabled]" value="1" {{ settings.is_enabled|default(0) ? "checked" : "" }} />
                                 <label for="is-olimp-enabled-checkbox">{{ text('olimpEnabled') }}</label>
                             </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea class="ckeditor" rows="40" cols="45" name="settings[indexContent]">{{ settings.indexContent|raw }}</textarea>
                         </td>
                     </tr>
                     <tr>

@@ -43,6 +43,7 @@ class InfoController extends BaseAdminController
             'olimpCheckerLogin' => UserHelper::getUser()->username,
             'olimpCheckerPassword' => UserHelper::getUser()->guid,
             'useLastResults' => SettingsHelper::param('useLastResults', false),
+            'indexContent' => SettingsHelper::param('indexContent', '<p></p>'),
             'is_enabled' => UserHelper::getUser()->is_enabled
         ];
 
@@ -84,6 +85,7 @@ class InfoController extends BaseAdminController
         $user->save();
 
         SettingsHelper::setParam('useLastResults', $settings['useLastResults'] ?: 0);
+        SettingsHelper::setParam('indexContent', $settings['indexContent'] ?: '<p></p>');
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));
     }
