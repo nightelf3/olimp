@@ -12,15 +12,23 @@
 .navbar .navbar-header {
     width: 100%;
 }
+
 .sidebar .logo {
     padding: 0;
 }
+
 .sidebar .logo img {
     height: 66px;
     width: auto;
 }
 
-@media screen and (max-width:767px) {
+.logout-link {
+    position: absolute !important;
+    width: 100%;
+    bottom: 10px;
+}
+
+@media screen and (max-width:991px) {
     .navbar-header > .row > div {
         text-align: center;
     }
@@ -28,12 +36,9 @@
         float: none;
         margin: 1em auto;
     }
-}
-
-.logout-link {
-    position: absolute !important;
-    width: 100%;
-    bottom: 10px;
+    .logout-link {
+        width: auto;
+    }
 }
 
 .navbar-brand-wrapper {
