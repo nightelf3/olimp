@@ -109,8 +109,8 @@ class AccountController extends BaseController
             return $this->render('user');
         }
 
-        $user = $request->paramsPost()->all();
-        $errors = $this->validateUserForm($user, true);
+        $userForm = $request->paramsPost()->all();
+        $errors = $this->validateUserForm($userForm, true);
         if (false === empty($errors)) {
             $userData['errors'] = $errors;
             $this->data['userForm'] = TemplateHelper::render('components/user_form', $userData);
@@ -119,14 +119,15 @@ class AccountController extends BaseController
 
         $user = UserHelper::getUser();
         $user->fill([
-            'class' => $user['class'],
-            'school' => $user['school'],
-            'phone' => $user['phone'],
-            'name' => $user['name'],
-            'surname' => $user['surname']
+            'class' => $userForm['class'],
+            'school' => $userForm['school'],
+            'phone' => $userForm['phone'],
+            'name' => $userForm['name'],
+            'surname' => $userForm['surname'],
+            'live_update' => $userForm['live_update'] ?: 0
         ]);
-        if (!empty($user['password'])) {
-            $user->password = $user['password'];
+        if (!empty($userForm['password'])) {
+            $user->password = $userForm['password'];
             $user->hashPassword();
         }
         $user->save();
@@ -136,10 +137,17 @@ class AccountController extends BaseController
         return $this->render('user');
     }
 
+    public function update(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        return $response->json([
+            'userCard' => TemplateHelper::render('components/user', [ 'user' => UserHelper::getUser() ])
+        ]);
+    }
+
     protected function validateUserForm($user, $updateOnly = false)
     {
         $errors = [];
-        if (!!$updateOnly) {
+        if (!$updateOnly) {
             if (!isset($user['username']) || empty($user['username'])) {
                 $errors['username'] = true;
             }

@@ -27,13 +27,14 @@ use helpers\UrlHelper;
  * @property int old_score
  * @property bool is_admin
  * @property bool is_enabled
- * @property bool guid
+ * @property string guid
+ * @property bool live_update
  */
 class UserModel extends BaseModel
 {
     protected $table = 'users';
     protected $primaryKey = 'user_id';
-    protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname', 'score', 'mulct', 'old_score', 'is_enabled', 'guid' ];
+    protected $fillable = [ 'username', 'password', 'password_salt', 'email', 'class', 'school', 'phone', 'name', 'surname', 'score', 'mulct', 'old_score', 'is_enabled', 'guid', 'live_update' ];
     public $timestamps = true;
 
     public function getUserFolderAttribute()

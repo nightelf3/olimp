@@ -15,10 +15,13 @@ return [
     [['GET'], '/task', 'task#task', [ 'login' => true ]],
     [['GET'], '/task/[i:user_id]', 'task#task', [ 'login' => true ]],
     [['GET', 'POST'], '/task/[i:user_id]/[i:task_id]', 'task#index', [ 'login' => true ]],
+    [['GET'], '/task/[i:user_id]/[i:task_id]/update', 'task#update', [ 'login' => true ]],
     [['GET'], '/compile-log/[i:queue_id]', 'task#compile', [ 'login' => true ]],
     [['GET', 'POST'], '/user', 'account#user', [ 'login' => true ]],
+    [['GET'], '/user/update', 'account#update', [ 'login' => true ]],
     [['GET'], '/rating', 'rating#index', [ 'login' => true ]],
     [['GET'], '/rating/[i:user_id]', 'rating#get', [ 'login' => true ]],
+    [['GET'], '/rating/[i:user_id]/update', 'rating#update', [ 'login' => true ]],
 
     [['GET'], '/admin', 'info#index', [ 'admin' => true ]],
     [['GET'], '/admin/users', 'info#users', [ 'admin' => true ]],

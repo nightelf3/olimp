@@ -10,6 +10,7 @@ namespace controllers;
 use helpers\classes\enums\TaskStatusEnum;
 use helpers\ConfigHelper;
 use helpers\SettingsHelper;
+use helpers\TemplateHelper;
 use helpers\UrlHelper;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Klein\App;
@@ -39,14 +40,33 @@ class RatingController extends BaseController
 
     public function get(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        $this->header['js'][] = 'rating.js';
+
         $userId = $request->param('user_id', 0);
         $tasks = TaskModel::select([ 'task_id', 'name' ])
             ->where('user_id', $userId)->orderBy('sort_order')->get();
-        $this->data['table'] = $this->getRatingTable($userId, $tasks);
-        $this->data['tasks'] = $tasks;
-        $this->data['showLastResults'] = SettingsHelper::param('useLastResults', false);
+        $this->data['ratingTable'] = TemplateHelper::render('components/rating_table', [
+            'table' => $this->getRatingTable($userId, $tasks),
+            'tasks' => $tasks,
+            'showLastResults' => SettingsHelper::param('useLastResults', false)
+        ]);
 
         return $this->render('rating');
+    }
+
+    public function update(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        $userId = $request->param('user_id', 0);
+        $tasks = TaskModel::select([ 'task_id', 'name' ])
+            ->where('user_id', $userId)->orderBy('sort_order')->get();
+
+        return $response->json([
+            'rating' => TemplateHelper::render('components/rating_table', [
+                'table' => $this->getRatingTable($userId, $tasks),
+                'tasks' => $tasks,
+                'showLastResults' => SettingsHelper::param('useLastResults', false)
+            ])
+        ]);
     }
 
     private function getRatingTable($adminId, $tasks)

@@ -32,6 +32,7 @@ abstract class BaseController
     {
         $this->header['user'] = UserHelper::isAuthenticated() ? UserHelper::getUser() : null;
         if (UserHelper::isAuthenticated()) {
+            $this->header['js'][] = 'user-card.js';
             if (SettingsHelper::isOlimpInProgress()) {
                 $this->header['css'][] = 'timer.css';
                 $this->header['js'][] = 'timer.js';
@@ -47,7 +48,11 @@ abstract class BaseController
         }
 
         $this->data['header'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/header', $this->header);
-        $this->data['footer'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/footer');
+        $this->data['footer'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/footer', [
+            'JSSettings' => [
+                'liveUpdate' => UserHelper::getUser()->live_update
+            ]
+        ]);
 
         $this->data['isAuthenticated'] = UserHelper::isAuthenticated();
 

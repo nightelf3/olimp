@@ -31,9 +31,11 @@ class TaskController extends BaseController
             return $response->redirect(UrlHelper::href('task'));
         }
 
+        $this->header['js'][] = 'task.js';
+
         $userId = $request->param('user_id', 0);
         $this->data['userId'] = $userId;
-        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->where([
+        $tasks = TaskModel::select([ 'task_id', 'name' ])->where([
             'user_id' => $userId
         ])->orderBy('sort_order')->get();
 
@@ -64,8 +66,14 @@ class TaskController extends BaseController
             $item['stan'] = explode(',', $item['stan']);
             $item['tests'] = $item['tests'] ? explode(',', $item['tests']) : [];
         }
-        $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue ]);
+        $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue, 'task' => $task ]);
+        $this->data['taskTabs'] = TemplateHelper::render('components/task_tabs', [
+            'userId' => $userId,
+            'tasks' => $tasks,
+            'currentTask' => $task
+        ]);
         $this->data['currentTask'] = $task;
+        $this->data['tasks'] = $tasks;
 
         return $fileUploaded ? $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}")) : $this->render('task');
     }
@@ -124,6 +132,45 @@ class TaskController extends BaseController
         $this->data['taskId'] = $error->task_id;
         $this->data['userId'] = $error->user_id;
         return $this->render('compile');
+    }
+
+    public function update(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        if (!SettingsHelper::isOlimpStarts() && !UserHelper::isAdmin()) {
+            throw HttpException::createFromCode(403);
+        }
+
+        $userId = $request->param('user_id', 0);
+        $this->data['userId'] = $userId;
+
+        /** @var TaskModel $task */
+        $task = TaskModel::select([ 'task_id', 'task', 'is_enabled' ])->where([
+            'user_id' => $userId
+        ])->find($request->param('task_id', 0));
+        if (is_null($task)) {
+            throw HttpException::createFromCode(404);
+        } elseif (!$task->is_enabled) {
+            throw HttpException::createFromCode(403);
+        }
+
+        $queue = UserHelper::getUser()->getQueue($task->task_id)->toArray();
+        foreach ($queue as &$item) {
+            $item['stan'] = explode(',', $item['stan']);
+            $item['tests'] = $item['tests'] ? explode(',', $item['tests']) : [];
+        }
+
+        $tasks = TaskModel::select([ 'task_id', 'name' ])->where([
+            'user_id' => $userId
+        ])->orderBy('sort_order')->get();
+
+        return $response->json([
+            'queue' => TemplateHelper::render('components/queue', [ 'queue' => $queue ]),
+            'taskTabs' => TemplateHelper::render('components/task_tabs', [
+                'userId' => $userId,
+                'tasks' => $tasks,
+                'currentTask' => $task
+            ])
+        ]);
     }
 
     private function uploadFile(Request $request)

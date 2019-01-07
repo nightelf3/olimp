@@ -8,6 +8,14 @@
     </div>
 </footer>
 
+<script>
+    App = typeof App == 'undefined' ? {} : App;
+    App.page = typeof App.page == 'undefined' ? {} : App.page;
+    {% for key, value in JSSettings %}
+        App.page.{{ key }} = {{ value }};
+    {% endfor %}
+</script>
+
 </div> {# <div class="main-panel"> #}
 </div> {# <div class="wrapper"> #}
 </body>

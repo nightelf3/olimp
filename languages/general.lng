@@ -113,5 +113,6 @@
     "olimpCheckerPassword": "Пароль для Olimp-Checker:",
     "olimpCheckerLogin": "Логін для Olimp-Checker:",
     "useLastResults": "Використовувати попередні результати",
-    "goBackToTask": "Повернутись назад до завдання"
+    "goBackToTask": "Повернутись назад до завдання",
+    "liveUpdate": "Оновлювати інформацію в режимі реального часу"
 }

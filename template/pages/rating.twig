@@ -1,43 +1,11 @@
 {{ header|raw }}
-<div class="card">
+<div class="card" id="rating-page">
     <div class="header">
         <h4 class="title">{{ text('ratingTable') }}</h4>
     </div>
     <div class="content rating-content">
         <div class="table-responsive table-full-width">
-            <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>{{ text('no') }}</th>
-                <th>{{ text('username') }}</th>
-                <th>{{ text('fullname') }}</th>
-                {% for task in tasks %}
-                <th>{{ task.name }}</th>
-                {% endfor %}
-                <th>{{ text('mulct') }}</th>
-                {% if showLastResults %}<th>{{ text('oldScore') }}</th>{% endif %}
-                <th>{{ text('score') }}</th>
-                <th>{{ text('result') }}</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            {% for key, row in table  %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ row.login }}</td>
-                <td>{{ row.name|raw }}</td>
-                {% for task in tasks %}
-                    <td>{{ '-' == row.tasks[task.task_id].ok ? '-' : "#{row.tasks[task.task_id].ok} (#{row.tasks[task.task_id].try })" }}</td>
-                {% endfor %}
-                <td>{{ row.shtraff }}</td>
-                {% if showLastResults %}<td>{{ row.old_res }}</td>{% endif %}
-                <td>{{ row.score }}</td>
-                <td>{{ max(row.score - row.shtraff, 0) }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-            </table>
+            {{ ratingTable|raw }}
         </div>
     </div>
 </div>
