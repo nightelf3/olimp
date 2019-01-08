@@ -1,0 +1,45 @@
+{{ header|raw }}
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('importPage') }}</h4>
+    </div>
+    <div class="content">
+        {% if users|length %}
+        <table class="table-bordered">
+            <thead>
+            <tr>
+                <td>{{ text('username') }}</td>
+                <td>{{ text('password') }}</td>
+                <td>{{ text('email') }}</td>
+                <td>{{ text('surname') }}</td>
+                <td>{{ text('name') }}</td>
+                <td>{{ text('phone') }}</td>
+                <td>{{ text('school') }}</td>
+                <td>{{ text('class') }}</td>
+                <td>{{ text('mulc') }}</td>
+                <td>{{ text('oldScore') }}</td>
+                <td>{{ text('score') }}</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.surname }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.school }}</td>
+                <td>{{ user.class }}</td>
+                <td>{{ user.mulc|default(0) }}</td>
+                <td>{{ user.oldScore|default(0) }}</td>
+                <td>{{ user.score|default(0) }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{{ footer|raw }}

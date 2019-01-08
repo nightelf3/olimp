@@ -14,6 +14,7 @@
     "pfbc/pfbc": "3.*",
     "twbs/bootstrap": "~3.3.6",
     "timhovius/bootstrap-material-design": "dev-master",
+    "phpoffice/phpexcel": "^1.8.2",
 
     "bower-asset/jquery-2.2.4": "2.2.4",
     "bower-asset/ckeditor": "4.3.*",
