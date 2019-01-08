@@ -92,7 +92,7 @@ class TaskController extends BaseController
         $task = TaskModel::select(['task_id'])->where([
             'user_id' => $userId,
             'is_enabled' => true
-        ])->first();
+        ])->orderBy('sort_order')->first();
         if (!is_null($task)) {
             return $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}"));
         }
