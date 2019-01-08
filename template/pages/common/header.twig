@@ -60,8 +60,12 @@
                     </button>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">{{ timer|raw }}</div>
-                    <div class="col-md-6 text-right">{{ userForm|raw }}</div>
+                    {% if timer is null and userForm is null %}
+                        <div class="col-xs-12 text-left navbar-brand-wrapper"><a class="navbar-brand" href="{{ href() }}">{{ text('logoString') }}</a></div>
+                    {% else %}
+                        <div class="col-md-6">{{ timer|raw }}</div>
+                        <div class="col-md-6 text-right">{{ userForm|raw }}</div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -34,12 +34,18 @@ abstract class BaseController
         $this->header['enableRegistration'] = SettingsHelper::param('enableRegistration', false);
         if (UserHelper::isAuthenticated()) {
             $this->header['js'][] = 'user-card.js';
+            $this->header['css'][] = 'timer.css';
+            $this->header['js'][] = 'timer.js';
+
             if (SettingsHelper::isOlimpInProgress()) {
-                $this->header['css'][] = 'timer.css';
-                $this->header['js'][] = 'timer.js';
                 $this->header['timer'] = TemplateHelper::render('components/timer', [
                     'olimpStart' => date("Y-m-d H:i:s", SettingsHelper::param('olimp_start', 0)),
                     'olimpContinuity' => SettingsHelper::param('olimp_duration', 0)
+                ]);
+            } else {
+                $this->header['timer'] = TemplateHelper::render('components/timer', [
+                    'olimpStart' => date("Y-m-d H:i:s", time()),
+                    'olimpContinuity' => SettingsHelper::param('olimp_start', 0) - time()
                 ]);
             }
 

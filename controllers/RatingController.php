@@ -91,7 +91,7 @@ class RatingController extends BaseController
             ) AS `queue`
             INNER JOIN `{$prefix}tasks` AS `tasks` ON `tasks`.`task_id` = `queue`.`task_id`
             RIGHT JOIN `{$prefix}users` AS `users` ON `queue`.`user_id` = `users`.`user_id`
-            ORDER BY `queue_id` IS NULL, `users`.`score` + `old_score_new` - `users`.`mulct` DESC, `queue_id` ASC
+            ORDER BY `queue_id` IS NULL, `users`.`score` + `old_score_new` - `users`.`mulct` DESC, `queue_id` ASC, `users`.`username`
         ";
         $db = Capsule::connection('default');
         $results = $db->select($db->raw($sql));

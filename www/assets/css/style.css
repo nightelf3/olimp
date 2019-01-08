@@ -51,6 +51,25 @@
     padding-left: 20px;
 }
 
+.navbar-brand-wrapper {
+    height: 74px;
+    padding: 0 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.navbar-brand-wrapper .navbar-brand {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0 !important;
+    height: auto;
+}
+
+
 .user-card {
     float: right;
     max-height: 74px;

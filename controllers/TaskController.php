@@ -35,14 +35,23 @@ class TaskController extends BaseController
 
         $userId = $request->param('user_id', 0);
         $this->data['userId'] = $userId;
+
         $tasks = TaskModel::select([ 'task_id', 'name' ])->where([
             'user_id' => $userId
         ])->orderBy('sort_order')->get();
+        $this->data['tasks'] = $tasks;
 
         /** @var TaskModel $task */
         $task = TaskModel::select([ 'task_id', 'task', 'is_enabled' ])->where([
             'user_id' => $userId
         ])->find($request->param('task_id', 0));
+
+        $this->data['taskTabs'] = TemplateHelper::render('components/task_tabs', [
+            'userId' => $userId,
+            'tasks' => $tasks,
+            'currentTask' => $task
+        ]);
+
         if (is_null($task)) {
             throw HttpException::createFromCode(404);
         } elseif (!$task->is_enabled) {
@@ -67,13 +76,7 @@ class TaskController extends BaseController
             $item['tests'] = $item['tests'] ? explode(',', $item['tests']) : [];
         }
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue, 'task' => $task ]);
-        $this->data['taskTabs'] = TemplateHelper::render('components/task_tabs', [
-            'userId' => $userId,
-            'tasks' => $tasks,
-            'currentTask' => $task
-        ]);
         $this->data['currentTask'] = $task;
-        $this->data['tasks'] = $tasks;
 
         return $fileUploaded ? $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}")) : $this->render('task');
     }
