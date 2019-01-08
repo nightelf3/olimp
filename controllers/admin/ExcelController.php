@@ -16,10 +16,9 @@ use models\UserModel;
 
 class ExcelController extends BaseAdminController
 {
-    public function index(Request $request, Response $response, ServiceProvider $service, App $app)
+    public function import(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        //TODO: add check
-        return '';
+        return 'TODO: add a proper check';
 
         $id = 0;
         $adminUser = UserModel::where('username', 'olimp')->first();
@@ -37,7 +36,7 @@ class ExcelController extends BaseAdminController
                 'mulct' => 0,
                 'old_score' => 0,
                 'is_enabled' => 1,
-                'live_update' => 0
+                'live_update' => 1
             ]);
         }
         $adminUser->password = $this->generateRandomString();

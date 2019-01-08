@@ -40,7 +40,7 @@ return [
     [['POST'], '/admin/task/[i:task_id]/tests', 'task#save', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
     [['GET'], '/admin/task/[i:task_id]/delete', 'task#delete', [ 'admin' => true ]],
 
-    [['GET'], '/admin/excel', 'excel#index', [ 'admin' => true ]],
+    [['GET'], '/admin/excel/import', 'excel#import', [ 'admin' => true ]],
 
     [['GET'], '/admin/queue', 'admin\checker#queue'],
 ];
