@@ -116,5 +116,6 @@
     "goBackToTask": "Повернутись назад до завдання",
     "liveUpdate": "Оновлювати інформацію в режимі реального часу",
     "importPage": "_importPageText",
-    "mulc": "_mulcText"
+    "mulc": "Штраф",
+    "enableRegistration": "Реєстрація/Відновлення паролю доступні"
 }

@@ -7,6 +7,7 @@
  */
 namespace controllers;
 
+use helpers\ErrorHelper;
 use helpers\MailHelper;
 use helpers\SessionHelper;
 use helpers\SettingsHelper;
@@ -23,6 +24,11 @@ class AccountController extends BaseController
 {
     public function registration(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        if (!SettingsHelper::param('enableRegistration', false)) {
+            ErrorHelper::assert(false, "Registration is disabled");
+            return $response->redirect(UrlHelper::href());
+        }
+
         $userData = [
             'backLink' => UrlHelper::href(),
             'submitText' => TemplateHelper::text('register')
@@ -54,6 +60,11 @@ class AccountController extends BaseController
 
     public function forgot(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        if (!SettingsHelper::param('enableRegistration', false)) {
+            ErrorHelper::assert(false, "Registration is disabled");
+            return $response->redirect(UrlHelper::href());
+        }
+
         if ($request->method('get')) {
             return $this->render('forgot/forgot');
         }

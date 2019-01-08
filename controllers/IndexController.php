@@ -29,7 +29,10 @@ class IndexController extends BaseController
         }
 
         if (!UserHelper::isAuthenticated()){
-            $this->data['loginForm'] = TemplateHelper::render('components/login', [ 'errors' => $errors ]);
+            $this->data['loginForm'] = TemplateHelper::render('components/login', [
+                'errors' => $errors,
+                'enableRegistration' => SettingsHelper::param('enableRegistration', false)
+            ]);
         }
 
         $this->data['indexContent'] = SettingsHelper::param('indexContent', '<p></p>');

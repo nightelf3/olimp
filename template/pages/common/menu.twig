@@ -16,6 +16,7 @@
                 </a>
             </li>
             {% if user is null %}
+                {% if enableRegistration %}
                 <li class="{{ getActive('/registration') }}">
                     <a href="{{ href('registration') }}">
                         <i class="ti-user"></i>
@@ -28,6 +29,7 @@
                         <p>{{ text('forgotMenu') }}</p>
                     </a>
                 </li>
+                {% endif %}
             {% else %}
                 <li class="{{ getActive('/task') }}">
                     <a href="{{ href('task') }}">

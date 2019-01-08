@@ -22,6 +22,7 @@
     </div>
 </form>
 
+{% if enableRegistration %}
 <div class="footer">
     <hr>
     <div class="row">
@@ -29,3 +30,4 @@
         <div class="col-xs-6 text-right"><a href="{{ href('registration') }}">{{ text('registrate') }}</a></div>
     </div>
 </div>
+{% endif %}

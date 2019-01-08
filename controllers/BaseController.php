@@ -31,6 +31,7 @@ abstract class BaseController
     protected function render($template)
     {
         $this->header['user'] = UserHelper::isAuthenticated() ? UserHelper::getUser() : null;
+        $this->header['enableRegistration'] = SettingsHelper::param('enableRegistration', false);
         if (UserHelper::isAuthenticated()) {
             $this->header['js'][] = 'user-card.js';
             if (SettingsHelper::isOlimpInProgress()) {
