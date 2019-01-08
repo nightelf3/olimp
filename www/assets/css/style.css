@@ -41,24 +41,6 @@
     }
 }
 
-.navbar-brand-wrapper {
-    height: 74px;
-    padding: 0 15px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.navbar-brand-wrapper .navbar-brand {
-    display: inline-block;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 1.5;
-    padding: 0;
-    margin: 0 !important;
-    height: auto;
-}
-
 .vertical-middle {
     display: inline-block;
     vertical-align: middle;
@@ -73,6 +55,10 @@
     float: right;
     max-height: 74px;
     width: 100%;
+}
+
+.user-card .user-info {
+    max-width: 220px;
 }
 
 .user-card .card {
