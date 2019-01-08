@@ -50,7 +50,7 @@ abstract class BaseController
         $this->data['header'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/header', $this->header);
         $this->data['footer'] = TemplateHelper::render($this::ROOT_FOLDER . '/common/footer', [
             'JSSettings' => [
-                'liveUpdate' => UserHelper::getUser()->live_update
+                'liveUpdate' => UserHelper::isAuthenticated() ? UserHelper::getUser()->live_update : false
             ]
         ]);
 
