@@ -1,0 +1,41 @@
+<form id="FormText" method="post" action="{{ href("admin/task/#{task.task_id}") }}">
+	<textarea class="ckeditor" rows="40" cols="45" name="task[task]">{{ task.task|raw }}</textarea>
+    <table width="100%" class="sysinfo">
+        <tr>
+            <td nowrap>{{ text('taskName') }}</td>
+            <td width="100%"><input type="text" name="task[name]" value="{{ task.name|default("Task #{task.task_id}") }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('taskMaxScore') }}</td>
+            <td width="100%"><input type="number" min="0" name="task[max_score]" value="{{ task.max_score|default(100) }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('taskMulc') }}</td>
+            <td width="100%"><input type="number" min="0" name="task[mulct]" value="{{ task.mulct|default(0) }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('taskMaxTime') }}</td>
+            <td width="100%"><input type="number" min="100" name="task[time_limit]" value="{{ task.time_limit|default(100) }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('taskMaxMemory') }}</td>
+            <td width="100%"><input type="number" min="1" name="task[memory_limit]" value="{{ task.memory_limit|default(1024) }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('taskSortOrder') }}</td>
+            <td width="100%"><input type="number" name="task[sort_order]" value="{{ task.sort_order|default(0) }}" required /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="100%">
+                <div class="checkbox">
+                    <input type="checkbox" id="is-task-enabled-checkbox" name="task[is_enabled]" value="1" {{ task.is_enabled|default(0) ? "checked" : "" }} />
+                    <label for="is-task-enabled-checkbox">{{ text('taskEnabled') }}</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" class="btn btn-info btn-fill btn-wd" id="save-task" name="task[submit]" value="{{ text('save') }}" /></td>
+        </tr>
+    </table>
+</form>

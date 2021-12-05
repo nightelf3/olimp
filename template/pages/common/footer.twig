@@ -12,7 +12,7 @@
     App = typeof App == 'undefined' ? {} : App;
     App.page = typeof App.page == 'undefined' ? {} : App.page;
     {% for key, value in JSSettings %}
-        App.page.{{ key }} = {{ value }};
+        App.page.{{ key }} = 0;
     {% endfor %}
 </script>
 

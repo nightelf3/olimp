@@ -10,9 +10,9 @@ $(function () {
             olimpContinuity: 0,
 
             timer: function() {
+                //TODO: get amount from the server to avoid local conflicts
                 var dateNow = new Date();
                 var amount = App.page.timer.olimpStart.getTime() + App.page.timer.olimpContinuity - dateNow.getTime();
-                console.log(App.page.timer.olimpStart, App.page.timer.olimpContinuity, dateNow.getTime(), amount);
                 var hours1 = 0,
                     hours2 = 0,
                     mins1 = 0,

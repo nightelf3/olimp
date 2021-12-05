@@ -1,0 +1,18 @@
+<form method="post" id="tests-form" action="{{ href("admin/task/#{task.task_id}/tests") }}">
+    <input type="hidden" name="task[tests_count]" id="tests-count" value="{{ task.num }}" />
+    <table width="100%">
+        <tr>
+            <td width="50%" align="center">{{ text('testInput') }}</td>
+            <td width="50%" align="center">{{ text('testOutput') }}</td>
+        </tr>
+        <tr>
+            <td width="50%">
+                <textarea name="task[input]" id="tests-input" wrap="off">{{ task.input }}</textarea>
+            </td>
+            <td width="50%">
+                <textarea name="task[output]" id="tests-output" wrap="off">{{ task.output }}</textarea>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" class="btn btn-info btn-fill btn-wd" id="save-task" value="{{ text('save') }}" />
+</form>

@@ -1,0 +1,6 @@
+<tr id="task-tabs">
+    {% for task in tasks %}
+        <td class="tabs-link{% if task.task_id == currentTask.task_id %} active{% endif %}" style="background-color:{{ tabTaskColor(task.getStatus(), task.task_id == currentTask.task_id) }};" width="{{ 100 / tasks|length }}%" onClick="location.href='{{ href("task/#{userId}/#{task.task_id}") }}'">{{ task.name }}</td>
+        {% if false == loop.last %}<td width="1"></td>{% endif %}
+    {% endfor %}
+</tr>

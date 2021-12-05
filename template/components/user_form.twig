@@ -1,0 +1,81 @@
+<form method="post" class="userform">
+    <div class="form-group">
+        <label for="userform-username">{{ text('username') }}</label>
+        <input type="text" id="userform-username" class="form-control border-input" name="username" value="{{ form.username }}" {% if updateOnly %}disabled{% else %}required{% endif %} />
+        {% if false == updateOnly and (errors.username or errors.usernameExists) %}
+        <div class="alert alert-danger">
+            {% if errors.username %}{{ text('incorrect-username') }}<br />{% endif %}
+            {% if errors.usernameExists %}{{ text('username-exists') }}<br />{% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-password">{{ text('password') }}</label>
+        <input type="password" id="userform-password" class="form-control border-input" name="password" value="{% if false == updateOnly %}{{ form.password }}{% endif %}"{% if false == updateOnly %} required{% endif %} />
+        {% if errors.password %}<div class="alert alert-danger">{{ text('incorrect-password') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-password2">{{ text('password2') }}</label>
+        <input type="password" id="userform-password2" class="form-control border-input" name="password2" value="{% if false == updateOnly %}{{ form.password2 }}{% endif %}"{% if false == updateOnly %} required{% endif %} />
+        {% if errors.password2 %}<div class="alert alert-danger">{{ text('incorrect-password2') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-email">{{ text('email') }}</label>
+        <input type="email" id="userform-email" class="form-control border-input" name="email" value="{{ form.email }}" {% if updateOnly %}disabled{% else %}required{% endif %} />
+        {% if false == updateOnly and (errors.email or errors.emailExists) %}
+        <div class="alert alert-danger">
+            {% if errors.email %}{{ text('incorrect-email') }}<br />{% endif %}
+            {% if errors.emailExists %}{{ text('email-exists') }}<br />{% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-surname">{{ text('surname') }}</label>
+        <input type="text" id="userform-surname" class="form-control border-input" name="surname" value="{{ form.surname }}" required />
+        {% if errors.surname %}<div class="alert alert-danger">{{ text('incorrect-surname') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-name">{{ text('name') }}</label>
+        <input type="text" id="userform-name" class="form-control border-input" name="name" value="{{ form.name }}" required />
+        {% if errors.name %}<div class="alert alert-danger">{{ text('incorrect-name') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-phone">{{ text('phone') }}</label>
+        <input type="tel" id="userform-phone" class="form-control border-input" name="phone" value="{{ form.phone }}" required />
+        {% if errors.phone %}<div class="alert alert-danger">{{ text('incorrect-phone') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-school">{{ text('school') }}</label>
+        <input type="text" id="userform-school" class="form-control border-input" name="school" value="{{ form.school }}" required />
+        {% if errors.school %}<div class="alert alert-danger">{{ text('incorrect-school') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="userform-class">{{ text('class') }}</label>
+        <input type="text" id="userform-class" class="form-control border-input" name="class" value="{{ form.class }}" required />
+        {% if errors.class %}<div class="alert alert-danger">{{ text('incorrect-class') }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <input type="checkbox" id="userform-live-update" name="live_update" value="1"{% if form.live_update %} checked{% endif %}/>
+            <label for="userform-live-update">{{ text('liveUpdate') }}</label>
+        </div>
+    </div>
+
+    {# TODO: add captcha #}
+    {#<div class="form-group">
+		<div class="g-recaptcha" data-sitekey="6Le9N0EUAAAAAFj-ykexsDLz0MzjMVd3q8gXM6UM"></div>
+    </div>#}
+
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-info btn-fill btn-wd">{{ submitText }}</button>
+    </div>
+</form>

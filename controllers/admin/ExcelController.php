@@ -7,19 +7,24 @@
  */
 namespace controllers\admin;
 
+use helpers\RatingHelper;
+use helpers\SessionHelper;
+use helpers\TemplateHelper;
 use helpers\UrlHelper;
+use helpers\UserHelper;
+use Illuminate\Contracts\Session\Session;
 use Klein\App;
 use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
+use models\QueueModel;
+use models\TaskModel;
 use models\UserModel;
 
 class ExcelController extends BaseAdminController
 {
     public function import(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        return 'TODO: add a proper check';
-
         $id = 0;
         $adminUser = UserModel::where('username', 'olimp')->first();
         if (!$adminUser)
@@ -72,6 +77,158 @@ class ExcelController extends BaseAdminController
             }
         }
         return $this->render('import');
+    }
+
+    public function results(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        // create a PHPExcel object
+        $objPHPExcel = new \PHPExcel();
+
+        // get tasks and order them
+        $tasks = TaskModel::where([
+            'user_id' => UserHelper::getUser()->user_id
+        ])->orderBy('sort_order')->get();
+
+        // get rating table
+        $rating = RatingHelper::generate(UserHelper::getUser()->user_id, $tasks);
+
+        // get classes and create a sheet for each of them
+        $classes = UserModel::distinct('class')->orderByRaw('ABS(class) ASC')->select([ 'class' ])->get();
+        while (count($classes) > $objPHPExcel->getSheetCount()) {
+            $objPHPExcel->createSheet();
+        }
+
+        $sheetNum = 0;
+        foreach ($classes as $class) {
+            $objPHPExcel->setActiveSheetIndex($sheetNum++);
+            $sheet = $objPHPExcel->getActiveSheet();
+
+            $col = 'A';
+            $row = 1;
+
+            $sheet->setTitle("{$class->class} клас");
+            $sheet->SetCellValue($col++.$row, '#');
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('fullname'));
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('school'));
+            foreach ($tasks as $task) {
+                $sheet->SetCellValue($col++.$row, $task->name);
+            }
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('mulct'));
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('score'));
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('result'));
+
+            foreach ($rating as $line) {
+                if ($line['class'] != $class->class) {
+                    continue;
+                }
+
+                $col = 'A';
+                $row++;
+                $sheet->SetCellValue($col++.$row, $row - 1);
+                $sheet->SetCellValue($col++.$row, str_replace('&nbsp;', ' ', $line['name']));
+                $sheet->SetCellValue($col++.$row, $line['school']);
+                foreach ($tasks as $task) {
+                    $curTask = $line['tasks'][$task->task_id];
+                    $sheet->SetCellValue($col++.$row, '-' == $curTask['ok'] ? '-' : (isset($_GET['percents']) ? $curTask['ok'] : substr($curTask['ok'], 0, -1)) . (isset($_GET['try']) ? " ({$curTask['try']})" : ''));
+                }
+                $sheet->SetCellValue($col++.$row, $line['shtraff']);
+                $sheet->SetCellValue($col++.$row, $line['score']);
+                $sheet->SetCellValue($col++.$row, max($line['score'] - $line['shtraff'], 0));
+            }
+        }
+
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="results.xls"');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    public function _results(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        // create a PHPExcel object
+        $objPHPExcel = new \PHPExcel();
+
+        // get classes and create a sheet for each of them
+        $classes = UserModel::distinct('class')->select([ 'class' ])->get();
+        while (count($classes) > $objPHPExcel->getSheetCount()) {
+            $objPHPExcel->createSheet();
+        }
+
+        // get enabled tasks by sort_order
+        $tasks = TaskModel::where([
+            'user_id' => UserHelper::getUser()->user_id,
+            'is_enabled' => 1
+        ])->orderBy('sort_order')->get();
+
+        $sheetNum = 0;
+        foreach ($classes as $class) {
+            $objPHPExcel->setActiveSheetIndex($sheetNum++);
+            $sheet = $objPHPExcel->getActiveSheet();
+
+            $col = 'A';
+            $row = 1;
+
+            $sheet->setTitle("{$class->class} клас");
+            $sheet->SetCellValue($col++.$row, '#');
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('fullname'));
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('school'));
+            foreach ($tasks as $task) {
+                $sheet->SetCellValue($col++.$row, $task->name);
+            }
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('mulct'));
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('score'));
+            $sheet->SetCellValue($col++.$row, TemplateHelper::text('result'));
+
+            $users = UserModel::where('class', $class->class)->get();
+            foreach ($users as $user) {
+                /** @var UserModel $user */
+                $col = 'A';
+                $row++;
+                $sheet->SetCellValue($col++.$row, $row - 1);
+                $sheet->SetCellValue($col++.$row, "{$user->surname} {$user->name}");
+                $sheet->SetCellValue($col++.$row, $user->school);
+
+                foreach ($tasks as $task) {
+                    /** @var TaskModel $task */
+
+                    /** @var QueueModel $item */
+                    $item = QueueModel::where([
+                        'user_id' => $user->user_id,
+                        'task_id' => $task->task_id
+                    ])->orderBy('queue_id', 'desc')->first();
+
+                    $score = 0;
+                    if (is_null($item)) {
+                        $score = 0;
+                    } elseif ($item->stan == '9') {
+                        $score = $task->max_score;
+                    } elseif ($item->stan != '3' && $item->stan != '10') {
+                        $score = round(((int)$task->tests_count - count(explode(',', $item->stan))) / ((float)$task->tests_count) * (int)$task->max_score);
+                    }
+
+                    $str = "{$score}";
+                    if (isset($_GET['count'])) {
+                        $count = QueueModel::where([
+                            'user_id' => $user->user_id,
+                            'task_id' => $task->task_id
+                        ])->whereNotIn('stan', ['3', '9'])->count();
+                        $str .= " ($count)";
+                    }
+                    $sheet->SetCellValue($col++.$row, $str);
+                }
+
+                $sheet->SetCellValue($col++.$row, $user->mulct);
+                $sheet->SetCellValue($col++.$row, $user->score);
+                $sheet->SetCellValue($col++.$row, max($user->score - $user->mulct, 0));
+            }
+        }
+
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="results.xls"');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
     }
 
     private function zerofill($num, $zerofill = 5)

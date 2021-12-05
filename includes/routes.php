@@ -41,6 +41,7 @@ return [
     [['GET'], '/admin/task/[i:task_id]/delete', 'task#delete', [ 'admin' => true ]],
 
     [['GET'], '/admin/excel/import', 'excel#import', [ 'admin' => true ]],
+    [['GET'], '/admin/excel/results', 'excel#results', [ 'admin' => true ]],
 
     [['GET'], '/admin/queue', 'admin\checker#queue'],
 ];

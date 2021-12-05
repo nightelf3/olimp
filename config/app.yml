@@ -1,4 +1,4 @@
-site_url: http://192.168.0.200
+site_url: http://olimp-fmi
 env: dev
 
 database:
@@ -6,7 +6,7 @@ database:
   host: localhost
   database: olimp_db
   username: root
-  password: root
+  password:
   port: 3306
   charset: utf8
   collation: utf8_unicode_ci

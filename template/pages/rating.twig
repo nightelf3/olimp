@@ -4,9 +4,13 @@
         <h4 class="title">{{ text('ratingTable') }}</h4>
     </div>
     <div class="content rating-content">
+        {% if ratingTable %}
         <div class="table-responsive table-full-width">
             {{ ratingTable|raw }}
         </div>
+        {% else %}
+        <div class="alert alert-danger">{{ text('ratingClosed') }}</div>
+        {% endif %}
     </div>
 </div>
 {{ footer|raw }}

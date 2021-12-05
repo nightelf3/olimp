@@ -1,0 +1,22 @@
+<div id="timerbox">
+    <div class="timerbox-num" style="">
+        <div id="timerbox-hours1" class="timerbox-field"></div>
+        <div id="timerbox-hours2" class="timerbox-field"></div>
+    </div>
+    <div class="timerbox-space"></div>
+    <div class="timerbox-num" style="">
+        <div id="timerbox-mins1" class="timerbox-field"></div>
+        <div id="timerbox-mins2" class="timerbox-field"></div>
+    </div>
+    <div class="timerbox-space"></div>
+    <div class="timerbox-num" style="width: 103px;">
+        <div id="timerbox-secs1" class="timerbox-field"></div>
+        <div id="timerbox-secs2" class="timerbox-field"></div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        App.page.timer.init("{{ olimpStart }}", {{ olimpContinuity }});
+    });
+</script>

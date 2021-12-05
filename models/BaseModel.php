@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static BaseModel whereRaw(string $field, array $_ = [])
  * @method static BaseModel whereIn(array $_ = [])
  * @method static BaseModel whereNotNull(array $_ = [])
+ * @method static BaseModel whereNotIn(string $field, array $parameters)
  * @method static BaseModel orWhere(array $_ = [])
  * @method static BaseModel groupBy(string $field)
  * @method static BaseModel orderBy(string $field, string $sortType = 'asc')
