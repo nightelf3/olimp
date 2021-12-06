@@ -15,6 +15,9 @@ $(function () {
                         });
                     }, 2500);
                 }
+                
+                var div = document.getElementById("comments");
+                div.scrollTop = div.scrollHeight - div.clientHeight;
             }
         };
 

@@ -17,6 +17,7 @@ use Klein\Exceptions\HttpException;
 use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
+use models\CommentModel;
 use models\CompilationErrorModel;
 use models\CompilerModel;
 use models\QueueModel;
@@ -60,10 +61,10 @@ class TaskController extends BaseController
             return $this->render('task');
         }
 
-        $fileUploaded = false;
+        $redirect = false;
         if (SettingsHelper::isOlimpInProgress()) {
             $errors = $this->uploadFile($request);
-            $fileUploaded = $request->files()->count() == 1 && empty($errors);
+            $redirect = $request->files()->count() == 1 && empty($errors);
             $this->data['uploadForm'] = TemplateHelper::render('components/upload', [
                 'error' => $errors,
                 'task_id' => $task->task_id
@@ -77,8 +78,27 @@ class TaskController extends BaseController
         }
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue, 'task' => $task ]);
         $this->data['currentTask'] = $task;
+        
+        if ($request->param('comment-submit')) {
+            CommentModel::create([
+                'user_id' => $userId,
+                'task_id' => $task->task_id,
+                'text' => $request->param('comment', '')
+            ]);
+            $redirect = true;
+        }
 
-        return $fileUploaded ? $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}")) : $this->render('task');
+        $comments = [];
+        foreach (CommentModel::where([ 'user_id' => $userId, 'task_id' => $task->task_id ])->get() as $comment) {
+            $comments[] = [
+                'user' => UserHelper::getUser()->username,
+                'date' => $comment->created_at,
+                'text' => $comment->text
+            ];
+        }
+        $this->data['commentsForm'] = TemplateHelper::render('components/comments', [ 'comments' => $comments ]);
+
+        return $redirect ? $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}")) : $this->render('task');
     }
 
     public function task(Request $request, Response $response, ServiceProvider $service, App $app)

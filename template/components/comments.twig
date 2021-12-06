@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('commentsFormTitle') }}</h4>
+    </div>
+    <div class="content">
+        <ul class="list-unstyled team-members" id="comments">
+            {% for comment in comments %}
+            <li>
+                    <div class="comment-header text-primary">{{ comment.user }} <small class="text-muted comment-date">{{ comment.date }}</small></div>
+                    <div class="comment-body">{{ comment.text }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <form method="post">
+            <div class="form-group text-center">
+                <textarea name="comment" rows="3" class="form-control border-input" placeholder="{{ text('commentPlaceholder') }}" required></textarea>
+            </div>
+            <div class="form-group text-right">
+                <input type="submit" name="comment-submit" class="btn btn-info btn-fill btn-wd" value="{{ text('commentSend') }}" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div align="center"></div>

@@ -28,6 +28,25 @@
     bottom: 10px;
 }
 
+.team-members {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.comment-header {
+    margin-bottom: 5px;
+}
+
+.comment-body {
+}
+
+.comment-date {
+    display: inline-block;
+    padding-right: 5px;
+    float: right;
+    color: #9A9A9A;
+}
+
 @media screen and (max-width:991px) {
     .navbar-header > .row > div {
         text-align: center;

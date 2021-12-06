@@ -118,5 +118,8 @@
     "importPage": "_importPageText",
     "mulc": "Штраф",
     "enableRegistration": "Реєстрація\/Відновлення паролю доступні",
-    "ratingClosed": "Рейтинг закритий на поточному етапі олімпіади."
+    "ratingClosed": "Рейтинг закритий на поточному етапі олімпіади.",
+    "commentsFormTitle": "Обговорення",
+    "commentSend": "Відправити",
+    "commentPlaceholder": "Опишіть проблему із задачею"
 }
