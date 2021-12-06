@@ -40,6 +40,8 @@ return [
     [['POST'], '/admin/task/[i:task_id]/tests', 'task#save', [ 'admin' => true, 'optional' => [ 'tests' => true ] ]],
     [['GET'], '/admin/task/[i:task_id]/delete', 'task#delete', [ 'admin' => true ]],
 
+    [['GET'], '/admin/comments', 'comments#index', [ 'admin' => true ]],
+
     [['GET'], '/admin/excel/import', 'excel#import', [ 'admin' => true ]],
     [['GET'], '/admin/excel/results', 'excel#results', [ 'admin' => true ]],
 

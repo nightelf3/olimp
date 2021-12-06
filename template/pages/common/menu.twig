@@ -71,6 +71,12 @@
                         <p>{{ text('adminMenuTasks') }}</p>
                     </a>
                 </li>
+                <li class="{{ getActive('/admin/comments') }}">
+                    <a href="{{ href('admin/comments') }}">
+                        <i class="ti-comments"></i>
+                        <p>{{ text('adminMenuComments') }}</p>
+                    </a>
+                </li>
                 <li class="{{ getActive('/admin/sysinfo') }}">
                     <a href="{{ href('admin/sysinfo') }}">
                         <i class="ti-settings"></i>
