@@ -13,7 +13,7 @@
                         <td id="task-{{ task.task_id }}" class="tabsLink" width="{{ 97 / tasks|length }}%">
                             <table width="100%">
                                 <tr>
-                                    <td width="100%" class="tab-header" onClick="location.href = '{{ href("admin/task/#{task.task_id}") }}'">{{ task.name }}</td>
+                                    <td class="tab-header" onClick="location.href = '{{ href("admin/task/#{task.task_id}") }}'">{{ task.name }}</td>
                                     <td width="15" align="right" nowrap><img src="/assets/img/icons/edit.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/tests") }}'" width="100%" /></td>
                                     <td width="15" align="right" nowrap><img src="/assets/img/icons/delete.png" onClick="location.href = '{{ href("admin/task/#{task.task_id}/delete") }}'" width="100%" /></td>
                                 </tr>

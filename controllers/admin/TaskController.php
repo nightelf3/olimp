@@ -85,6 +85,10 @@ class TaskController extends BaseAdminController
     {
         $this->task = TaskModel::create([
             'name' => TemplateHelper::text('taskDefault'),
+            'task' => TemplateHelper::text('taskDefault'),
+            'input' => '',
+            'output' => '',
+            'tests_count' => 0,
             'time_limit' => 100,
             'memory_limit' => 10,
             'max_score' => 100,
