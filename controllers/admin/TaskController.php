@@ -49,7 +49,7 @@ class TaskController extends BaseAdminController
     public function get(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if (is_null($this->task)) {
-            ErrorHelper::assert("Can't find task #{$this->task->task_id}");
+            ErrorHelper::assert("Can't find task");
             return $response->redirect(UrlHelper::href('admin'));
         }
 
@@ -66,7 +66,7 @@ class TaskController extends BaseAdminController
     public function save(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if (is_null($this->task)) {
-            ErrorHelper::assert("Can't find task #{$this->task->task_id}");
+            ErrorHelper::assert("Can't find task");
             return $response->redirect(UrlHelper::href('admin'));
         }
 
@@ -101,7 +101,7 @@ class TaskController extends BaseAdminController
     public function delete(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if (is_null($this->task)) {
-            ErrorHelper::assert("Can't find task #{$this->task->task_id}");
+            ErrorHelper::assert("Can't find task");
             return $response->redirect(UrlHelper::href('admin'));
         }
         $this->task->delete();
