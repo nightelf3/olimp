@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4 class="title">{{ text('commentsFormTitle') }}</h4>
+        <h4 class="title">{{ header|default(text('commentsFormTitle')) }}</h4>
     </div>
     <div class="content">
         <ul class="list-unstyled team-members" id="comments">
@@ -13,6 +13,7 @@
         </ul>
 
         <form method="post">
+            <input type="hidden" name="user-id" value="{{ user_id }}" />
             <div class="form-group text-center">
                 <textarea name="comment" rows="3" class="form-control border-input" placeholder="{{ text('commentPlaceholder') }}" required></textarea>
             </div>
@@ -22,5 +23,3 @@
         </form>
     </div>
 </div>
-
-<div align="center"></div>

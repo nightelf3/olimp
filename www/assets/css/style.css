@@ -47,6 +47,32 @@
     color: #9A9A9A;
 }
 
+.tasks-switcher .task-card-holder {
+    padding: 0 15px;
+}
+
+.tasks-switcher .task-card-holder:last-child {
+    padding-right: 0;
+}
+
+.tasks-switcher .task-card-holder:first-child {
+    padding-left: 0;
+}
+
+.tasks-switcher .task-card-holder .card {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+.tasks-switcher .task-card-holder .card.active {
+    background-color: #9A9A9A;
+}
+
+.tasks-switcher .task-card-holder .card.active .title {
+    color: #fff;
+}
+
+
 @media screen and (max-width:991px) {
     .navbar-header > .row > div {
         text-align: center;

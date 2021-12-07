@@ -40,8 +40,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class BaseModel extends Model
 {
-    protected $table = 'users';
-    protected $primaryKey = 'user_id';
     public $timestamps = false;
 
     public function toArray($defaultArray = [])

@@ -122,5 +122,6 @@
     "ratingClosed": "Рейтинг закритий на поточному етапі олімпіади.",
     "commentsFormTitle": "Обговорення",
     "commentSend": "Відправити",
-    "commentPlaceholder": "Опишіть проблему із задачею"
+    "commentPlaceholder": "Опишіть проблему із задачею",
+    "commentsEmpty": "Обговорення пусті"
 }
