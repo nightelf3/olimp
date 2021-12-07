@@ -31,22 +31,43 @@ class TaskController extends BaseController
         if (!SettingsHelper::isOlimpStarts() && !UserHelper::isAdmin()) {
             return $response->redirect(UrlHelper::href('task'));
         }
+        
+        $userId = $request->param('user_id', 0);
+        
+        /** @var TaskModel $task */
+        $task = TaskModel::select([ 'task_id', 'task', 'is_enabled' ])->where([
+            'user_id' => $userId
+        ])->find($request->param('task_id', 0));
+        
+        if (SettingsHelper::isOlimpInProgress()) {
+            $errors = $this->uploadFile($request);
+            if ($request->files()->count() == 1 && empty($errors)) {
+                return $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}"));
+            }
+            $this->data['uploadForm'] = TemplateHelper::render('components/upload', [
+                'error' => $errors,
+                'task_id' => $task->task_id
+            ]);
+        }
+        
+        if ($request->param('comment_submit')) {
+            CommentModel::create([
+                'user_id' => UserHelper::getUser()->user_id,
+                'task_id' => $task->task_id,
+                'text' => $request->param('comment', '')
+            ]);
+            return $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}"));
+        }
 
         $this->header['js'][] = 'task.js';
 
-        $userId = $request->param('user_id', 0);
-        $this->data['userId'] = $userId;
 
         $tasks = TaskModel::select([ 'task_id', 'name' ])->where([
             'user_id' => $userId
         ])->orderBy('sort_order')->get();
         $this->data['tasks'] = $tasks;
 
-        /** @var TaskModel $task */
-        $task = TaskModel::select([ 'task_id', 'task', 'is_enabled' ])->where([
-            'user_id' => $userId
-        ])->find($request->param('task_id', 0));
-
+        $this->data['userId'] = $userId;
         $this->data['taskTabs'] = TemplateHelper::render('components/task_tabs', [
             'userId' => $userId,
             'tasks' => $tasks,
@@ -61,16 +82,6 @@ class TaskController extends BaseController
             return $this->render('task');
         }
 
-        $redirect = false;
-        if (SettingsHelper::isOlimpInProgress()) {
-            $errors = $this->uploadFile($request);
-            $redirect = $request->files()->count() == 1 && empty($errors);
-            $this->data['uploadForm'] = TemplateHelper::render('components/upload', [
-                'error' => $errors,
-                'task_id' => $task->task_id
-            ]);
-        }
-
         $queue = UserHelper::getUser()->getQueue($task->task_id)->toArray();
         foreach ($queue as &$item) {
             $item['stan'] = explode(',', $item['stan']);
@@ -78,18 +89,13 @@ class TaskController extends BaseController
         }
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue, 'task' => $task ]);
         $this->data['currentTask'] = $task;
-        
-        if ($request->param('comment-submit')) {
-            CommentModel::create([
-                'user_id' => UserHelper::getUser()->user_id,
-                'task_id' => $task->task_id,
-                'text' => $request->param('comment', '')
-            ]);
-            $redirect = true;
-        }
 
         $comments = [];
-        foreach (CommentModel::where([ 'user_id' => UserHelper::getUser()->user_id, 'task_id' => $task->task_id ])->orderBy('comment_id', 'ASC')->get() as $comment) {
+        $commentsData = CommentModel::where([
+            'user_id' => UserHelper::getUser()->user_id,
+            'task_id' => $task->task_id
+        ])->orderBy('comment_id', 'ASC')->get();
+        foreach ($commentsData as $comment) {
             $comments[] = [
                 'user' => UserHelper::getUser()->username,
                 'date' => $comment->created_at,
@@ -98,7 +104,7 @@ class TaskController extends BaseController
         }
         $this->data['commentsForm'] = TemplateHelper::render('components/comments', [ 'comments' => $comments ]);
 
-        return $redirect ? $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}")) : $this->render('task');
+        return $this->render('task');
     }
 
     public function task(Request $request, Response $response, ServiceProvider $service, App $app)

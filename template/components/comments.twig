@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card{% if comments and comments|last.user_id == admin_id %} answered{% endif %}">
     <div class="header">
         <h4 class="title">{{ header|default(text('commentsFormTitle')) }}</h4>
     </div>
@@ -13,12 +13,12 @@
         </ul>
 
         <form method="post">
-            <input type="hidden" name="user-id" value="{{ user_id }}" />
+            <input type="hidden" name="user_id" value="{{ user_id }}" />
             <div class="form-group text-center">
                 <textarea name="comment" rows="3" class="form-control border-input" placeholder="{{ text('commentPlaceholder') }}" required></textarea>
             </div>
             <div class="form-group text-right">
-                <input type="submit" name="comment-submit" class="btn btn-info btn-fill btn-wd" value="{{ text('commentSend') }}" />
+                <input type="submit" name="comment_submit" class="btn btn-info btn-fill btn-wd" value="{{ text('commentSend') }}" />
             </div>
         </form>
     </div>

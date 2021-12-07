@@ -13,7 +13,9 @@
 
 {% if comments %}
 {% for comment in comments %}
+<div class="comments-holder">
     {{ comment|raw }}
+</div>
 {% endfor %}
 {% else %}
 <div class="card">

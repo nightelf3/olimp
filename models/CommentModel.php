@@ -20,4 +20,14 @@ class CommentModel extends BaseModel
     protected $table = 'comments';
     protected $primaryKey = 'comment_id';
     protected $fillable = [ 'user_id', 'task_id', 'text' ];
+
+    /**
+     * Get user from
+     *
+     * @return UserModel
+     */
+    public function user()
+    {
+        return $this->hasOne(UserModel::class, 'user_id', 'user_id');
+    }
 }

@@ -64,12 +64,17 @@
     text-align: center;
     cursor: pointer;
 }
+
 .tasks-switcher .task-card-holder .card.active {
     background-color: #9A9A9A;
 }
 
 .tasks-switcher .task-card-holder .card.active .title {
     color: #fff;
+}
+
+.comments-holder .card.answered {
+    opacity: 0.6;
 }
 
 
