@@ -111,12 +111,12 @@
     "taskEnabled": "Завдання активне",
     "task-is-not-enabled": "Завдання не активне на поточному етапі олімпіади. Виберіть, будь ласка, інше завдання.",
     "olimpEnabled": "Олімпіада активна",
-    "olimpCheckerPassword": "Пароль для Olimp-Checker:",
-    "olimpCheckerLogin": "Логін для Olimp-Checker:",
+    "olimpCheckerPassword": "Пароль:",
+    "olimpCheckerLogin": "Логін:",
     "useLastResults": "Використовувати попередні результати",
     "goBackToTask": "Повернутись назад до завдання",
     "liveUpdate": "Оновлювати інформацію в режимі реального часу",
-    "importPage": "_importPageText",
+    "importPage": "Імпорт",
     "mulc": "Штраф",
     "enableRegistration": "Реєстрація\/Відновлення паролю доступні",
     "ratingClosed": "Рейтинг закритий на поточному етапі олімпіади.",
@@ -125,5 +125,7 @@
     "commentPlaceholder": "Опишіть проблему із задачею",
     "commentsEmpty": "Обговорення пусті",
     "enableComments": "Увімкнути обговорення",
-    "enable_rating": "Увімкнути рейтинг"
+    "enable_rating": "Увімкнути рейтинг",
+    "systemComponents": "Управління компонентами",
+    "systemInfo": "Дані для Olimp-Checker"
 }

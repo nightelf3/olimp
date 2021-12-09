@@ -1,5 +1,6 @@
 {{ header|raw }}
 <input type="hidden" id="admin-sysinfo" />
+
 <div class="card">
     <div class="header">
         <h4 class="title">{{ text('systemSettings') }}</h4>
@@ -9,50 +10,20 @@
             <form method="post" action="{{ href('admin/sysinfo/settings') }}">
                 <table class="padding-table full-width">
                     <tr>
-                        <td width="1%" nowrap>{{ text('olimpCheckerLogin') }}</td>
-                        <td>{{ settings.olimpCheckerLogin }}</td>
-                    </tr>
-                    <tr>
-                        <td width="1%" nowrap>{{ text('olimpCheckerPassword') }}</td>
-                        <td>{{ settings.olimpCheckerPassword }}</td>
-                    </tr>
-                    <tr>
                         <td colspan="2">
                             <div class="checkbox">
-                                <input type="checkbox" id="is-use-last-results-checkbox" name="settings[useLastResults]" value="1" {{ settings.useLastResults|default(0) ? "checked" : "" }} />
-                                <label for="is-use-last-results-checkbox">{{ text('useLastResults') }}</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="checkbox">
-                                <input type="checkbox" id="is-use-last-results-checkbox" name="settings[enableRegistration]" value="1" {{ settings.enableRegistration|default(0) ? "checked" : "" }} />
-                                <label for="is-enable-registration-checkbox">{{ text('enableRegistration') }}</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="checkbox">
-                                <input type="checkbox" id="is-use-last-results-checkbox" name="settings[enable_comments]" value="1" {{ settings.enable_comments|default(0) ? "checked" : "" }} />
-                                <label for="is-enable-registration-checkbox">{{ text('enableComments') }}</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="checkbox">
-                                <input type="checkbox" id="is-use-last-results-checkbox" name="settings[enable_rating]" value="1" {{ settings.enable_rating|default(0) ? "checked" : "" }} />
-                                <label for="is-enable-registration-checkbox">{{ text('enable_rating') }}</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="checkbox">
+                                <input type="hidden" name="settings[is_enabled]" value="0" />
                                 <input type="checkbox" id="is-olimp-enabled-checkbox" name="settings[is_enabled]" value="1" {{ settings.is_enabled|default(0) ? "checked" : "" }} />
                                 <label for="is-olimp-enabled-checkbox">{{ text('olimpEnabled') }}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="checkbox">
+                                <input type="hidden" name="settings[useLastResults]" value="0" />
+                                <input type="checkbox" id="is-use-last-results-checkbox" name="settings[useLastResults]" value="1" {{ settings.useLastResults|default(0) ? "checked" : "" }} />
+                                <label for="is-use-last-results-checkbox">{{ text('useLastResults') }}</label>
                             </div>
                         </td>
                     </tr>
@@ -69,6 +40,51 @@
         </div>
     </div>
 </div>
+
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('systemComponents') }}</h4>
+    </div>
+    <div class="content">
+        <div>
+            <form method="post" action="{{ href('admin/sysinfo/settings') }}">
+                <table class="padding-table full-width">
+                    <tr>
+                        <td colspan="2">
+                            <div class="checkbox">
+                                <input type="hidden" name="settings[enableRegistration]" value="0" />
+                                <input type="checkbox" id="enable-last-results-checkbox" name="settings[enableRegistration]" value="1" {{ settings.enableRegistration|default(0) ? "checked" : "" }} />
+                                <label for="enable-registration-checkbox">{{ text('enableRegistration') }}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="checkbox">
+                                <input type="hidden" name="settings[enable_comments]" value="0" />
+                                <input type="checkbox" id="enable-comments-checkbox" name="settings[enable_comments]" value="1" {{ settings.enable_comments|default(0) ? "checked" : "" }} />
+                                <label for="enable-comments-checkbox">{{ text('enableComments') }}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="checkbox">
+                                <input type="hidden" name="settings[enable_rating]" value="0" />
+                                <input type="checkbox" id="enable-rating-checkbox" name="settings[enable_rating]" value="1" {{ settings.enable_rating|default(0) ? "checked" : "" }} />
+                                <label for="enable-rating-checkbox">{{ text('enable_rating') }}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" class="btn btn-info btn-fill btn-wd" value="{{ text('save') }}" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="card">
     <div class="header">
         <h4 class="title">{{ text('systemEvents') }}</h4>
@@ -79,6 +95,26 @@
                 <input type="submit" class="btn btn-info btn-fill btn-wd confirm-click" name="event[delete_results]" value="{{ text('deleteResults') }}" />
                 <input type="submit" class="btn btn-info btn-fill btn-wd confirm-click" name="event[reset_results]" value="{{ text('resetResults') }}" />
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('systemInfo') }}</h4>
+    </div>
+    <div class="content">
+        <div>
+            <table class="padding-table full-width">
+                <tr>
+                    <td width="1%" nowrap>{{ text('olimpCheckerLogin') }}</td>
+                    <td>{{ settings.olimpCheckerLogin }}</td>
+                </tr>
+                <tr>
+                    <td width="1%" nowrap>{{ text('olimpCheckerPassword') }}</td>
+                    <td>{{ settings.olimpCheckerPassword }}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
