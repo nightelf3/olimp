@@ -42,7 +42,7 @@
     "uploadHelpLink": "Приклад завантаження",
     "taskResult_0": "В обробці",
     "test": "Тест №",
-    "taskResult_5": "Не правильна відповідь",
+    "taskResult_5": "Неправильна відповідь",
     "taskResult_6": "Помилка виконання",
     "taskResult_3": "Помилка компіляції",
     "seeCompileError": "лог",
