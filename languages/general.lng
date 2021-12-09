@@ -123,5 +123,6 @@
     "commentsFormTitle": "Обговорення",
     "commentSend": "Відправити",
     "commentPlaceholder": "Опишіть проблему із задачею",
-    "commentsEmpty": "Обговорення пусті"
+    "commentsEmpty": "Обговорення пусті",
+    "enableComments": "Увімкнути обговорення"
 }

@@ -91,19 +91,22 @@ class TaskController extends BaseController
         $this->data['queueInfo'] = TemplateHelper::render('components/queue', [ 'queue' => $queue, 'task' => $task ]);
         $this->data['currentTask'] = $task;
 
-        $comments = [];
-        $commentsData = CommentModel::where([
-            'to_id' => UserHelper::getUser()->user_id,
-            'task_id' => $task->task_id
-        ])->orderBy('comment_id', 'ASC')->get();
-        foreach ($commentsData as $comment) {
-            $comments[] = [
-                'user' => $comment->from->username,
-                'date' => $comment->created_at,
-                'text' => $comment->text
-            ];
+        if (SettingsHelper::param('enable_comments', false))
+        {
+            $comments = [];
+            $commentsData = CommentModel::where([
+                'to_id' => UserHelper::getUser()->user_id,
+                'task_id' => $task->task_id
+            ])->orderBy('comment_id', 'ASC')->get();
+            foreach ($commentsData as $comment) {
+                $comments[] = [
+                    'user' => $comment->from->username,
+                    'date' => $comment->created_at,
+                    'text' => $comment->text
+                ];
+            }
+            $this->data['commentsForm'] = TemplateHelper::render('components/comments', [ 'comments' => $comments ]);
         }
-        $this->data['commentsForm'] = TemplateHelper::render('components/comments', [ 'comments' => $comments ]);
 
         return $this->render('task');
     }

@@ -35,6 +35,14 @@
                     <tr>
                         <td colspan="2">
                             <div class="checkbox">
+                                <input type="checkbox" id="is-use-last-results-checkbox" name="settings[enable_comments]" value="1" {{ settings.enable_comments|default(0) ? "checked" : "" }} />
+                                <label for="is-enable-registration-checkbox">{{ text('enableComments') }}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="checkbox">
                                 <input type="checkbox" id="is-olimp-enabled-checkbox" name="settings[is_enabled]" value="1" {{ settings.is_enabled|default(0) ? "checked" : "" }} />
                                 <label for="is-olimp-enabled-checkbox">{{ text('olimpEnabled') }}</label>
                             </div>
