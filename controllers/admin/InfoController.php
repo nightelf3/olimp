@@ -15,6 +15,7 @@ use Klein\App;
 use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
+use models\CommentModel;
 use models\CompilationErrorModel;
 use models\QueueModel;
 use models\TaskModel;
@@ -61,6 +62,7 @@ class InfoController extends BaseAdminController
             ->where('user_id', UserHelper::getUser()->user_id)
             ->get()->toArray(), 'task_id');
         if (isset($event['delete_results'])) {
+            CommentModel::whereIn('task_id', $taskIds)->delete();
             QueueModel::whereIn('task_id', $taskIds)->delete();
             ControllerHelper::updateAllResults();
         } elseif (isset($event['reset_results'])) {

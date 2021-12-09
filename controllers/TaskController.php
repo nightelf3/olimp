@@ -50,7 +50,7 @@ class TaskController extends BaseController
             ]);
         }
         
-        if ($request->param('comment_submit')) {
+        if (SettingsHelper::param('enable_comments', false) && $request->param('comment_submit')) {
             CommentModel::create([
                 'from_id' => UserHelper::getUser()->user_id,
                 'to_id' => UserHelper::getUser()->user_id,
