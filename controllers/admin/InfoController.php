@@ -47,6 +47,7 @@ class InfoController extends BaseAdminController
             'indexContent' => SettingsHelper::param('indexContent', '<p></p>'),
             'enableRegistration' => SettingsHelper::param('enableRegistration', false),
             'enable_comments' => SettingsHelper::param('enable_comments', false),
+            'enable_rating' => SettingsHelper::param('enable_rating', false),
             'is_enabled' => UserHelper::getUser()->is_enabled
         ];
 
@@ -92,6 +93,7 @@ class InfoController extends BaseAdminController
         SettingsHelper::setParam('indexContent', $settings['indexContent'] ?: '<p></p>');
         SettingsHelper::setParam('enableRegistration', $settings['enableRegistration'] ?: 0);
         SettingsHelper::setParam('enable_comments', $settings['enable_comments'] ?: 0);
+        SettingsHelper::setParam('enable_rating', $settings['enable_rating'] ?: 0);
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));
     }

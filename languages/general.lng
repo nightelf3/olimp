@@ -124,5 +124,6 @@
     "commentSend": "Відправити",
     "commentPlaceholder": "Опишіть проблему із задачею",
     "commentsEmpty": "Обговорення пусті",
-    "enableComments": "Увімкнути обговорення"
+    "enableComments": "Увімкнути обговорення",
+    "enable_rating": "Увімкнути рейтинг"
 }

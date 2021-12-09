@@ -44,7 +44,7 @@ class RatingController extends BaseController
         $userId = $request->param('user_id', 0);
         $tasks = TaskModel::select([ 'task_id', 'name' ])
             ->where('user_id', $userId)->orderBy('sort_order')->get();
-        if (UserHelper::isAdmin())
+        if (SettingsHelper::param('enable_rating', false) || UserHelper::isAdmin())
         {
             $this->data['ratingTable'] = TemplateHelper::render('components/rating_table', [
                 'table' => RatingHelper::generate($userId, $tasks),
