@@ -32,10 +32,13 @@ class CommentsController extends BaseAdminController
 
     public function task(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        $this->header['js'][] = 'admin/comments.js';
+
         $this->data['task_id'] = $request->param('task_id', 0);
         if ($request->param('comment_submit')) {
             CommentModel::create([
-                'user_id' => UserHelper::getUser()->user_id,
+                'from_id' => UserHelper::getUser()->user_id,
+                'to_id' => $request->param('user_id', UserHelper::getUser()->user_id),
                 'task_id' => $this->data['task_id'],
                 'text' => $request->param('comment', '')
             ]);
@@ -50,21 +53,20 @@ class CommentsController extends BaseAdminController
         $commentsData = CommentModel::where([
             'task_id' => $this->data['task_id']
         ])->orderBy('comment_id', 'ASC')->get();
-        $index = 0;
         foreach ($commentsData as $comment) {
-            if (!isset($comments[$comment->user->user_id])) {
-                $comments[$comment->user->user_id] = [
-                    'header' => $comment->user->username,
-                    'user_id' => $comment->user->user_id,
-                    'admin_id'=> UserHelper::getUser()->user_id,
-                    'comments' => [],
-                    'index' => $index++
+            if (!isset($comments[$comment->to->user_id])) {
+                $comments[$comment->to->user_id] = [
+                    'header' => $comment->to->username,
+                    'user_id' => $comment->to->user_id,
+                    'admin_id' => UserHelper::getUser()->user_id,
+                    'comments' => []
                 ];
             }
 
-            $comments[$comment->user->user_id]['comments'][] = [
-                'user_id' => $comment->user->user_id,
-                'user' => $comment->user->username,
+            $comments[$comment->to->user_id]['comments'][] = [
+                'comment_id' => $comment->comment_id,
+                'user_id' => $comment->from->user_id,
+                'user' => $comment->from->username,
                 'date' => $comment->created_at,
                 'text' => $comment->text
             ];
@@ -72,7 +74,13 @@ class CommentsController extends BaseAdminController
 
         // sort data in desc order, so new comments will be on top
         usort($comments, function($a, $b) {
-            return $a['index'] < $b['index'];
+            $isAnsweredA = end($a['comments'])['user_id'] == UserHelper::getUser()->user_id;
+            $isAnsweredB = end($b['comments'])['user_id'] == UserHelper::getUser()->user_id;
+            if ($isAnsweredA ^ $isAnsweredB) {
+                return $isAnsweredA > $isAnsweredB;
+            }
+
+            return end($a['comments'])['comment_id'] < end($b['comments'])['comment_id'];
         });
 
 

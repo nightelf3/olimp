@@ -1,28 +1,30 @@
 {{ header|raw }}
-<table width="100%" class="tasks-switcher">
-    <tr>
-    {% for task in tasks %}
-        <td class="task-card-holder">
-            <div class="card{% if task.task_id == task_id %} active{% endif %}" onClick="location.href='{{ href("admin/comments/#{task.task_id}") }}'">
-                <h4 class="title">{{ task.name }}</h4>
-            </div>
-        </td>
-    {% endfor %}
-    </tr>
-</table>
+<div id="admin-comments">
+    <table width="100%" class="tasks-switcher">
+        <tr>
+        {% for task in tasks %}
+            <td class="task-card-holder">
+                <div class="card{% if task.task_id == task_id %} active{% endif %}" onClick="location.href='{{ href("admin/comments/#{task.task_id}") }}'">
+                    <h4 class="title">{{ task.name }}</h4>
+                </div>
+            </td>
+        {% endfor %}
+        </tr>
+    </table>
 
-{% if comments %}
-{% for comment in comments %}
-<div class="comments-holder">
-    {{ comment|raw }}
-</div>
-{% endfor %}
-{% else %}
-<div class="card">
-    <div class="header">
-        <h4 class="title text-center">{{ text('commentsEmpty') }}</h4>
+    {% if comments %}
+    {% for comment in comments %}
+    <div class="comments-holder">
+        {{ comment|raw }}
     </div>
-    <div class="content"></div>
+    {% endfor %}
+    {% else %}
+    <div class="card">
+        <div class="header">
+            <h4 class="title text-center">{{ text('commentsEmpty') }}</h4>
+        </div>
+        <div class="content"></div>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
 {{ footer|raw }}

@@ -16,8 +16,9 @@ $(function () {
                     }, 2500);
                 }
                 
-                var div = document.getElementById("comments");
-                div.scrollTop = div.scrollHeight - div.clientHeight;
+                $(".team-members").each(function() {
+                    this.scrollTop = this.scrollHeight - this.clientHeight;
+                });
             }
         };
 

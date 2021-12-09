@@ -3,7 +3,7 @@
         <h4 class="title">{{ header|default(text('commentsFormTitle')) }}</h4>
     </div>
     <div class="content">
-        <ul class="list-unstyled team-members" id="comments">
+        <ul class="list-unstyled team-members">
             {% for comment in comments %}
             <li>
                     <div class="comment-header text-primary">{{ comment.user }} <small class="text-muted comment-date">{{ comment.date }}</small></div>
@@ -13,7 +13,7 @@
         </ul>
 
         <form method="post">
-            <input type="hidden" name="user_id" value="{{ user_id }}" />
+            {% if user_id %}<input type="hidden" name="user_id" value="{{ user_id }}" />{% endif %}
             <div class="form-group text-center">
                 <textarea name="comment" rows="3" class="form-control border-input" placeholder="{{ text('commentPlaceholder') }}" required></textarea>
             </div>

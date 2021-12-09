@@ -52,7 +52,8 @@ class TaskController extends BaseController
         
         if ($request->param('comment_submit')) {
             CommentModel::create([
-                'user_id' => UserHelper::getUser()->user_id,
+                'from_id' => UserHelper::getUser()->user_id,
+                'to_id' => UserHelper::getUser()->user_id,
                 'task_id' => $task->task_id,
                 'text' => $request->param('comment', '')
             ]);
@@ -92,12 +93,12 @@ class TaskController extends BaseController
 
         $comments = [];
         $commentsData = CommentModel::where([
-            'user_id' => UserHelper::getUser()->user_id,
+            'to_id' => UserHelper::getUser()->user_id,
             'task_id' => $task->task_id
         ])->orderBy('comment_id', 'ASC')->get();
         foreach ($commentsData as $comment) {
             $comments[] = [
-                'user' => UserHelper::getUser()->username,
+                'user' => $comment->from->username,
                 'date' => $comment->created_at,
                 'text' => $comment->text
             ];
