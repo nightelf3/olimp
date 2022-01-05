@@ -49,6 +49,10 @@ class ExcelController extends BaseAdminController
 
         $objPHPExcel = \PHPExcel_IOFactory::load(UrlHelper::path('data/users.xls'));
         foreach ($objPHPExcel->getActiveSheet()->toArray(null, true, true, true) as $user) {
+            if (empty($user['A'])) {
+                continue;
+            }
+            
             $name = explode(' ', $user['A'], 3);
             $login = 'user' . $this->zerofill(++$id, 3);
             $users[] = new UserModel([

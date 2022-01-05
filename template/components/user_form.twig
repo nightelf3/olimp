@@ -63,12 +63,13 @@
         {% if errors.class %}<div class="alert alert-danger">{{ text('incorrect-class') }}</div>{% endif %}
     </div>
 
-    <div class="form-group">
+    {# TODO: fix performance of live update #}
+    {#<div class="form-group">
         <div class="checkbox">
             <input type="checkbox" id="userform-live-update" name="live_update" value="1"{% if form.live_update %} checked{% endif %}/>
             <label for="userform-live-update">{{ text('liveUpdate') }}</label>
         </div>
-    </div>
+    </div>#}
 
     {# TODO: add captcha #}
     {#<div class="form-group">
