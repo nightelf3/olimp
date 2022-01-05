@@ -47,6 +47,7 @@ class InfoController extends BaseAdminController
             'indexContent' => SettingsHelper::param('indexContent', '<p></p>'),
             'enableRegistration' => SettingsHelper::param('enableRegistration', false),
             'enable_comments' => SettingsHelper::param('enable_comments', false),
+            'enable_rating' => SettingsHelper::param('enable_rating', false),
             'is_enabled' => UserHelper::getUser()->is_enabled
         ];
 
@@ -81,17 +82,22 @@ class InfoController extends BaseAdminController
 
     public function sysSettings(Request $request, Response $response, ServiceProvider $service, App $app)
     {
+        /** @var Array $settings */
         $settings = $request->param('settings', []);
-        /** @var UserModel $user */
-        $user = UserHelper::getUser();
+        
+        if (isset($settings['is_enabled']))
+        {
+            /** @var UserModel $user */
+            $user = UserHelper::getUser();
+            $user->is_enabled = $settings['is_enabled'];
+            $user->save();
 
-        $user->is_enabled = $settings['is_enabled'] ?: 0;
-        $user->save();
+            unset($settings['is_enabled']);
+        }
 
-        SettingsHelper::setParam('useLastResults', $settings['useLastResults'] ?: 0);
-        SettingsHelper::setParam('indexContent', $settings['indexContent'] ?: '<p></p>');
-        SettingsHelper::setParam('enableRegistration', $settings['enableRegistration'] ?: 0);
-        SettingsHelper::setParam('enable_comments', $settings['enable_comments'] ?: 0);
+        foreach (array_keys($settings) as $key) {
+            SettingsHelper::setParam($key, isset($settings[$key]) ? $settings[$key] : SettingsHelper::param($key, false));
+        }
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));
     }
