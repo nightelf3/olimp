@@ -77,6 +77,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td colspan="2">
+                            <div class="checkbox">
+                                <input type="hidden" name="settings[single_login]" value="0" />
+                                <input type="checkbox" id="single-login-checkbox" name="settings[single_login]" value="1" {{ settings.single_login|default(0) ? "checked" : "" }} />
+                                <label for="single-login-checkbox">{{ text('single_login') }}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan="2"><input type="submit" class="btn btn-info btn-fill btn-wd" value="{{ text('save') }}" /></td>
                     </tr>
                 </table>

@@ -54,10 +54,10 @@ class UserModel extends BaseModel
         return $this;
     }
 
-    public function hashPassword()
+    public function hashPassword($password = null)
     {
         $this->generateSalt();
-        $this->password = sha1($this->password . $this->password_salt);
+        $this->password = sha1((is_null($password) ? $this->password : $password) . $this->password_salt);
 
         return $this;
     }

@@ -85,8 +85,7 @@ class AccountController extends BaseController
         ])->first();
 
         $newPassword = uniqid(mt_rand(), false);
-        $user->password = $newPassword;
-        $user->hashPassword()->save();
+        $user->hashPassword($newPassword)->save();
 
         $data = [
             'username' => $user->username,
@@ -103,7 +102,7 @@ class AccountController extends BaseController
 
     public function logout(Request $request, Response $response, ServiceProvider $service, App $app)
     {
-        SessionHelper::remove('userId');
+        UserHelper::logout();
         return $response->redirect(UrlHelper::href());
     }
 
@@ -138,8 +137,7 @@ class AccountController extends BaseController
             'live_update' => $userForm['live_update'] ?: 0
         ]);
         if (!empty($userForm['password'])) {
-            $user->password = $userForm['password'];
-            $user->hashPassword();
+            $user->hashPassword($userForm['password']);
         }
         $user->save();
 

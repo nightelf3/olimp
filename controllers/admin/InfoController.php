@@ -48,6 +48,7 @@ class InfoController extends BaseAdminController
             'enableRegistration' => SettingsHelper::param('enableRegistration', false),
             'enable_comments' => SettingsHelper::param('enable_comments', false),
             'enable_rating' => SettingsHelper::param('enable_rating', false),
+            'single_login' => SettingsHelper::param('single_login', false),
             'is_enabled' => UserHelper::getUser()->is_enabled
         ];
 

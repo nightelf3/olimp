@@ -19,10 +19,14 @@ class UserHelper extends BaseHelper
 
     public static function initialize()
     {
-        $userId = SessionHelper::get('userId');
+        $username = SessionHelper::get('username');
+        $password = SessionHelper::get('password');
 
-        if (!is_null($userId)) {
-            self::$user = UserModel::where([ 'user_id' => $userId ])->first();
+        if (!is_null($username) && !is_null($password)) {
+            self::$user = UserModel::where([
+                'username' => $username,
+                'password' => $password
+            ])->first();
         }
     }
 
@@ -70,16 +74,31 @@ class UserHelper extends BaseHelper
         $password = $request->paramsPost()->get('password', '');
         /** @var UserModel $user */
         $user = UserModel::where('username', $request->paramsPost()->get('username', ''))
-            ->whereRaw("password = SHA1(CONCAT('{$password}', password_salt))")
-            ->select([ 'user_id' ])->first();
+            ->whereRaw("password = SHA1(CONCAT('{$password}', password_salt))")->first();
 
         $errors = [];
         if ($user) {
-            SessionHelper::set('userId', $user->user_id);
+            if (!$user->is_admin && SettingsHelper::param('single_login', false)) {
+                $user->hashPassword($password)->update();
+            }
+
+            SessionHelper::set('username', $user->username);
+            SessionHelper::set('password', $user->password);
         } else {
             $errors['userNotExists'] = true;
         }
 
         return $errors;
+    }
+
+    /**
+     * Logout the user
+     *
+     * @return null
+     */
+    public static function logout()
+    {
+        SessionHelper::remove('username');
+        SessionHelper::remove('password');
     }
 }
