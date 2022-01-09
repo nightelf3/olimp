@@ -1,5 +1,7 @@
 <form id="FormText" method="post" action="{{ href("admin/task/#{task.task_id}") }}">
-	<textarea class="ckeditor" rows="40" cols="45" name="task[task]">{{ task.task|raw }}</textarea>
+    <div id="task-main-text">
+	    <textarea class="ckeditor" class="ckeditor" rows="40" cols="45" name="task[task]">{{ task.task|raw }}</textarea>
+    </div>
     <table width="100%" class="sysinfo">
         <tr>
             <td nowrap>{{ text('taskName') }}</td>

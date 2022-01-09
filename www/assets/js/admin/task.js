@@ -67,6 +67,12 @@ $(function () {
                     }
                 );
 
+                ClassicEditor
+                    .create(document.querySelector('.ckeditor'))
+                    .catch(error => {
+                        console.error(error);
+                    });
+
                 $(document).on('submit', '#tests-form', App.admin.task.formTest);
                 App.admin.task.testsResize();
             }
