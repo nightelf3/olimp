@@ -5,7 +5,7 @@
         {% for task in tasks %}
             <td class="task-card-holder" width="{{ 100 / tasks|length }}%">
                 <div class="card{% if task.task_id == task_id %} active{% endif %}" onClick="location.href='{{ href("admin/comments/#{task.task_id}") }}'">
-                    <h4 class="title">{{ task.name }}</h4>
+                    <h4 class="title">{{ task.name }} <small>({{ task.comments_count }})</small></h4>
                 </div>
             </td>
         {% endfor %}

@@ -45,9 +45,12 @@ class CommentsController extends BaseAdminController
             return $response->redirect(UrlHelper::href("admin/comments/{$this->data['task_id']}"));
         }
 
-        $this->data['tasks'] = TaskModel::select([ 'task_id', 'name' ])->where([
-            'user_id' => UserHelper::getUser()->user_id
-        ])->orderBy('sort_order')->get();
+        $this->data['tasks'] = TaskModel::select([ 'tasks.task_id', 'name' ])->selectRaw('count(comment_id) as comments_count')
+            ->leftJoin('comments', 'comments.task_id', '=', 'tasks.task_id')
+            ->groupBy('tasks.task_id')
+            ->where([
+                'user_id' => UserHelper::getUser()->user_id
+            ])->orderBy('sort_order')->get();
 
         $comments = [];
         $commentsData = CommentModel::where([

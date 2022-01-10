@@ -38,6 +38,7 @@
 }
 
 .comment-body {
+    white-space: pre;
 }
 
 .comment-date {
@@ -71,6 +72,10 @@
 
 .tasks-switcher .task-card-holder .card.active .title {
     color: #fff;
+}
+
+.tasks-switcher .task-card-holder .card.active .title small {
+    color: #eee;
 }
 
 .comments-holder .card.answered {
