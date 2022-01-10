@@ -135,5 +135,6 @@
     "usernameHeader": "Логін",
     "logsData": "Інформація",
     "empty": "Пусто",
-    "logsUpload": "Завантаження з різних IP"
+    "logsUpload": "Завантаження з різних IP",
+    "classHeader": "Клас"
 }

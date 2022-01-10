@@ -4,6 +4,7 @@
         <th>{{ text('no') }}</th>
         <th>{{ text('usernameHeader') }}</th>
         <th>{{ text('fullname') }}</th>
+        <th>{{ text('classHeader') }}</th>
         {% for task in tasks %}
             <th>{{ task.name }}</th>
         {% endfor %}
@@ -20,6 +21,7 @@
             <td>{{ loop.index }}</td>
             <td>{{ row.login }}</td>
             <td>{{ row.name|raw }}</td>
+            <td>{{ row.class }}</td>
             {% for task in tasks %}
                 <td>{{ '-' == row.tasks[task.task_id].ok ? '-' : "#{row.tasks[task.task_id].ok} (#{row.tasks[task.task_id].try })" }}</td>
             {% endfor %}
