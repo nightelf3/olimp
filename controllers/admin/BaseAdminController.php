@@ -18,7 +18,6 @@ abstract class BaseAdminController extends BaseController
 
     protected function render($template)
     {
-        $this->header['menu'] = TemplateHelper::render($this::ROOT_FOLDER . '/components/menu');
         $this->header['userInfo'] = TemplateHelper::render('components/user', [
             'user' => UserHelper::getUser(),
             'showScore' => false,
