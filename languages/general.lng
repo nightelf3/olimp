@@ -129,5 +129,11 @@
     "systemComponents": "Управління компонентами",
     "systemInfo": "Дані для Olimp-Checker",
     "single_login": "Заборонити мультилогін",
-    "examples": "Заготовки задач: "
+    "examples": "Заготовки задач: ",
+    "adminMenuLogs": "Логи",
+    "logsLogin": "Вхід з різних IP",
+    "usernameHeader": "Логін",
+    "logsData": "Інформація",
+    "empty": "Пусто",
+    "logsUpload": "Завантаження з різних IP"
 }

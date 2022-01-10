@@ -8,6 +8,7 @@
 namespace helpers;
 
 use Klein\Request;
+use models\LogModel;
 use models\UserModel;
 
 class UserHelper extends BaseHelper
@@ -84,6 +85,12 @@ class UserHelper extends BaseHelper
 
             SessionHelper::set('username', $user->username);
             SessionHelper::set('password', $user->password);
+            self::$user = $user;
+
+            LogModel::create([
+                'user_id' => self::$user->user_id,
+                'data' => 'login: ' . self::getIP()
+            ]);
         } else {
             $errors['userNotExists'] = true;
         }
@@ -98,7 +105,26 @@ class UserHelper extends BaseHelper
      */
     public static function logout()
     {
+        if (self::$user) {
+            //TODO: extend LogModel to action -> data
+            LogModel::create([
+                'user_id' => self::$user->user_id,
+                'data' => 'logout: ' . self::getIP()
+            ]);
+        }
+        
         SessionHelper::remove('username');
         SessionHelper::remove('password');
+        self::$user = null;
+    }
+
+    /**
+     * Return the user's IP
+     *
+     * @return string
+     */
+    private static function getIP()
+    {
+        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
     }
 }

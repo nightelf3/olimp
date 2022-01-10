@@ -1,0 +1,69 @@
+{{ header|raw }}
+
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('logsLogin') }}</h4>
+    </div>
+    <div class="content">
+        {% if logins|length %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ text('usernameHeader') }}</th>
+                <th>{{ text('fullname') }}</th>
+                <th>{{ text('logsData') }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for row in logins %}
+                <tr>
+                    <td>{{ row.login }}</td>
+                    <td>{{ row.name|raw }}</td>
+                    <td>{{ row.data|raw }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <i class="ti-info"></i> {{ text('empty') }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="header">
+        <h4 class="title">{{ text('logsUpload') }}</h4>
+    </div>
+    <div class="content">
+        {% if uploads|length %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ text('usernameHeader') }}</th>
+                <th>{{ text('fullname') }}</th>
+                <th>{{ text('logsData') }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for row in uploads %}
+                <tr>
+                    <td>{{ row.login }}</td>
+                    <td>{{ row.name|raw }}</td>
+                    <td>{{ row.data|raw }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <i class="ti-info"></i> {{ text('empty') }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{{ footer|raw }}

@@ -43,6 +43,8 @@ return [
     [['GET'], '/admin/comments', 'comments#index', [ 'admin' => true ]],
     [['GET', 'POST'], '/admin/comments/[i:task_id]', 'comments#task', [ 'admin' => true ]],
 
+    [['GET'], '/admin/logs', 'logs#index', [ 'admin' => true ]],
+
     [['GET'], '/admin/excel/import', 'excel#import', [ 'admin' => true ]],
     [['GET'], '/admin/excel/results', 'excel#results', [ 'admin' => true ]],
 
