@@ -128,5 +128,6 @@
     "enable_rating": "Увімкнути рейтинг",
     "systemComponents": "Управління компонентами",
     "systemInfo": "Дані для Olimp-Checker",
-    "single_login": "Заборонити мультилогін"
+    "single_login": "Заборонити мультилогін",
+    "examples": "Заготовки задач: "
 }
