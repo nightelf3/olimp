@@ -11,8 +11,10 @@ date_default_timezone_set(helpers\ConfigHelper::get('datetime', 'timezone'));
 
 /* Turn on debug mode */
 if (helpers\ConfigHelper::isDebug()) {
-    Symfony\Component\Debug\Debug::enable(E_ERROR | E_WARNING);
-    Kint_Renderer_Rich::$theme = 'solarized-dark.css';
+    error_reporting(E_ERROR | E_WARNING);
+    Symfony\Component\ErrorHandler\DebugClassLoader::enable();
+    Symfony\Component\ErrorHandler\ErrorHandler::register(new Symfony\Component\ErrorHandler\ErrorHandler(new Symfony\Component\ErrorHandler\BufferingLogger(), true));
+    Kint\Renderer\RichRenderer::$theme = 'solarized-dark.css';
 } else {
     error_reporting(0);
     ini_set('display_errors', 0);

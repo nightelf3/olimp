@@ -1,45 +1,25 @@
 {
   "type": "project",
   "require": {
-    "php": ">=5.6.3",
-    "fxp/composer-asset-plugin": "dev-master",
-    "mnsami/composer-custom-directory-installer": "1.1.*",
-    "symfony/yaml": "^3.3.2",
-    "klein/klein": "^2.1.2",
-    "illuminate/events": "^5.4.27",
-    "illuminate/database": "^5.4.27",
-    "serafim/properties": "1.*",
-    "robmorgan/phinx": "0.*",
-    "twig/twig": "1.*",
-    "pfbc/pfbc": "3.*",
-    "twbs/bootstrap": "~3.3.6",
+    "php": "7.1.33",
+    "klein/klein": "2.1.2",
+    "symfony/yaml": "4.4.45",
+    "illuminate/events": "5.8.36",
+    "illuminate/database": "5.8.36",
+    "robmorgan/phinx": "0.11.7",
+    "twig/twig": "2.15.4",
     "timhovius/bootstrap-material-design": "dev-master",
-    "phpoffice/phpexcel": "^1.8.2",
-
-    "bower-asset/jquery-2.2.4": "2.2.4",
-    "bower-asset/ckeditor": "4.3.*",
-    "bower-asset/sprintf": "^1.1.1"
+    "phpoffice/phpspreadsheet": "^1.8.2",
+    "components/jquery": "2.2.4"
   },
   "require-dev": {
-    "codeception/codeception": "2.3.3",
-    "symfony/debug": "*",
-    "squizlabs/php_codesniffer": "*",
-    "kint-php/kint": "2.*"
+    "codeception/codeception": "4.2.2",
+    "symfony/error-handler": "4.4.44",
+    "kint-php/kint": "5.0.5"
   },
   "config": {
-    "fxp-asset": {
-      "installer-paths": {
-        "npm-asset-library": "vendor/npm",
-        "bower-asset-library": "www/vendor"
-      }
-    }
-  },
-  "extra": {
-    "installer-paths": {
-      "www/vendor/{$name}": [
-        "twbs/bootstrap",
-        "timhovius/bootstrap-material-design"
-      ]
+    "allow-plugins": {
+      "kylekatarnls/update-helper": true
     }
   }
 }
