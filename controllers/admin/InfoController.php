@@ -8,6 +8,7 @@
 namespace controllers\admin;
 
 use helpers\ControllerHelper;
+use helpers\ErrorHelper;
 use helpers\SettingsHelper;
 use helpers\UrlHelper;
 use helpers\UserHelper;
@@ -17,6 +18,7 @@ use Klein\Response;
 use Klein\ServiceProvider;
 use models\CommentModel;
 use models\CompilationErrorModel;
+use models\CheckerModel;
 use models\QueueModel;
 use models\TaskModel;
 use models\UserModel;
@@ -53,6 +55,10 @@ class InfoController extends BaseAdminController
         ];
 
         $this->data['user'] = UserHelper::getUser();
+        $this->data['checkers'] = CheckerModel::where([
+            'user_id' => UserHelper::getUser()->user_id,
+            'is_removed' => false
+        ])->get();
         return $this->render('sysinfo');
     }
 
@@ -64,6 +70,7 @@ class InfoController extends BaseAdminController
             ->where('user_id', UserHelper::getUser()->user_id)
             ->get()->toArray(), 'task_id');
         if (isset($event['delete_results'])) {
+            //TODO: drop Users folder?
             CommentModel::whereIn('task_id', $taskIds)->delete();
             QueueModel::whereIn('task_id', $taskIds)->delete();
             ControllerHelper::updateAllResults();
@@ -85,7 +92,7 @@ class InfoController extends BaseAdminController
     {
         /** @var Array $settings */
         $settings = $request->param('settings', []);
-        
+
         if (isset($settings['is_enabled']))
         {
             /** @var UserModel $user */
@@ -98,6 +105,29 @@ class InfoController extends BaseAdminController
 
         foreach (array_keys($settings) as $key) {
             SettingsHelper::setParam($key, isset($settings[$key]) ? $settings[$key] : SettingsHelper::param($key, false));
+        }
+
+        return $response->redirect(UrlHelper::href('admin/sysinfo'));
+    }
+
+    public function checkers(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        /** @var CheckerModel $checker */
+        $checker = CheckerModel::find($request->param('checker_id', 0));
+        if (is_null($checker)) {
+            ErrorHelper::assert("Can't find the checker");
+            return $response->redirect(UrlHelper::href('admin/sysinfo'));
+        }
+
+        switch ($request->param('action', ""))
+        {
+        case "remove":
+            $checker->delete();
+            break;
+        case "toggle":
+            $checker->is_active = !$checker->is_active;
+            $checker->update();
+            break;
         }
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));
