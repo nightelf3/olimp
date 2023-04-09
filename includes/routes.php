@@ -23,6 +23,10 @@ return [
     [['GET'], '/rating/[i:user_id]', 'rating#get', [ 'login' => true ]],
     [['GET'], '/rating/[i:user_id]/update', 'rating#update', [ 'login' => true ]],
 
+    [['POST'], '/api/register', 'API\\APIChecker#register', [ 'api' => true ]],
+    [['POST'], '/api/message', 'API\\APIChecker#message', [ 'api' => true ]],
+    [['POST'], '/api/logout', 'API\\APIChecker#logout', [ 'api' => true ]],
+
     [['GET'], '/admin', 'info#index', [ 'admin' => true ]],
     [['GET'], '/admin/users', 'info#users', [ 'admin' => true ]],
     [['GET'], '/admin/sysinfo', 'info#sysinfo', [ 'admin' => true ]],
