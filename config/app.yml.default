@@ -1,4 +1,4 @@
-site_url: http://192.168.0.200
+site_url: https://olimp-fmi
 env: dev
 
 database:
