@@ -67,6 +67,7 @@ class ControllerHelper extends BaseHelper
             'score' => 0,
             'mulct' => 0
         ];
+        //TODO: speedup tis query, sinze we don't want to fetch all
         $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
             ->where('queue.user_id', $user->user_id)
             ->orderBy('queue_id', 'desc')->get();
@@ -83,6 +84,7 @@ class ControllerHelper extends BaseHelper
             } elseif ('10' == $row->stan) {
                 // incorrect output
                 $results['mulct'] += $row->mulct;
+                $calculatedTasks[] = $row->task_id;
             } else {
                 // another type of error
                 if (!in_array($row->task_id, $calculatedTasks)) {
