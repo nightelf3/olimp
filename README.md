@@ -10,11 +10,9 @@ Install OpenServer:
 - phpmyadmin
 - add Domain "olimp-fmi -> olimp-fmi/www"
 
-Install "Composer v1"
+Install "Composer"
 
-- php composer.phar global require "composer-plugin-api:1.1.0"
-- php composer.phar global require "fxp/composer-asset-plugin:1.4.6"
-- php composer.phar install
+- php composer.phar update
 
 Migrate DB:
 
