@@ -35,8 +35,9 @@ class TaskController extends BaseController
         $userId = $request->param('user_id', 0);
         
         /** @var TaskModel $task */
-        $task = TaskModel::select([ 'task_id', 'task', 'is_enabled' ])->where([
-            'user_id' => $userId
+        $task = TaskModel::join('users', 'users.user_id', '=', 'tasks.user_id')->select([ 'task_id', 'task', 'tasks.is_enabled' ])->where([
+            'users.user_id' => $userId,
+            'users.is_enabled' => UserHelper::getUser()->user_id == $userId ? UserHelper::getUser()->is_enabled : true
         ])->find($request->param('task_id', 0));
         
         if (SettingsHelper::isOlimpInProgress()) {
@@ -77,7 +78,7 @@ class TaskController extends BaseController
 
         if (is_null($task)) {
             throw HttpException::createFromCode(404);
-        } elseif (!$task->is_enabled) {
+        } elseif (!$task->is_enabled && UserHelper::getUser()->user_id != $userId) {
             $this->data['errors']['taskIsNotEnabled'] = true;
             $this->data['currentTask']['task_id'] = $task->task_id;
             return $this->render('task');
@@ -119,9 +120,14 @@ class TaskController extends BaseController
         }
 
         $userId = $request->param('user_id', 0);
+        if (UserHelper::isAdmin()) {
+            //TODO: add the ability to participate in other olimps
+            $userId = UserHelper::getUser()->user_id;
+        }
+        
         $task = TaskModel::select(['task_id'])->where([
             'user_id' => $userId,
-            'is_enabled' => true
+            'is_enabled' => UserHelper::getUser()->user_id == $userId ? UserHelper::getUser()->is_enabled : true
         ])->orderBy('sort_order')->first();
         if (!is_null($task)) {
             return $response->redirect(UrlHelper::href("task/{$userId}/{$task->task_id}"));

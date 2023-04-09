@@ -13,6 +13,9 @@ class RatingHelper extends BaseHelper
 {
     public static function generate($adminId, $tasks)
     {
+        $olimpStart = (int)SettingsHelper::param('olimp_start', 0);
+        $olimpEnd = $olimpStart + (int)SettingsHelper::param('olimp_duration', 9999999999);
+
         $prefix = ConfigHelper::get('database', 'prefix');
 
         $oldScore = SettingsHelper::param('useLastResults', false) ? '`users`.`old_score`' : '0';
@@ -21,11 +24,11 @@ class RatingHelper extends BaseHelper
                 `tasks`.`task_id`, `tasks`.`tests_count`,
                 `users`.`class`, `users`.`school`,
                 `queue`.`queue_id`, `queue`.`stan`, `queue`.`try`,
-                `users`.`is_admin`
+                `users`.`is_admin`, `queue`.`timestamp`
             FROM (
                 SELECT *, COUNT(queue_id) AS `try`
                 FROM (
-                    SELECT `queue_id`, `stan`, `queue`.`task_id`, `queue`.`user_id`
+                    SELECT `queue_id`, `stan`, `queue`.`task_id`, `queue`.`user_id`, UNIX_TIMESTAMP(`queue`.`created_at`) AS `timestamp`
                     FROM `{$prefix}queue` AS `queue`
                     INNER JOIN `{$prefix}tasks` AS `tasks` ON `tasks`.`task_id` = `queue`.`task_id`
                     WHERE `tasks`.`user_id` = '{$adminId}' AND `stan` NOT IN ('0', '1', '2', '4')
@@ -65,12 +68,14 @@ class RatingHelper extends BaseHelper
             }
 
             $arr[$row->username]['tasks'][$row->task_id]['try'] = $row->try;
+            $arr[$row->username]['tasks'][$row->task_id]['timestamp'] = (int)$row->timestamp;
             if ('9' == $row->stan) {
                 // succeed
                 $arr[$row->username]['tasks'][$row->task_id]['ok'] = '100%';
             } elseif (in_array($row->stan, ['3', '10'])) {
                 // incorrect output
                 $arr[$row->username]['tasks'][$row->task_id]['ok'] = '0%';
+                $arr[$row->username]['tasks'][$row->task_id]['timestamp'] = $olimpEnd;
             } else {
                 // another type of error
                 $arr[$row->username]['tasks'][$row->task_id]['ok'] = round(((int)$row->tests_count - count(explode(',', $row->stan))) / ((float)$row->tests_count) * 100) . '%';
@@ -84,11 +89,26 @@ class RatingHelper extends BaseHelper
                 {
                     $row['tasks'][$task->task_id] = [
                         'try' => 0,
-                        'ok' => '-'
+                        'ok' => '-',
+                        'timestamp' => $olimpEnd * 2
                     ];
                 }
             }
         }
+
+        uasort($arr, function ($a, $b) use ($tasks) {
+            if ($a['score'] != $b['score']) {
+                return $a['score'] < $b['score'];
+            }
+
+            $sumA = 0;
+            $sumB = 0;
+            foreach ($tasks as $task) {
+                $sumA += $a['tasks'][$task->task_id]['timestamp'];
+                $sumB += $b['tasks'][$task->task_id]['timestamp'];
+            }
+            return $sumA > $sumB;
+        });
 
         return $arr;
     }

@@ -21,10 +21,10 @@ class LogsController extends BaseAdminController
         //TODO: add date to the data
         $this->data['logins'] = [];
         $data = LogModel::join('users', 'users.user_id', '=', 'logs.user_id')
-            ->groupBy('logs.user_id')->havingRaw('count(distinct mid(`data`, 8)) > 1')
+            ->groupBy('logs.user_id')->havingRaw('count(*) > 1')
             ->whereRaw("data like 'login:%' AND is_admin = 0")
             ->select(['username', 'surname', 'name'])
-            ->selectRaw("group_concat(distinct mid(`data`, 8) separator '<br/>') as data")->get();
+            ->selectRaw("group_concat(distinct concat(mid(`data`, 8), ' ', oi_logs.created_at) separator '<br/>') as data")->get();
         foreach ($data as $row) {
             $this->data['logins'][] = [
                 'login' => $row->username,

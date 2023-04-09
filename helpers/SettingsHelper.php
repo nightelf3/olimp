@@ -49,7 +49,6 @@ class SettingsHelper extends BaseHelper
         $olimpEnd = $olimpStart + (int)static::param('olimp_duration', 0);
         $currentTime = time();
 
-        //TODO: check if opimp is active
         return ($orIsAdmin && UserHelper::isAdmin()) || ($olimpStart <= $currentTime && $currentTime <= $olimpEnd);
     }
 
