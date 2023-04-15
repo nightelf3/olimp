@@ -4,6 +4,7 @@
         <h4 class="title">{{ text('chooseOlimpTitle') }}</h4>
     </div>
     <div class="content">
+        {% if users|length %}
         <ul class="list-unstyled team-members">
             {% for user in users %}
             <li>
@@ -22,6 +23,11 @@
             </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <i class="ti-info"></i> {{ text('empty') }}
+        </div>
+        {% endif %}
     </div>
 </div>
 {{ footer|raw }}

@@ -1,7 +1,7 @@
 {
   "type": "project",
   "require": {
-    "php": "7.1.33",
+    "php": "7.2.34",
     "klein/klein": "2.1.2",
     "symfony/yaml": "4.4.45",
     "illuminate/events": "5.8.36",
@@ -20,6 +20,7 @@
   "config": {
     "allow-plugins": {
       "kylekatarnls/update-helper": true
-    }
+    },
+    "disable-tls": true
   }
 }
