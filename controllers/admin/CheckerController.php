@@ -50,7 +50,7 @@ class CheckerController extends BaseAdminController
         <head>
             <title>SITE_NAME - GetQueue</title>
         </head>
-        
+
         <body id="BodyId">';
 
         if ($_GET['get'] == "task")	{

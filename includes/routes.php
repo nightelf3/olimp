@@ -33,6 +33,7 @@ return [
     [['POST'], '/admin/sysinfo/event', 'info#sysEvent', [ 'admin' => true ]],
     [['POST'], '/admin/sysinfo/settings', 'info#sysSettings', [ 'admin' => true ]],
     [['GET'], '/admin/sysinfo/checker/[i:checker_id]/[toggle|remove:action]', 'info#checkers', [ 'admin' => true ]],
+    [['GET'], '/admin/sysinfo/checker/config', 'info#checkerConfig', [ 'admin' => true ]],
 
     [['GET'], '/admin/timer', 'timer#index', [ 'admin' => true ]],
     [['POST'], '/admin/timer', 'timer#save', [ 'admin' => true ]],

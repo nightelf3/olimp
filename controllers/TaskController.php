@@ -31,15 +31,15 @@ class TaskController extends BaseController
         if (!SettingsHelper::isOlimpStarts() && !UserHelper::isAdmin()) {
             return $response->redirect(UrlHelper::href('task'));
         }
-        
+
         $userId = $request->param('user_id', 0);
-        
+
         /** @var TaskModel $task */
         $task = TaskModel::join('users', 'users.user_id', '=', 'tasks.user_id')->select([ 'task_id', 'task', 'tasks.is_enabled' ])->where([
             'users.user_id' => $userId,
             'users.is_enabled' => UserHelper::getUser()->user_id == $userId ? UserHelper::getUser()->is_enabled : true
         ])->find($request->param('task_id', 0));
-        
+
         if (SettingsHelper::isOlimpInProgress()) {
             $errors = $this->uploadFile($request);
             if ($request->files()->count() == 1 && empty($errors)) {
@@ -50,7 +50,7 @@ class TaskController extends BaseController
                 'task_id' => $task->task_id
             ]);
         }
-        
+
         if (SettingsHelper::param('enable_comments', false) && $request->param('comment_submit')) {
             CommentModel::create([
                 'from_id' => UserHelper::getUser()->user_id,
@@ -124,7 +124,7 @@ class TaskController extends BaseController
             //TODO: add the ability to participate in other olimps
             $userId = UserHelper::getUser()->user_id;
         }
-        
+
         $task = TaskModel::select(['task_id'])->where([
             'user_id' => $userId,
             'is_enabled' => UserHelper::getUser()->user_id == $userId ? UserHelper::getUser()->is_enabled : true

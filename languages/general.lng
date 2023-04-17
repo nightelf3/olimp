@@ -111,8 +111,6 @@
     "taskEnabled": "Завдання активне",
     "task-is-not-enabled": "Завдання не активне на поточному етапі олімпіади. Виберіть, будь ласка, інше завдання.",
     "olimpEnabled": "Олімпіада активна",
-    "olimpCheckerPassword": "Пароль:",
-    "olimpCheckerLogin": "Логін:",
     "useLastResults": "Використовувати попередні результати",
     "goBackToTask": "Повернутись назад до завдання",
     "liveUpdate": "Оновлювати інформацію в режимі реального часу",
@@ -142,5 +140,7 @@
     "checker-activity": "Дія",
     "checker-available": "Активний",
     "checker-idle": "Онлайн",
-    "checker-empty": "Активних програм немає"
+    "checker-empty": "Активних програм немає",
+    "checker-download-settings": "Скачати налаштування",
+    "checker-name-placeholder": "Назва обробника результатів"
 }

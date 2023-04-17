@@ -114,16 +114,18 @@
     </div>
     <div class="content">
         <div>
-            <table class="padding-table full-width">
-                <tr>
-                    <td width="1%" nowrap>{{ text('olimpCheckerLogin') }}</td>
-                    <td>{{ settings.olimpCheckerLogin }}</td>
-                </tr>
-                <tr>
-                    <td width="1%" nowrap>{{ text('olimpCheckerPassword') }}</td>
-                    <td>{{ settings.olimpCheckerPassword }}</td>
-                </tr>
-            </table>
+            <form method="get" action="/admin/sysinfo/checker/config" class="checker-settings" id="checker-settings">
+                <table class="padding-table full-width">
+                    <tr>
+                        <td class="form-group">
+                            <input type="text" placeholder="{{ text('checker-name-placeholder') }}" class="form-control border-input" name="checker-name" value="{{ checkerName }}" required />
+                        </td>
+                        <td class="form-group" width="1%" nowrap>
+                            <button type="submit" class="btn btn-info btn-fill btn-wd">{{ text("checker-download-settings") }}</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
             {% if checkers|length %}
             <table class="table table-striped padding-table full-width">
                 <thead>

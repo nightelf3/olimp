@@ -27,8 +27,7 @@ class APICheckerController
         $user = UserModel::where([
             'username' => $request->param('username'),
             'guid' => $request->param('password'),
-            'is_admin' => true,
-            'is_enabled' => true
+            'is_admin' => true
         ])->first();
         if (is_null($user)) {
             return $this->jsonError($response, 403, "Authentication failed");

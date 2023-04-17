@@ -14,6 +14,17 @@ $(function() {
 
                     e.preventDefault();
                     return false;
+                })
+                .on('submit', '#checker-settings', function(e) {
+                    e.preventDefault();
+
+                    // download config.json
+                    const a = document.createElement('a')
+                    a.href = $(this).attr("action") + '?' + $(this).serialize();
+                    a.download = "config.json"
+                    document.body.appendChild(a)
+                    a.click()
+                    document.body.removeChild(a)
                 });
             }
         };

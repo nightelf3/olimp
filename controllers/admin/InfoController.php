@@ -54,11 +54,10 @@ class InfoController extends BaseAdminController
             'is_enabled' => UserHelper::getUser()->is_enabled
         ];
 
-        $this->data['user'] = UserHelper::getUser();
         $this->data['checkers'] = CheckerModel::where([
-            'user_id' => UserHelper::getUser()->user_id,
-            'is_removed' => false
+            'user_id' => UserHelper::getUser()->user_id
         ])->get();
+        $this->data['checkerName'] = UserHelper::getUser()->username . '-checker-' . (count($this->data['checkers']) + 1);
         return $this->render('sysinfo');
     }
 
@@ -131,5 +130,16 @@ class InfoController extends BaseAdminController
         }
 
         return $response->redirect(UrlHelper::href('admin/sysinfo'));
+    }
+
+    public function checkerConfig(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        $json = [
+            "api" => UrlHelper::href('api'),
+            "username" => UserHelper::getUser()->username,
+            "password" => UserHelper::getUser()->guid,
+            "checkername" => $request->param('checker-name')
+        ];
+        return $response->json($json);
     }
 }
