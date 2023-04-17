@@ -72,7 +72,7 @@ class APICheckerController
                 'tasks.is_enabled' => true,
                 'queue.stan' => 0
             ])->take($request->param('limit', 1))->get();
-        if (!$queue) {
+        if ($queue->isEmpty()) {
             return $response->json([ 'message' => 'idle' ]);
         }
 
@@ -124,7 +124,6 @@ class APICheckerController
             'name' => $request->param('checkername'),
             'token' => $request->param('checkertoken')
         ])->first();
-
     }
 
     protected function jsonError(Response $response, int $code, $message) {

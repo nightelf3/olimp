@@ -34,7 +34,7 @@ class AddCheckersTable extends AbstractMigration
         $table = $this->table('checkers', [ 'id' => 'checker_id' ]);
         $table->addColumn('name', 'string', [ 'limit' => 255, 'null' => false ])
             ->addColumn('user_id', 'integer', [ 'null' => false ])
-            ->addColumn('token', 'string', [ 'limit' => 32 ])
+            ->addColumn('token', 'string', [ 'limit' => 64 ])
             ->addColumn('is_active', 'boolean', [ 'default' => false ])
             ->addColumn('created_at', 'datetime', [ 'default' => 'CURRENT_TIMESTAMP' ])
             ->addColumn('updated_at', 'datetime', [ 'default' => 'CURRENT_TIMESTAMP' ])
