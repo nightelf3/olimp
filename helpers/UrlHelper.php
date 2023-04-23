@@ -26,7 +26,7 @@ class UrlHelper extends BaseHelper
             $path = "/{$path}";
         }
 
-        return BASE_PATH . $path;
+        return str_replace('/', DIRECTORY_SEPARATOR, BASE_PATH . $path);
     }
 
     /**
