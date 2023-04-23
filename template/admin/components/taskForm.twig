@@ -1,11 +1,30 @@
-<form id="FormText" method="post" action="{{ href("admin/task/#{task.task_id}") }}">
+<form method="post" action="{{ href("admin/task/#{task.task_id}") }}">
     <div id="task-main-text">
-	    <textarea class="ckeditor" class="ckeditor" rows="40" cols="45" name="task[task]">{{ task.task|raw }}</textarea>
+       <textarea class="ckeditor" class="ckeditor" rows="40" cols="45" name="task[task]">{{ task.task|raw }}</textarea>
     </div>
     <table width="100%" class="sysinfo">
         <tr>
+            <td colspan="2"><h6>{{ text('task-data-section') }}</h6></td>
+        </tr>
+        <tr>
             <td nowrap>{{ text('taskName') }}</td>
             <td width="100%"><input type="text" name="task[name]" value="{{ task.name|default("Task #{task.task_id}") }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('taskSortOrder') }}</td>
+            <td width="100%"><input type="number" name="task[sort_order]" value="{{ task.sort_order|default(0) }}" required /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="100%">
+                <div class="checkbox">
+                    <input type="checkbox" id="is-task-enabled-checkbox" name="task[is_enabled]" value="1" {{ task.is_enabled|default(0) ? "checked" : "" }} />
+                    <label for="is-task-enabled-checkbox">{{ text('taskEnabled') }}</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><h6 class="margin-top">{{ text('task-score-section') }}</h6></td>
         </tr>
         <tr>
             <td nowrap>{{ text('taskMaxScore') }}</td>
@@ -14,6 +33,9 @@
         <tr>
             <td nowrap>{{ text('taskMulc') }}</td>
             <td width="100%"><input type="number" min="0" name="task[mulct]" value="{{ task.mulct|default(0) }}" required /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h6>{{ text('task-settings-section') }}</h6></td>
         </tr>
         <tr>
             <td nowrap>{{ text('taskMaxTime') }}</td>
@@ -30,19 +52,6 @@
         <tr>
             <td nowrap>{{ text('task-output-file') }}</td>
             <td width="100%"><input type="text" name="task[output_file]" value="{{ task.output_file|default("stdout") }}" required /></td>
-        </tr>
-        <tr>
-            <td nowrap>{{ text('taskSortOrder') }}</td>
-            <td width="100%"><input type="number" name="task[sort_order]" value="{{ task.sort_order|default(0) }}" required /></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td width="100%">
-                <div class="checkbox">
-                    <input type="checkbox" id="is-task-enabled-checkbox" name="task[is_enabled]" value="1" {{ task.is_enabled|default(0) ? "checked" : "" }} />
-                    <label for="is-task-enabled-checkbox">{{ text('taskEnabled') }}</label>
-                </div>
-            </td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" class="btn btn-info btn-fill btn-wd" id="save-task" name="task[submit]" value="{{ text('save') }}" /></td>
