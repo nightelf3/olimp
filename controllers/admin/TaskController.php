@@ -73,9 +73,11 @@ class TaskController extends BaseAdminController
         $taskInfo = $request->param('task', []);
         if ($app->optional['tests']) {
             $taskInfo['is_enabled'] = $this->task->is_enabled;
-        } else {
-            $taskInfo['is_enabled'] = $taskInfo['is_enabled'] ?: false;
         }
+
+        $taskInfo['is_enabled'] = $taskInfo['is_enabled'] ?: false;
+        $taskInfo['input_file'] = $taskInfo['is_custom_file'] ? $taskInfo['input_file'] : 'stdin';
+        $taskInfo['output_file'] = $taskInfo['is_custom_file'] ? $taskInfo['output_file'] : 'stdout';
         $this->task->update($taskInfo);
 
         return $this->get($request, $response, $service, $app);

@@ -47,4 +47,9 @@ class TaskModel extends BaseModel
 
         return new TaskStatusEnum($item ? explode(',', $item->stan)[0] : TaskStatusEnum::NoAction);
     }
+
+    public function isCustomFile()
+    {
+        return strcasecmp($this->input_file, 'stdin') != 0 || strcasecmp($this->output_file, 'stdout');
+    }
 }

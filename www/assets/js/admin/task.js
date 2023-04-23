@@ -48,6 +48,13 @@ $(function () {
                 });
             },
 
+            refreshFilesState: function ()
+            {
+                let value = $('#is-task-custom-file').is(':checked');
+                $('.custom-file').prop('disabled', (i, v) => !value);
+                $('.custom-file').closest('tr').toggleClass('disabled', !value);
+            },
+
             init: function (id) {
                 $('#task-' + id).css({
                     backgroundColor: '#c6c6c6',
@@ -72,6 +79,9 @@ $(function () {
                     .catch(error => {
                         console.error(error);
                     });
+
+                $(document).on('change', '#is-task-custom-file', App.admin.task.refreshFilesState)
+                App.admin.task.refreshFilesState();
 
                 $(document).on('submit', '#tests-form', App.admin.task.formTest);
                 App.admin.task.testsResize();

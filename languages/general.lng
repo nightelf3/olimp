@@ -150,5 +150,6 @@
     "task-settings-section": "Налаштуваня перевірки:",
     "task-max-score": "балів",
     "task-time": "мс",
-    "task-memory": "Мб"
+    "task-memory": "Мб",
+    "task-custom-file": "Використовувати файли замість стандартного потоку"
 }
