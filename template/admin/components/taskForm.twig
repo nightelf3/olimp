@@ -24,6 +24,14 @@
             <td width="100%"><input type="number" min="1" name="task[memory_limit]" value="{{ task.memory_limit|default(1024) }}" required /></td>
         </tr>
         <tr>
+            <td nowrap>{{ text('task-input-file') }}</td>
+            <td width="100%"><input type="text" name="task[input_file]" value="{{ task.input_file|default("stdin") }}" required /></td>
+        </tr>
+        <tr>
+            <td nowrap>{{ text('task-output-file') }}</td>
+            <td width="100%"><input type="text" name="task[output_file]" value="{{ task.output_file|default("stdout") }}" required /></td>
+        </tr>
+        <tr>
             <td nowrap>{{ text('taskSortOrder') }}</td>
             <td width="100%"><input type="number" name="task[sort_order]" value="{{ task.sort_order|default(0) }}" required /></td>
         </tr>
