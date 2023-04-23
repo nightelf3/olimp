@@ -21,7 +21,7 @@ class TwigTaskExtension extends \Twig_Extension
 
     public function tabTaskColor(TaskStatusEnum $taskStatus, $active = false)
     {
-        switch ($taskStatus->value)
+        switch ($taskStatus->value())
         {
             case TaskStatusEnum::InQueue:
             case TaskStatusEnum::Compiling:

@@ -22,8 +22,6 @@ namespace helpers\classes\enums;
  **/
 class TaskStatusEnum extends BaseEnum
 {
-    const __default = self::NoAction;
-
     const NoAction = 0;
     const InQueue = 1;
     const Compiling = 2;

@@ -45,7 +45,7 @@ class TaskModel extends BaseModel
             'task_id' => $this->task_id
         ])->orderBy('created_at', 'desc')->first();
 
-        return new TaskStatusEnum($item ? explode(',', $item->stan)[0] : TaskStatusEnum::NoAction);
+        return new TaskStatusEnum($item ? (int)explode(',', $item->stan)[0] : null, TaskStatusEnum::NoAction);
     }
 
     public function isCustomFile()

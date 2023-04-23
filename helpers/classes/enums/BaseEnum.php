@@ -11,11 +11,12 @@ use helpers\ErrorHelper;
 
 abstract class BaseEnum
 {
-    final public function __construct($value)
+    final public function __construct($value, $default = null)
     {
         $c = new \ReflectionClass($this);
-        if (!in_array($value, $c->getConstants())) {
-            ErrorHelper::assert("{$value} not a const in enum");
+        if (!in_array($value, $c->getConstants(), true)) {
+            ErrorHelper::assert(!is_null($default), "{$value} not a const in enum");
+            $value = $default ?: $c->getConstants()[0];
         }
         $this->value = $value;
     }
@@ -24,4 +25,11 @@ abstract class BaseEnum
     {
         return "{$this->value}";
     }
+
+    final public function value()
+    {
+        return $this->value;
+    }
+
+    protected $value = null;
 }
