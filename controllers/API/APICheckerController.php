@@ -7,6 +7,7 @@
  */
 namespace controllers\API;
 
+use helpers\classes\enums\TaskStatusEnum;
 use helpers\SettingsHelper;
 use helpers\UrlHelper;
 use Klein\App;
@@ -53,18 +54,27 @@ class APICheckerController
             return $this->jsonError($response, 500, "Registration failed");
         }
 
-        return $response->json([ 'checkertoken' => $checker->token ]);
+        return $response->json([
+            'successed' => 1,
+            'checkertoken' => $checker->token
+        ]);
     }
 
     public function message(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         $checker = $this->getChecker($request);
         if (is_null($checker)) {
-            return $response->json([ 'message' => 'logout' ]);
+            return $response->json([
+                'successed' => 1,
+                'message' => 'logout'
+            ]);
         }
 
         if (!$checker->is_active) {
-            return $response->json([ 'message' => 'authentification' ]);
+            return $response->json([
+                'successed' => 1,
+                'message' => 'authentification'
+            ]);
         }
 
         $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
@@ -72,16 +82,22 @@ class APICheckerController
             ->where([
                 'tasks.user_id' => $checker->user_id,
                 'tasks.is_enabled' => true,
-                'queue.stan' => 0
+                'queue.stan' => TaskStatusEnum::NoAction
             ])->take($request->param('limit', 1))->get();
         if ($queue->isEmpty()) {
-            return $response->json([ 'message' => 'idle' ]);
+            return $response->json([
+                'successed' => 1,
+                'message' => 'idle'
+            ]);
         }
 
         // update stan
-        QueueModel::whereIn('queue_id', $queue->map(function ($e) { return $e->queue_id; }))->update([ 'stan' => 1 ]);
+        QueueModel::whereIn('queue_id', $queue->map(function ($e) { return $e->queue_id; }))->update([
+            'stan' => TaskStatusEnum::InQueue
+        ]);
 
         $json = [
+            'successed' => 1,
             'tasks' => [],
             'message' => 'task'
         ];
@@ -137,8 +153,8 @@ class APICheckerController
     protected function jsonError(Response $response, int $code, $message) {
         $response->code($code);
         return $response->json([
+            'successed' => 0,
             'error' => $message
         ]);
-
     }
 }
