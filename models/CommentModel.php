@@ -33,7 +33,7 @@ class CommentModel extends BaseModel
     }
 
     /**
-     * Get user from
+     * Get user to
      *
      * @return UserModel
      */

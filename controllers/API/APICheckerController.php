@@ -8,6 +8,7 @@
 namespace controllers\API;
 
 use helpers\classes\enums\TaskStatusEnum;
+use helpers\ControllerHelper;
 use helpers\SettingsHelper;
 use helpers\UrlHelper;
 use Klein\App;
@@ -15,6 +16,7 @@ use Klein\Request;
 use Klein\Response;
 use Klein\ServiceProvider;
 use models\CheckerModel;
+use models\CompilationErrorModel;
 use models\QueueModel;
 use models\UserModel;
 
@@ -79,6 +81,7 @@ class APICheckerController
 
         $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
             ->join('users', 'users.user_id', '=', 'queue.user_id')
+            ->join('compilers', 'compilers.compiler_id', '=', 'queue.compiler_id')
             ->where([
                 'tasks.user_id' => $checker->user_id,
                 'tasks.is_enabled' => true,
@@ -104,12 +107,13 @@ class APICheckerController
         foreach ($queue as $item) {
             $fileData = file_get_contents(UrlHelper::path("users/{$item->username}/{$item->task_id}/{$item->filename}"));
             $jsonItem = [
-                'queue_id' => $item->queue_id,
-                'custom_file' => strcasecmp($item->input_file, 'stdin') != 0 || strcasecmp($item->output_file, 'stdout'),
+                'queue_id' => (int)$item->queue_id,
+                'use_files' => strcasecmp($item->input_file, 'stdin') != 0 || strcasecmp($item->output_file, 'stdout'),
+                'extension' => $item->ext,
                 'input_file' => $item->input_file,
                 'output_file' => $item->output_file,
-                'time_limit' => $item->time_limit,
-                'memory_limit' => $item->memory_limit,
+                'time_limit' => (int)$item->time_limit,
+                'memory_limit' => (int)$item->memory_limit,
                 'text' => base64_encode($fileData),
                 'tests' => []
             ];
@@ -119,14 +123,103 @@ class APICheckerController
             $count = (int)$item->tests_count;
             for ($i = 0; $i < $count; $i++) {
                 $jsonItem['tests'][] = [
-                    'input' => $input[$i],
-                    'output' => $output[$i],
+                    'input' => base64_encode($input[$i]),
+                    'output' => base64_encode($output[$i]),
                 ];
             }
 
             $json['tasks'][] = $jsonItem;
         }
         return $response->json($json);
+    }
+
+    public function results(Request $request, Response $response, ServiceProvider $service, App $app)
+    {
+        /** @var CheckerModel $checker */
+        $checker = $this->getChecker($request);
+        if (is_null($checker)) {
+            return $this->jsonError($response, 403, "Authentication failed");
+        }
+
+        /** @var QueueModel $queue */
+        $queue = $request->param('queue_id') ? QueueModel::find($request->param('queue_id')) : null;
+        if (is_null($queue)) {
+            return $this->jsonError($response, 400, "Can't find the queue item");
+        }
+
+        $states = $request->param('states');
+        if (is_null($queue)) {
+            return $this->jsonError($response, 400, "Can't find the queue item");
+        }
+
+        $updateRating = false;
+        $states = array_map(function ($e) {
+            return new TaskStatusEnum((int)$e, TaskStatusEnum::ResponseError);
+        }, explode(',', $states));
+        if (count($states) == 1) {
+            $state = $states[0];
+            switch ($state->value())
+            {
+            case TaskStatusEnum::InQueue:
+                return $this->jsonError($response, 400, "Item is already in the queue");
+
+            case TaskStatusEnum::InvalidOutputStream:
+            case TaskStatusEnum::Succeed:
+                $updateRating = true;
+                $queue->update([
+                    'stan' => $state->value(),
+                    'tests' => null
+                ]);
+                break;
+
+            case TaskStatusEnum::NoAction:
+            case TaskStatusEnum::Compiling:
+            case TaskStatusEnum::InProgress:
+                $queue->update([
+                    'stan' => $state->value(),
+                    'tests' => null
+                ]);
+                break;
+
+            case TaskStatusEnum::CompilingError:
+                $message = $request->param('message');
+                if (is_null($message)) {
+                    return $this->jsonError($response, 400, "Compilation message is missing");
+                }
+                $message = base64_decode($message, true);
+                if (!$message) {
+                    return $this->jsonError($response, 400, "Compilation message is not valid");
+                }
+                CompilationErrorModel::create([
+                    'queue_id' => $queue->queue_id,
+                    'error' => $message
+                ]);
+                break;
+            }
+        } else {
+            $message = $request->param('message');
+            if (is_null($message)) {
+                return $this->jsonError($response, 400, "Response message is missing");
+            }
+            $tests = array_map(function ($e) {
+                return (int)$e;
+            }, explode(',', $message));
+            if (count($tests) != count($states)) {
+                return $this->jsonError($response, 400, "States are not valid");
+            }
+
+            $updateRating = true;
+            $queue->update([
+                'stan' => implode(',', array_map(function ($e) { return $e->value(); }, $states)),
+                'tests' => implode(',', $tests),
+            ]);
+        }
+
+        if ($updateRating) {
+            ControllerHelper::updateResults($queue->user());
+        }
+
+        return $response->json([ 'successed' => 1 ]);
     }
 
     public function logout(Request $request, Response $response, ServiceProvider $service, App $app)

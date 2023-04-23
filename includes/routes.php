@@ -24,6 +24,7 @@ return [
     [['GET'], '/rating/[i:user_id]/update', 'rating#update', [ 'login' => true ]],
 
     [['POST'], '/api/register', 'API\\APIChecker#register', [ 'api' => true ]],
+    [['POST'], '/api/results', 'API\\APIChecker#results', [ 'api' => true ]],
     [['POST'], '/api/message', 'API\\APIChecker#message', [ 'api' => true ]],
     [['POST'], '/api/logout', 'API\\APIChecker#logout', [ 'api' => true ]],
 
