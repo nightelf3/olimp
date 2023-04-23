@@ -8,6 +8,7 @@
 namespace controllers\API;
 
 use helpers\SettingsHelper;
+use helpers\UrlHelper;
 use Klein\App;
 use Klein\Request;
 use Klein\Response;
@@ -63,10 +64,11 @@ class APICheckerController
         }
 
         if (!$checker->is_active) {
-            return $response->json([ 'message' => 'idle' ]);
+            return $response->json([ 'message' => 'authentification' ]);
         }
 
         $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
+            ->join('users', 'users.user_id', '=', 'queue.user_id')
             ->where([
                 'tasks.user_id' => $checker->user_id,
                 'tasks.is_enabled' => true,
@@ -76,16 +78,23 @@ class APICheckerController
             return $response->json([ 'message' => 'idle' ]);
         }
 
-        $queue->update([ 'stan' => 1 ]);
+        // update stan
+        QueueModel::whereIn('queue_id', $queue->map(function ($e) { return $e->queue_id; }))->update([ 'stan' => 1 ]);
+
         $json = [
             'tasks' => [],
             'message' => 'task'
         ];
         foreach ($queue as $item) {
+            $fileData = file_get_contents(UrlHelper::path("users/{$item->username}/{$item->task_id}/{$item->filename}"));
             $jsonItem = [
+                'queue_id' => $item->queue_id,
+                'custom_file' => strcasecmp($item->input_file, 'stdin') != 0 || strcasecmp($item->output_file, 'stdout'),
+                'input_file' => $item->input_file,
+                'output_file' => $item->output_file,
                 'time_limit' => $item->time_limit,
                 'memory_limit' => $item->memory_limit,
-                'text' => 'TODO',
+                'text' => base64_encode($fileData),
                 'tests' => []
             ];
 
