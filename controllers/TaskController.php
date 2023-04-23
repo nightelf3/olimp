@@ -35,7 +35,10 @@ class TaskController extends BaseController
         $userId = $request->param('user_id', 0);
 
         /** @var TaskModel $task */
-        $task = TaskModel::join('users', 'users.user_id', '=', 'tasks.user_id')->select([ 'task_id', 'task', 'tasks.is_enabled' ])->where([
+        $task = TaskModel::join('users', 'users.user_id', '=', 'tasks.user_id')->select([
+            'task_id', 'task',
+            'tasks.name', 'tasks.time_limit', 'tasks.memory_limit', 'tasks.max_score', 'tasks.is_enabled'
+        ])->where([
             'users.user_id' => $userId,
             'users.is_enabled' => UserHelper::getUser()->user_id == $userId ? UserHelper::getUser()->is_enabled : true
         ])->find($request->param('task_id', 0));

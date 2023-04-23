@@ -10,6 +10,8 @@
                             {% if (errors.taskIsNotEnabled) %}
                                 <div class="alert alert-danger">{{ text('task-is-not-enabled') }}</div>
                             {% else %}
+                                <h3><strong>{{ currentTask.name }}</strong></h3>
+                                <p><strong>({{ currentTask.max_score }} {{ text('task-max-score') }}, {{ currentTask.time_limit|round }} {{ text('task-time') }}, {{ currentTask.memory_limit|round }} {{ text('task-memory') }})</strong></p>
                                 {{ currentTask.task|decode|raw }}
                             {% endif %}
                         </div>

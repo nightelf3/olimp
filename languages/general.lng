@@ -147,5 +147,8 @@
     "task-output-file": "Вихідний файл:",
     "task-data-section": "Загальна інформація:",
     "task-score-section": "Налаштування оцінювання:",
-    "task-settings-section": "Налаштуваня перевірки:"
+    "task-settings-section": "Налаштуваня перевірки:",
+    "task-max-score": "балів",
+    "task-time": "мс",
+    "task-memory": "Мб"
 }
