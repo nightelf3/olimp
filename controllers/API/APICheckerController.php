@@ -107,10 +107,9 @@ class APICheckerController
     public function logout(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         $checker = $this->getChecker($request);
-        if (is_null($checker)) {
-            return $this->jsonError($response, 400, "Logout parameters are not specified");
+        if (!is_null($checker)) {
+            $checker->delete();
         }
-        $checker->delete();
         return $response->json([ 'successed' => 1 ]);
     }
 
