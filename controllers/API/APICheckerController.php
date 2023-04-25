@@ -79,7 +79,8 @@ class APICheckerController
             ]);
         }
 
-        $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
+        $queue = QueueModel::select([ '*', 'tasks.name as task_name'])
+            ->join('tasks', 'tasks.task_id', '=', 'queue.task_id')
             ->join('users', 'users.user_id', '=', 'queue.user_id')
             ->join('compilers', 'compilers.compiler_id', '=', 'queue.compiler_id')
             ->where([
@@ -109,12 +110,14 @@ class APICheckerController
             $jsonItem = [
                 'queue_id' => (int)$item->queue_id,
                 'use_files' => strcasecmp($item->input_file, 'stdin') != 0 || strcasecmp($item->output_file, 'stdout'),
-                'extension' => $item->ext,
                 'input_file' => $item->input_file,
                 'output_file' => $item->output_file,
                 'time_limit' => (int)$item->time_limit,
                 'memory_limit' => (int)$item->memory_limit,
                 'text' => base64_encode($fileData),
+                'extension' => $item->ext,
+                'username' => $item->username,
+                'task_name' => $item->task_name,
                 'tests' => []
             ];
 
