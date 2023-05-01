@@ -79,8 +79,7 @@ class APICheckerController
             ]);
         }
 
-        $queue = QueueModel::select([ '*', 'tasks.name as task_name'])
-            ->join('tasks', 'tasks.task_id', '=', 'queue.task_id')
+        $queue = QueueModel::join('tasks', 'tasks.task_id', '=', 'queue.task_id')
             ->join('users', 'users.user_id', '=', 'queue.user_id')
             ->join('compilers', 'compilers.compiler_id', '=', 'queue.compiler_id')
             ->where([
@@ -107,6 +106,7 @@ class APICheckerController
         ];
         foreach ($queue as $item) {
             $fileData = file_get_contents(UrlHelper::path("users/{$item->username}/{$item->task_id}/{$item->filename}"));
+            $fileData = str_replace("\r\n", "\n", $fileData);
             $jsonItem = [
                 'queue_id' => (int)$item->queue_id,
                 'use_files' => strcasecmp($item->input_file, 'stdin') != 0 || strcasecmp($item->output_file, 'stdout'),
@@ -117,7 +117,7 @@ class APICheckerController
                 'text' => base64_encode($fileData),
                 'extension' => $item->ext,
                 'username' => $item->username,
-                'task_name' => $item->task_name,
+                'task_id' => $item->task_id,
                 'tests' => []
             ];
 
@@ -151,8 +151,8 @@ class APICheckerController
         }
 
         $states = $request->param('states');
-        if (is_null($queue)) {
-            return $this->jsonError($response, 400, "Can't find the queue item");
+        if (is_null($states)) {
+            return $this->jsonError($response, 400, "Can't find the states");
         }
 
         $updateRating = false;
@@ -193,9 +193,13 @@ class APICheckerController
                 if (!$message) {
                     return $this->jsonError($response, 400, "Compilation message is not valid");
                 }
-                CompilationErrorModel::create([
-                    'queue_id' => $queue->queue_id,
-                    'error' => $message
+                CompilationErrorModel::updateOrCreate(
+                    [ 'queue_id' => $queue->queue_id ],
+                    [ 'error' => $message ]
+                );
+                $queue->update([
+                    'stan' => $state->value(),
+                    'tests' => null
                 ]);
                 break;
             }
