@@ -76,7 +76,8 @@ class InfoController extends BaseAdminController
         } elseif (isset($event['reset_results'])) {
             QueueModel::whereIn('task_id', $taskIds)->update([
                 'stan' => 0,
-                'tests' => ''
+                'tests' => '',
+                'counter' => 0
             ]);
             $queueIds = array_column(QueueModel::select([ 'queue_id' ])->whereIn('task_id', $taskIds)
                 ->get()->toArray(), 'queue_id');

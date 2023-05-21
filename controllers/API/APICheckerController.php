@@ -22,6 +22,8 @@ use models\UserModel;
 
 class APICheckerController
 {
+    const kMaxTries = 3;
+
     public function register(Request $request, Response $response, ServiceProvider $service, App $app)
     {
         if (is_null($request->param('username')) || is_null($request->param('password')) || is_null($request->param('checkername'))) {
@@ -176,6 +178,24 @@ class APICheckerController
                 break;
 
             case TaskStatusEnum::NoAction:
+                // sotmething wrong with '$queue->counter'
+                if ($queue->attributesToArray()['counter'] > APICheckerController::kMaxTries) {
+                    CompilationErrorModel::updateOrCreate(
+                        [ 'queue_id' => $queue->queue_id ],
+                        [ 'error' => 'Unexpected compilation or runtime error' ]
+                    );
+                    $queue->update([
+                        'stan' => TaskStatusEnum::CompilingError,
+                        'tests' => null,
+                    ]);
+                } else {
+                    $queue->increment('counter', 1, [
+                        'stan' => $state->value(),
+                        'tests' => null
+                    ]);
+                }
+                break;
+
             case TaskStatusEnum::Compiling:
             case TaskStatusEnum::InProgress:
                 $queue->update([

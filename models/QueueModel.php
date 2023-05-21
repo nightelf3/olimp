@@ -19,12 +19,13 @@ namespace models;
  * @property string stan
  * @property string tests
  * @property string upload_ip
+ * @property int counter
  */
 class QueueModel extends BaseModel
 {
     protected $table = 'queue';
     protected $primaryKey = 'queue_id';
-    protected $fillable = [ 'user_id', 'task_id', 'user_filename', 'filename', 'compiler_id', 'stan', 'tests', 'upload_ip' ];
+    protected $fillable = [ 'user_id', 'task_id', 'user_filename', 'filename', 'compiler_id', 'stan', 'tests', 'upload_ip', 'counter' ];
 
     /**
      * Get compiler by id
